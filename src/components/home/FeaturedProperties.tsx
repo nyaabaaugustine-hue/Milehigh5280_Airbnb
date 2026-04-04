@@ -19,9 +19,10 @@ interface PropertyCardProps {
   property: Property;
   index: number;
   onBookNow?: () => void;
+  onViewProperty?: (property: Property) => void;
 }
 
-function PropertyCard({ property, index, onBookNow }: PropertyCardProps) {
+function PropertyCard({ property, index, onBookNow, onViewProperty }: PropertyCardProps) {
   const ref  = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
 
@@ -44,6 +45,7 @@ function PropertyCard({ property, index, onBookNow }: PropertyCardProps) {
         vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10',
       )}
       style={{ transitionDelay: `${index * 150}ms` }}
+      onClick={() => onViewProperty?.(property)}
     >
       {/* ── Image ── */}
       <div className="card-image relative h-72 lg:h-80 overflow-hidden bg-[var(--surface-2)]">
@@ -107,6 +109,7 @@ function PropertyCard({ property, index, onBookNow }: PropertyCardProps) {
           </div>
           <Link
             href={`/properties/${property.slug}`}
+            onClick={(e) => e.stopPropagation()}
             className="ml-auto flex items-center gap-1 text-[var(--gold)] font-medium uppercase tracking-widest text-[0.65rem] hover:gap-2 transition-all duration-300"
           >
             View
@@ -116,7 +119,7 @@ function PropertyCard({ property, index, onBookNow }: PropertyCardProps) {
 
         {/* Book Now button */}
         <button
-          onClick={onBookNow}
+          onClick={(e) => { e.stopPropagation(); onBookNow?.(); }}
           className="btn-gold w-full justify-center gap-2 text-[0.7rem] py-3"
         >
           <Phone size={12} />
@@ -129,9 +132,10 @@ function PropertyCard({ property, index, onBookNow }: PropertyCardProps) {
 
 interface FeaturedPropertiesProps {
   onBookNow?: () => void;
+  onViewProperty?: (property: Property) => void;
 }
 
-export default function FeaturedProperties({ onBookNow }: FeaturedPropertiesProps) {
+export default function FeaturedProperties({ onBookNow, onViewProperty }: FeaturedPropertiesProps) {
   const properties = getFeaturedProperties();
   const ref  = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
@@ -181,7 +185,13 @@ export default function FeaturedProperties({ onBookNow }: FeaturedPropertiesProp
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {properties.map((property, i) => (
-          <PropertyCard key={property.id} property={property} index={i} onBookNow={onBookNow} />
+          <PropertyCard
+            key={property.id}
+            property={property}
+            index={i}
+            onBookNow={onBookNow}
+            onViewProperty={onViewProperty}
+          />
         ))}
       </div>
     </section>
