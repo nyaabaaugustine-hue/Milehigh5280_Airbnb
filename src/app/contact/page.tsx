@@ -48,11 +48,10 @@ export default function ContactPage() {
       return;
     }
     setLoading(true);
-    // Replace with real form submission (Formspree, EmailJS, etc.)
     await new Promise(r => setTimeout(r, 1500));
     setLoading(false);
     setSubmitted(true);
-    toast.success('Message sent! We\'ll respond within 2 hours.');
+    toast.success("Message sent! We'll respond within 2 hours.");
   };
 
   return (
@@ -79,8 +78,10 @@ export default function ContactPage() {
             <h2 className="font-serif text-3xl font-light text-white mb-8">Send a Message</h2>
 
             {submitted ? (
-              <div className="border border-[var(--gold)] bg-[rgba(201,150,58,0.05)] p-10 text-center"
-                style={{ animation: 'fadeIn 0.5s ease' }}>
+              <div
+                className="border border-[var(--gold)] bg-[rgba(201,150,58,0.05)] p-10 text-center"
+                style={{ animation: 'fadeIn 0.5s ease' }}
+              >
                 <CheckCircle size={48} className="text-[var(--gold)] mx-auto mb-4" />
                 <h3 className="font-serif text-2xl text-white mb-2">Message Received</h3>
                 <p className="text-[var(--text-muted)] mb-6">
@@ -95,6 +96,7 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+
                 {/* Enquiry type */}
                 <div>
                   <label className="section-label text-[0.55rem] block mb-2">Enquiry Type</label>
@@ -116,15 +118,24 @@ export default function ContactPage() {
                   <div>
                     <label className="section-label text-[0.55rem] block mb-2">Full Name *</label>
                     <input
-                      name="name" value={formData.name} onChange={handleChange}
-                      placeholder="Your name" className="input-luxury" required
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your name"
+                      className="input-luxury"
+                      required
                     />
                   </div>
                   <div>
                     <label className="section-label text-[0.55rem] block mb-2">Email *</label>
                     <input
-                      type="email" name="email" value={formData.email} onChange={handleChange}
-                      placeholder="your@email.com" className="input-luxury" required
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your@email.com"
+                      className="input-luxury"
+                      required
                     />
                   </div>
                 </div>
@@ -133,23 +144,39 @@ export default function ContactPage() {
                   <div>
                     <label className="section-label text-[0.55rem] block mb-2">Phone / WhatsApp</label>
                     <input
-                      name="phone" value={formData.phone} onChange={handleChange}
-                      placeholder="+233 or international" className="input-luxury"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+233 or international"
+                      className="input-luxury"
                     />
                   </div>
                   <div>
                     <label className="section-label text-[0.55rem] block mb-2">Property of Interest</label>
-                    <select name="property" value={formData.property} onChange={handleChange} className="input-luxury">
+                    <select
+                      name="property"
+                      value={formData.property}
+                      onChange={handleChange}
+                      className="input-luxury"
+                    >
                       <option value="">Any / Not Sure</option>
-                    div>
+                      {properties.map(p => (
+                        <option key={p.id} value={p.slug}>{p.name}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
                   <label className="section-label text-[0.55rem] block mb-2">Message *</label>
                   <textarea
-                    name="message" value={formData.message} onChange={handleChange}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tell us about your plans, dates, group size, or any requests..."
-                    rows={5} className="input-luxury resize-none" required
+                    rows={5}
+                    className="input-luxury resize-none"
+                    required
                   />
                 </div>
 
@@ -199,9 +226,9 @@ export default function ContactPage() {
           {/* ── Right: Contact Details ── */}
           <div className="space-y-6">
 
-            {/* WhatsApp CTA — most important for Ghana */}
+            {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/233000000000?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20your%20properties"
+              href="https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20your%20properties"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 bg-[#25D366]/10 border border-[#25D366]/30 p-5 hover:bg-[#25D366]/15 transition-colors duration-300 group"
@@ -220,9 +247,9 @@ export default function ContactPage() {
             <div className="border border-[var(--border)] p-6 space-y-5">
               <h3 className="section-label mb-2">Contact Details</h3>
               {[
-                { Icon: Phone,  label: 'Phone',   value: '+233 (0) 00 000 0000', href: 'tel:+233000000000' },
-                { Icon: Mail,   label: 'Email',   value: 'concierge@luxeghanastays.com', href: 'mailto:concierge@luxeghanastays.com' },
-                { Icon: MapPin, label: 'Office',  value: 'East Legon, Accra, Ghana', href: 'https://maps.google.com/?q=East+Legon+Accra' },
+                { Icon: Phone,  label: 'Phone',  value: '+233 54 198 8383',              href: 'tel:+233541988383' },
+                { Icon: Mail,   label: 'Email',  value: 'concierge@milehigh5280.com',    href: 'mailto:concierge@milehigh5280.com' },
+                { Icon: MapPin, label: 'Office', value: 'Ayi Mensah, Accra, Ghana',      href: 'https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana' },
               ].map(({ Icon, label, value, href }) => (
                 <a
                   key={label}
@@ -263,17 +290,22 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Google Map embed placeholder */}
-            <div className="border border-[var(--border)] relative h-48 bg-[var(--surface-2)] overflow-hidden flex items-center justify-center group">
-              <div className="absolute inset-0 opacity-5"
-                style={{ backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+            {/* Map placeholder */}
+            <div className="border border-[var(--border)] relative h-48 bg-[var(--surface-2)] overflow-hidden flex items-center justify-center">
+              <div
+                className="absolute inset-0 opacity-5"
+                style={{
+                  backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)',
+                  backgroundSize: '20px 20px',
+                }}
               />
               <div className="relative z-10 text-center">
                 <MapPin size={28} className="text-[var(--gold)] mx-auto mb-2" />
-                <p className="text-[var(--text-muted)] text-xs">Accra, Ghana</p>
+                <p className="text-[var(--text-muted)] text-xs">Ayi Mensah, Accra, Ghana</p>
                 <a
-                  href="https://maps.google.com/?q=East+Legon+Accra+Ghana"
-                  target="_blank" rel="noopener noreferrer"
+                  href="https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[var(--gold)] text-xs hover:underline mt-1 block"
                 >
                   Open Google Maps →
