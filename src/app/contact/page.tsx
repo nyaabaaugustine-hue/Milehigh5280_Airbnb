@@ -228,7 +228,7 @@ export default function ContactPage() {
 
             {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20your%20properties"
+              href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20your%20properties"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 bg-[#25D366]/10 border border-[#25D366]/30 p-5 hover:bg-[#25D366]/15 transition-colors duration-300 group"
@@ -247,7 +247,7 @@ export default function ContactPage() {
             <div className="border border-[var(--border)] p-6 space-y-5">
               <h3 className="section-label mb-2">Contact Details</h3>
               {[
-                { Icon: Phone,  label: 'Phone',  value: '+233 54 198 8383',              href: 'tel:+233541988383' },
+                { Icon: Phone,  label: 'Phone',  value: '+1 720 705 9849',              href: 'tel:+17207059849' },
                 { Icon: Mail,   label: 'Email',  value: 'concierge@milehigh5280.com',    href: 'mailto:concierge@milehigh5280.com' },
                 { Icon: MapPin, label: 'Office', value: 'Ayi Mensah, Accra, Ghana',      href: 'https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana' },
               ].map(({ Icon, label, value, href }) => (

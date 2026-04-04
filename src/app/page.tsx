@@ -49,7 +49,7 @@ export default function HomePage() {
               Book Your Stay
             </button>
             <a
-              href="https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20book%20The%20Palm%20apartment"
+              href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20The%20Palm%20apartment"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost"

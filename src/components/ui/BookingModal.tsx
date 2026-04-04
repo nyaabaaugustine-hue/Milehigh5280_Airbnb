@@ -94,7 +94,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       `*Total:* GHS ${(total * 15.8).toLocaleString()} / $${total}\n` +
       `${form.specialRequests ? `*Special Requests:* ${form.specialRequests}` : ''}`
     );
-    window.open(`https://wa.me/233541988383?text=${msg}`, '_blank');
+    window.open(`https://wa.me/17207059849?text=${msg}`, '_blank');
   };
 
   const handlePayment = async () => {
@@ -464,7 +464,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </p>
               <div className="flex flex-col gap-3">
                 <a
-                  href={`https://wa.me/233541988383?text=${encodeURIComponent(`Hi! I just booked The Palm for ${form.checkIn} - ${form.checkOut}. My name is ${form.name}.`)}`}
+                  href={`https://wa.me/17207059849?text=${encodeURIComponent(`Hi! I just booked The Palm for ${form.checkIn} - ${form.checkOut}. My name is ${form.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-gold w-full justify-center gap-2"

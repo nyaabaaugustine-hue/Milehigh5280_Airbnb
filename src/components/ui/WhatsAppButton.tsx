@@ -17,7 +17,7 @@ export default function WhatsAppButton({ onBookNow }: WhatsAppButtonProps) {
     return () => clearTimeout(t);
   }, []);
 
-  const waLink = 'https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment%20in%20Ayi%20Mensah';
+  const waLink = 'https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment%20in%20Ayi%20Mensah';
 
   const WhatsAppIcon = () => (
     <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg">

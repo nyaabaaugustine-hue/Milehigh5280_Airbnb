@@ -205,7 +205,7 @@ export default function BookingWidget({ property }: Props) {
             {checkIn && checkOut ? 'Reserve Now' : 'Check Availability'}
           </Link>
           <a
-            href={`https://wa.me/233000000000?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`}
+            href={`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost w-full justify-center"

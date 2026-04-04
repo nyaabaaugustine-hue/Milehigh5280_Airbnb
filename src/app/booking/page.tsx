@@ -279,7 +279,7 @@ function BookingFormInner() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/" className="btn-gold">Return Home</Link>
               <a
-                href={`https://wa.me/233541988383?text=Hello%2C%20I%20just%20booked%20${encodeURIComponent(property.name)}`}
+                href={`https://wa.me/17207059849?text=Hello%2C%20I%20just%20booked%20${encodeURIComponent(property.name)}`}
                 target="_blank" rel="noopener noreferrer"
                 className="btn-ghost"
               >
