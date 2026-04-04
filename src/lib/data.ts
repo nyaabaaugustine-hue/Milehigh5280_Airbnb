@@ -43,6 +43,10 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
       { id: '1-5', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',  alt: 'Milehigh5280 Airbnb- Lounge area', category: 'interior' },
       { id: '1-6', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/4_xgzoyo.jpg',  alt: 'Milehigh5280 Airbnb- Bathroom', category: 'interior' },
       { id: '1-7', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296670/7_wv1u9h.jpg',  alt: 'Milehigh5280 Airbnb- Exterior view', category: 'exterior' },
+      { id: '1-8', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302731/A_2_kwg4sf.jpg', alt: 'Milehigh5280 Airbnb - Modern interior', category: 'interior' },
+      { id: '1-9', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302731/A_4_pmp0ha.jpg', alt: 'Milehigh5280 Airbnb - Bedroom view', category: 'interior' },
+      { id: '1-10', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_5_q0jfae.jpg', alt: 'Milehigh5280 Airbnb - Premium amenity', category: 'amenity' },
+      { id: '1-11', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_3_dcbuqu.jpg', alt: 'Milehigh5280 Airbnb - Interior detail', category: 'amenity' },
     ],
     amenities: [
       { id: 'a1', label: 'High-Speed WiFi', icon: 'Wifi', category: 'essential' },
@@ -73,7 +77,7 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
         comment: 'Milehigh5280 Airbnbexceeded all my expectations. The apartment is immaculate, modern, and so peaceful. Ayi Mensah is such a beautiful area — I woke up to birds every morning. Highly recommend Rehoboth Properties!',
       },
       {
-        id: 'r2', author: 'Diana O.', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80',
+        id: 'r2', author: 'Diana O.', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80',
         country: 'United Kingdom', rating: 5, date: 'February 2025', stayDuration: '7 nights',
         comment: 'Coming back to Ghana to visit family and this was the perfect base. The neighbourhood is lush and green, the apartment feels like a proper home. The host was incredibly responsive and helpful.',
       },

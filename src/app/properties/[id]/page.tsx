@@ -13,8 +13,11 @@ export async function generateStaticParams() {
 }
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const property = getPropertyBySlug(params.id);
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> }
+): Promise<Metadata> {
+  const { id } = await params;
+  const property = getPropertyBySlug(id);
   if (!property) return { title: 'Property Not Found' };
   return {
     title: `${property.name} — ${property.location.city}, Ghana`,
@@ -33,14 +36,17 @@ const AmenityIcon = ({ icon }: { icon: string }) => {
     TreePalm: '🌴', Wind: '❄️', Shield: '🛡️', Dumbbell: '🏋️',
     Wine: '🍷', Building2: '🏙️', Cpu: '🏠', Flame: '🔥',
     Anchor: '⚓', Ship: '🚢', Sailboat: '⛵', Droplets: '💧',
-    PartyPopper: '🎉',
+    PartyPopper: '🎉', Car: '🚗', Shirt: '👕', Zap: '⚡',
   };
   return <span className="text-base">{iconMap[icon] ?? '✦'}</span>;
 };
 
 // ─── Page ────────────────────────────────────────────────────────────────────
-export default function PropertyPage({ params }: { params: { id: string } }) {
-  const property = getPropertyBySlug(params.id);
+export default async function PropertyPage(
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const property = getPropertyBySlug(id);
   if (!property) notFound();
 
   const amenityCategories = [
@@ -113,10 +119,10 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
             {/* Quick specs */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
               {[
-                { icon: <Users size={18} className="text-[var(--gold)]" />, value: property.capacity.guests, label: 'Guests' },
-                { icon: <Bed size={18} className="text-[var(--gold)]" />,   value: property.capacity.bedrooms, label: 'Bedrooms' },
-                { icon: <Bed size={16} className="text-[var(--gold)]" />,   value: property.capacity.beds, label: 'Beds' },
-                { icon: <Bath size={18} className="text-[var(--gold)]" />,  value: property.capacity.bathrooms, label: 'Bathrooms' },
+                { icon: <Users size={18} className="text-[var(--gold)]" />, value: property.capacity.guests,   label: 'Guests' },
+                { icon: <Bed   size={18} className="text-[var(--gold)]" />, value: property.capacity.bedrooms, label: 'Bedrooms' },
+                { icon: <Bed   size={16} className="text-[var(--gold)]" />, value: property.capacity.beds,     label: 'Beds' },
+                { icon: <Bath  size={18} className="text-[var(--gold)]" />, value: property.capacity.bathrooms,label: 'Bathrooms' },
               ].map(({ icon, value, label }) => (
                 <div key={label} className="border border-[var(--border)] p-4 text-center hover:border-[var(--gold)] transition-colors duration-300">
                   <div className="flex justify-center mb-2">{icon}</div>
@@ -226,7 +232,6 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
               <h2 className="font-serif text-2xl font-light text-white mb-4">Location</h2>
               <p className="text-[var(--text-muted)] text-sm mb-4">{property.location.address}</p>
 
-              {/* Map placeholder — replace with Google Maps embed */}
               <div className="relative h-64 border border-[var(--border)] bg-[var(--surface-2)] flex items-center justify-center overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--surface)] to-[var(--surface-2)]" />
                 <div className="relative z-10 text-center">
@@ -241,7 +246,6 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
                     Open in Google Maps
                   </a>
                 </div>
-                {/* Decorative grid */}
                 <div className="absolute inset-0 opacity-5"
                   style={{ backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '30px 30px' }}
                 />

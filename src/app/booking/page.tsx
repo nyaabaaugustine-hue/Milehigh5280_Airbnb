@@ -46,7 +46,6 @@ function Steps({ current }: { current: number }) {
 function BookingFormInner() {
   const params     = useSearchParams();
   const propertyId = params.get('property') ?? '1';
-  const property   = getPropertyById(propertyId);
 
   const [step,     setStep]     = useState(0);
   const [currency, setCurrency] = useState<'USD' | 'GHS'>('USD');
@@ -55,10 +54,13 @@ function BookingFormInner() {
   });
   const [loading, setLoading] = useState(false);
 
+  const property = getPropertyById(propertyId);
+
   const checkIn  = params.get('checkIn')  ? new Date(params.get('checkIn')!)  : new Date();
   const checkOut = params.get('checkOut') ? new Date(params.get('checkOut')!) : new Date(Date.now() + 86400000 * 3);
   const guests   = parseInt(params.get('guests') ?? '2', 10);
 
+  // All hooks must be called before any early return
   if (!property) {
     return (
       <div className="text-center py-32">
@@ -88,202 +90,11 @@ function BookingFormInner() {
 
   const handlePayment = async () => {
     setLoading(true);
-    // Simulate payment processing — replace with real Paystack/Stripe integration
     await new Promise(r => setTimeout(r, 2000));
     setLoading(false);
     setStep(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  // ── Step 0: Guest details ──────────────────────────────────────────────────
-  const StepDetails = () => (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {[
-          { name: 'firstName', label: 'First Name', placeholder: 'Your first name' },
-          { name: 'lastName',  label: 'Last Name',  placeholder: 'Your last name' },
-        ].map(({ name, label, placeholder }) => (
-          <div key={name}>
-            <label className="section-label text-[0.55rem] block mb-2">{label} *</label>
-            <input
-              name={name}
-              value={form[name as keyof typeof form]}
-              onChange={handleChange}
-              placeholder={placeholder}
-              className="input-luxury"
-              required
-            />
-          </div>
-        ))}
-      </div>
-      <div>
-        <label className="section-label text-[0.55rem] block mb-2">Email Address *</label>
-        <input
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="your@email.com"
-          className="input-luxury"
-          required
-        />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="section-label text-[0.55rem] block mb-2">Phone / WhatsApp *</label>
-          <input
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            placeholder="+233 or international"
-            className="input-luxury"
-            required
-          />
-        </div>
-        <div>
-          <label className="section-label text-[0.55rem] block mb-2">Nationality</label>
-          <input
-            name="nationality"
-            value={form.nationality}
-            onChange={handleChange}
-            placeholder="Country"
-            className="input-luxury"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="section-label text-[0.55rem] block mb-2">Special Requests</label>
-        <textarea
-          name="specialRequests"
-          value={form.specialRequests}
-          onChange={handleChange}
-          placeholder="Dietary needs, arrival time, celebrations, chef preferences..."
-          rows={4}
-          className="input-luxury resize-none"
-        />
-      </div>
-    </div>
-  );
-
-  // ── Step 1: Review booking ─────────────────────────────────────────────────
-  const StepReview = () => (
-    <div className="space-y-6">
-      <div className="border border-[var(--border)] p-6">
-        <p className="section-label mb-4">Your Details</p>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          {[
-            ['Name',    `${form.firstName} ${form.lastName}`],
-            ['Email',   form.email],
-            ['Phone',   form.phone],
-            ['Country', form.nationality || '—'],
-          ].map(([k, v]) => (
-            <div key={k}>
-              <p className="text-[var(--text-subtle)] text-xs uppercase tracking-widest mb-1">{k}</p>
-              <p className="text-white">{v}</p>
-            </div>
-          ))}
-        </div>
-        {form.specialRequests && (
-          <div className="mt-4 pt-4 border-t border-[var(--border)]">
-            <p className="text-[var(--text-subtle)] text-xs uppercase tracking-widest mb-1">Special Requests</p>
-            <p className="text-[var(--text-muted)] text-sm">{form.specialRequests}</p>
-          </div>
-        )}
-      </div>
-
-      {/* Price summary */}
-      <div className="border border-[var(--border)] p-6 bg-[var(--surface-2)] space-y-3">
-        <p className="section-label mb-4">Price Breakdown</p>
-        {[
-          [`${formatCurrency(pricing.nightlyRate, currency)} × ${pricing.nights} nights`, formatCurrency(pricing.nightsTotal, currency)],
-          ['Cleaning fee',  formatCurrency(pricing.cleaningFee, currency)],
-          ['Service fee',   formatCurrency(pricing.serviceFee, currency)],
-        ].map(([k, v]) => (
-          <div key={k} className="flex justify-between text-sm text-[var(--text-muted)]">
-            <span>{k}</span><span className="text-white">{v}</span>
-          </div>
-        ))}
-        <div className="border-t border-[var(--border)] pt-4 flex justify-between">
-          <span className="text-white font-medium">Total</span>
-          <span className="font-serif text-2xl text-white">{formatCurrency(pricing.total, currency)}</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  // ── Step 2: Payment ────────────────────────────────────────────────────────
-  const StepPayment = () => (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3 p-4 border border-[var(--border)] bg-[var(--surface-2)]">
-        <Lock size={16} className="text-[var(--gold)]" />
-        <p className="text-[var(--text-muted)] text-sm">
-          Payments are processed securely via <strong className="text-white">Paystack</strong> and{' '}
-          <strong className="text-white">Stripe</strong>. Your card details are never stored.
-        </p>
-      </div>
-
-      {/* Payment method selector */}
-      <div>
-        <p className="section-label mb-4">Select Payment Method</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {['Paystack (Ghana / Africa)', 'Stripe (International)'].map((method, i) => (
-            <label key={method} className={cn(
-              'flex items-center gap-3 border p-4 cursor-pointer transition-all duration-200',
-              i === 0 ? 'border-[var(--gold)] bg-[rgba(201,150,58,0.05)]' : 'border-[var(--border)] hover:border-[var(--gold)]',
-            )}>
-              <input type="radio" name="payment" defaultChecked={i === 0} className="accent-[var(--gold)]" />
-              <span className="text-white text-sm">{method}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Card details (placeholder UI — connect to Stripe Elements) */}
-      <div className="space-y-4">
-        <p className="section-label">Card Details</p>
-        <input placeholder="Card Number" className="input-luxury" maxLength={19} />
-        <div className="grid grid-cols-2 gap-4">
-          <input placeholder="MM / YY" className="input-luxury" />
-          <input placeholder="CVC" className="input-luxury" maxLength={4} type="password" />
-        </div>
-        <input placeholder="Name on Card" className="input-luxury" />
-      </div>
-
-      <p className="text-[var(--text-subtle)] text-xs flex items-start gap-2">
-        <Shield size={13} className="text-[var(--gold)] shrink-0 mt-0.5" />
-        By completing this reservation you agree to our cancellation policy. Full refund if cancelled
-        7+ days before check-in.
-      </p>
-    </div>
-  );
-
-  // ── Step 3: Confirmation ───────────────────────────────────────────────────
-  const StepConfirm = () => (
-    <div className="text-center py-8">
-      <div className="w-20 h-20 border border-[var(--gold)] flex items-center justify-center mx-auto mb-6"
-        style={{ animation: 'pulseGold 2s ease-in-out infinite' }}>
-        <CheckCircle size={36} className="text-[var(--gold)]" />
-      </div>
-      <h2 className="font-serif text-4xl font-light text-white mb-3">Reservation Confirmed</h2>
-      <p className="text-[var(--text-muted)] mb-2">
-        A confirmation has been sent to <strong className="text-white">{form.email}</strong>
-      </p>
-      <p className="text-[var(--text-muted)] text-sm mb-8">
-        Our concierge will contact you within 2 hours to finalise your stay.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Link href="/" className="btn-gold">Return Home</Link>
-        <a
-          href={`https://wa.me/233000000000?text=Hello%2C%20I%20just%20booked%20${encodeURIComponent(property.name)}`}
-          target="_blank" rel="noopener noreferrer"
-          className="btn-ghost"
-        >
-          <Phone size={14} />
-          WhatsApp Concierge
-        </a>
-      </div>
-    </div>
-  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12">
@@ -292,10 +103,192 @@ function BookingFormInner() {
       <div>
         <Steps current={step} />
 
-        {step === 0 && <StepDetails />}
-        {step === 1 && <StepReview />}
-        {step === 2 && <StepPayment />}
-        {step === 3 && <StepConfirm />}
+        {/* ── Step 0: Guest details ── */}
+        {step === 0 && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { name: 'firstName', label: 'First Name', placeholder: 'Your first name' },
+                { name: 'lastName',  label: 'Last Name',  placeholder: 'Your last name' },
+              ].map(({ name, label, placeholder }) => (
+                <div key={name}>
+                  <label className="section-label text-[0.55rem] block mb-2">{label} *</label>
+                  <input
+                    name={name}
+                    value={form[name as keyof typeof form]}
+                    onChange={handleChange}
+                    placeholder={placeholder}
+                    className="input-luxury"
+                    required
+                  />
+                </div>
+              ))}
+            </div>
+            <div>
+              <label className="section-label text-[0.55rem] block mb-2">Email Address *</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="your@email.com"
+                className="input-luxury"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="section-label text-[0.55rem] block mb-2">Phone / WhatsApp *</label>
+                <input
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="+233 or international"
+                  className="input-luxury"
+                  required
+                />
+              </div>
+              <div>
+                <label className="section-label text-[0.55rem] block mb-2">Nationality</label>
+                <input
+                  name="nationality"
+                  value={form.nationality}
+                  onChange={handleChange}
+                  placeholder="Country"
+                  className="input-luxury"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="section-label text-[0.55rem] block mb-2">Special Requests</label>
+              <textarea
+                name="specialRequests"
+                value={form.specialRequests}
+                onChange={handleChange}
+                placeholder="Dietary needs, arrival time, celebrations, chef preferences..."
+                rows={4}
+                className="input-luxury resize-none"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ── Step 1: Review booking ── */}
+        {step === 1 && (
+          <div className="space-y-6">
+            <div className="border border-[var(--border)] p-6">
+              <p className="section-label mb-4">Your Details</p>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                {[
+                  ['Name',    `${form.firstName} ${form.lastName}`],
+                  ['Email',   form.email],
+                  ['Phone',   form.phone],
+                  ['Country', form.nationality || '—'],
+                ].map(([k, v]) => (
+                  <div key={k}>
+                    <p className="text-[var(--text-subtle)] text-xs uppercase tracking-widest mb-1">{k}</p>
+                    <p className="text-white">{v}</p>
+                  </div>
+                ))}
+              </div>
+              {form.specialRequests && (
+                <div className="mt-4 pt-4 border-t border-[var(--border)]">
+                  <p className="text-[var(--text-subtle)] text-xs uppercase tracking-widest mb-1">Special Requests</p>
+                  <p className="text-[var(--text-muted)] text-sm">{form.specialRequests}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="border border-[var(--border)] p-6 bg-[var(--surface-2)] space-y-3">
+              <p className="section-label mb-4">Price Breakdown</p>
+              {[
+                [`${formatCurrency(pricing.nightlyRate, currency)} × ${pricing.nights} nights`, formatCurrency(pricing.nightsTotal, currency)],
+                ['Cleaning fee',  formatCurrency(pricing.cleaningFee, currency)],
+                ['Service fee',   formatCurrency(pricing.serviceFee, currency)],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between text-sm text-[var(--text-muted)]">
+                  <span>{k}</span><span className="text-white">{v}</span>
+                </div>
+              ))}
+              <div className="border-t border-[var(--border)] pt-4 flex justify-between">
+                <span className="text-white font-medium">Total</span>
+                <span className="font-serif text-2xl text-white">{formatCurrency(pricing.total, currency)}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Step 2: Payment ── */}
+        {step === 2 && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 p-4 border border-[var(--border)] bg-[var(--surface-2)]">
+              <Lock size={16} className="text-[var(--gold)]" />
+              <p className="text-[var(--text-muted)] text-sm">
+                Payments are processed securely via <strong className="text-white">Paystack</strong> and{' '}
+                <strong className="text-white">Stripe</strong>. Your card details are never stored.
+              </p>
+            </div>
+
+            <div>
+              <p className="section-label mb-4">Select Payment Method</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {['Paystack (Ghana / Africa)', 'Stripe (International)'].map((method, i) => (
+                  <label key={method} className={cn(
+                    'flex items-center gap-3 border p-4 cursor-pointer transition-all duration-200',
+                    i === 0 ? 'border-[var(--gold)] bg-[rgba(201,150,58,0.05)]' : 'border-[var(--border)] hover:border-[var(--gold)]',
+                  )}>
+                    <input type="radio" name="payment" defaultChecked={i === 0} className="accent-[var(--gold)]" />
+                    <span className="text-white text-sm">{method}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <p className="section-label">Card Details</p>
+              <input placeholder="Card Number" className="input-luxury" maxLength={19} />
+              <div className="grid grid-cols-2 gap-4">
+                <input placeholder="MM / YY" className="input-luxury" />
+                <input placeholder="CVC" className="input-luxury" maxLength={4} type="password" />
+              </div>
+              <input placeholder="Name on Card" className="input-luxury" />
+            </div>
+
+            <p className="text-[var(--text-subtle)] text-xs flex items-start gap-2">
+              <Shield size={13} className="text-[var(--gold)] shrink-0 mt-0.5" />
+              By completing this reservation you agree to our cancellation policy. Full refund if cancelled
+              7+ days before check-in.
+            </p>
+          </div>
+        )}
+
+        {/* ── Step 3: Confirmation ── */}
+        {step === 3 && (
+          <div className="text-center py-8">
+            <div className="w-20 h-20 border border-[var(--gold)] flex items-center justify-center mx-auto mb-6"
+              style={{ animation: 'pulseGold 2s ease-in-out infinite' }}>
+              <CheckCircle size={36} className="text-[var(--gold)]" />
+            </div>
+            <h2 className="font-serif text-4xl font-light text-white mb-3">Reservation Confirmed</h2>
+            <p className="text-[var(--text-muted)] mb-2">
+              A confirmation has been sent to <strong className="text-white">{form.email}</strong>
+            </p>
+            <p className="text-[var(--text-muted)] text-sm mb-8">
+              Our concierge will contact you within 2 hours to finalise your stay.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/" className="btn-gold">Return Home</Link>
+              <a
+                href={`https://wa.me/233541988383?text=Hello%2C%20I%20just%20booked%20${encodeURIComponent(property.name)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="btn-ghost"
+              >
+                <Phone size={14} />
+                WhatsApp Concierge
+              </a>
+            </div>
+          </div>
+        )}
 
         {step < 3 && (
           <div className="flex items-center gap-4 mt-8">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Calendar, User, Mail, Phone, MessageSquare, CreditCard, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Calendar, User, Mail, Phone, MessageSquare, CreditCard, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BookingModalProps {
@@ -30,7 +30,6 @@ interface PaymentForm {
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState<Step>('details');
-  const [loading, setLoading] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   const [form, setForm] = useState<BookingForm>({
@@ -100,13 +99,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const handlePayment = async () => {
     setPaymentLoading(true);
-    // Paystack simulation
     await new Promise(resolve => setTimeout(resolve, 2000));
     setPaymentLoading(false);
     setStep('success');
-    // Send WhatsApp notification
     sendWhatsApp();
-    // In real implementation, also send email via API
   };
 
   const formatCardNumber = (value: string) => {
@@ -118,6 +114,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   };
 
   if (!isOpen) return null;
+
+  // Step indicator helper
+  const stepOrder: Step[] = ['details', 'payment', 'success'];
+  const currentStepIndex = stepOrder.indexOf(step);
 
   return (
     <div
@@ -142,21 +142,30 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         {/* Header */}
         <div className="sticky top-0 bg-[var(--surface)] z-10 px-6 pt-6 pb-4 border-b border-[var(--border)] flex items-center justify-between">
           <div>
+            {/* Step indicators */}
             <div className="flex items-center gap-2 mb-1">
-              {['details', 'payment', 'success'].map((s, i) => (
-                <div key={s} className="flex items-center gap-2">
-                  <div className={cn(
-                    'w-5 h-5 rounded-full flex items-center justify-center text-[0.6rem] font-bold transition-all duration-300',
-                    step === s ? 'bg-[var(--gold)] text-obsidian' :
-                    (step === 'payment' && s === 'details') || step === 'success' ?
-                    'bg-[var(--gold)]/30 text-[var(--gold)]' :
-                    'bg-[var(--surface-3)] text-[var(--text-subtle)]',
-                  )}>
-                    {((step === 'payment' && s === 'details') || step === 'success' && s !== 'success') ? '✓' : i + 1}
+              {stepOrder.map((s, i) => {
+                const isDone = i < currentStepIndex;
+                const isCurrent = i === currentStepIndex;
+                return (
+                  <div key={s} className="flex items-center gap-2">
+                    <div className={cn(
+                      'w-5 h-5 rounded-full flex items-center justify-center text-[0.6rem] font-bold transition-all duration-300',
+                      isCurrent ? 'bg-[var(--gold)] text-obsidian' :
+                      isDone    ? 'bg-[var(--gold)]/30 text-[var(--gold)]' :
+                                  'bg-[var(--surface-3)] text-[var(--text-subtle)]',
+                    )}>
+                      {isDone ? '✓' : i + 1}
+                    </div>
+                    {i < stepOrder.length - 1 && (
+                      <div className={cn(
+                        'w-6 h-px transition-colors duration-300',
+                        i < currentStepIndex ? 'bg-[var(--gold)]' : 'bg-[var(--border)]',
+                      )} />
+                    )}
                   </div>
-                  {i < 2 && <div className={cn('w-6 h-px transition-colors duration-300', step !== 'details' && i === 0 ? 'bg-[var(--gold)]' : 'bg-[var(--border)]')} />}
-                </div>
-              ))}
+                );
+              })}
             </div>
             <h2 className="font-serif text-xl font-light text-white">
               {step === 'details' ? 'Reserve Your Stay' : step === 'payment' ? 'Secure Payment' : 'Booking Confirmed!'}
@@ -178,7 +187,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === 'details' && (
             <div className="space-y-4">
 
-              {/* Name & Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Full Name *</label>
@@ -210,7 +218,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Phone & Guests */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Phone *</label>
@@ -240,7 +247,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Dates */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Check-In *</label>
@@ -272,7 +278,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Special Requests */}
               <div>
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Special Requests</label>
                 <div className="relative">
@@ -287,7 +292,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Price Summary */}
               {nights > 0 && (
                 <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4 space-y-2">
                   <p className="section-label">Price Summary</p>
@@ -302,7 +306,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     </div>
                     <div className="flex justify-between text-white font-medium border-t border-[var(--border)] pt-2 mt-2">
                       <span>Total</span>
-                      <span className="text-[var(--gold)]">${total} <span className="text-[var(--text-muted)] text-xs font-normal">≈ GHS {(total * 15.8).toLocaleString()}</span></span>
+                      <span className="text-[var(--gold)]">
+                        ${total}{' '}
+                        <span className="text-[var(--text-muted)] text-xs font-normal">
+                          ≈ GHS {(total * 15.8).toLocaleString()}
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -317,7 +326,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {/* ── STEP 2: Payment ── */}
           {step === 'payment' && (
             <div className="space-y-4">
-              {/* Paystack badge */}
               <div className="flex items-center gap-2 bg-[var(--surface-2)] border border-[var(--border)] px-4 py-3">
                 <div className="w-8 h-5 bg-[#00C3F7] flex items-center justify-center rounded-sm">
                   <span className="text-white text-[0.5rem] font-black">P</span>
@@ -329,16 +337,16 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Amount reminder */}
               <div className="text-center py-2">
                 <p className="text-[var(--text-muted)] text-xs">Amount due</p>
                 <p className="font-serif text-3xl font-light text-white">
                   ${total} <span className="text-[var(--gold)] text-lg">/ GHS {(total * 15.8).toLocaleString()}</span>
                 </p>
-                <p className="text-[var(--text-muted)] text-xs mt-1">{nights} night{nights > 1 ? 's' : ''} · {form.checkIn} → {form.checkOut}</p>
+                <p className="text-[var(--text-muted)] text-xs mt-1">
+                  {nights} night{nights > 1 ? 's' : ''} · {form.checkIn} → {form.checkOut}
+                </p>
               </div>
 
-              {/* Card Number */}
               <div>
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Card Number</label>
                 <div className="relative">
@@ -359,7 +367,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               </div>
 
-              {/* Card Name */}
               <div>
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Name on Card</label>
                 <input
@@ -371,7 +378,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 />
               </div>
 
-              {/* Expiry & CVV */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Expiry</label>
@@ -402,10 +408,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </p>
 
               <div className="flex gap-3 mt-2">
-                <button
-                  onClick={() => setStep('details')}
-                  className="btn-ghost flex-1 justify-center"
-                >
+                <button onClick={() => setStep('details')} className="btn-ghost flex-1 justify-center">
                   Back
                 </button>
                 <button
@@ -444,9 +447,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4 text-left space-y-2">
                 <p className="section-label mb-2">Booking Summary</p>
                 {[
-                  ['Check-in', form.checkIn],
-                  ['Check-out', form.checkOut],
-                  ['Guests', form.guests],
+                  ['Check-in',   form.checkIn],
+                  ['Check-out',  form.checkOut],
+                  ['Guests',     form.guests],
                   ['Total Paid', `$${total}`],
                 ].map(([label, value]) => (
                   <div key={label} className="flex justify-between text-sm">

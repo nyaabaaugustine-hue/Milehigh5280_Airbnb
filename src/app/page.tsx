@@ -6,7 +6,7 @@ import Testimonials from '@/components/home/Testimonials';
 import Experience from '@/components/home/Experience';
 import Image from 'next/image';
 import { useBooking } from '@/components/layout/ClientShell';
-import { ArrowRight, Phone, MapPin, Star } from 'lucide-react';
+import { Phone, MapPin, Star } from 'lucide-react';
 
 export default function HomePage() {
   const { openBooking, viewProperty } = useBooking();
@@ -80,7 +80,7 @@ export default function HomePage() {
             <p className="text-[var(--text-muted)] leading-relaxed mb-6">
               Tucked away in the lush, tree-lined community of Ayi Mensah, The Palm offers
               the perfect balance of tranquil retreat and urban convenience — just 20 minutes
-              from Accra's CBD and business districts.
+              from Accra&apos;s CBD and business districts.
             </p>
             <ul className="space-y-3 mb-8">
               {[
@@ -106,7 +106,7 @@ export default function HomePage() {
                 <span className="text-white text-xs font-medium">4.92</span>
               </div>
             </div>
-            <button onClick={() => setBookingOpen(true)} className="btn-gold">
+            <button onClick={openBooking} className="btn-gold">
               <Phone size={13} />
               Book This Property
             </button>
@@ -115,4 +115,20 @@ export default function HomePage() {
           {/* Map */}
           <div className="lg:w-3/5 w-full">
             <div className="relative overflow-hidden border border-[var(--border)] shadow-2xl" style={{ borderRadius: '2px' }}>
-              {/* 
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15877.221588820084!2d-0.181711!3d5.792905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf79f749555555%3A0x1d5d1d5d1d5d1d5d!2sAyi%20Mensah%2C%20Accra!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh"
+                width="100%"
+                height="500"
+                style={{ border: 0, filter: 'grayscale(1) invert(0.9) contrast(1.2)' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </>
+  );
+}
