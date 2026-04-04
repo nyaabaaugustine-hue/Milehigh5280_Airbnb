@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { properties } from '@/lib/data';
 import toast from 'react-hot-toast';
 
 const FAQs = [
@@ -140,12 +141,7 @@ export default function ContactPage() {
                     <label className="section-label text-[0.55rem] block mb-2">Property of Interest</label>
                     <select name="property" value={formData.property} onChange={handleChange} className="input-luxury">
                       <option value="">Any / Not Sure</option>
-                      <option value="villa-eden-cantonments">Villa Eden</option>
-                      <option value="the-sky-penthouse-osu">Sky Penthouse</option>
-                      <option value="lakeside-estate-volta">Lakeside Estate</option>
-                      <option value="pearl-mansion-east-legon">Pearl Mansion</option>
-                    </select>
-                  </div>
+                    div>
                 </div>
 
                 <div>
