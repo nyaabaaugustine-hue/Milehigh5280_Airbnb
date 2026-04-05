@@ -79,6 +79,16 @@ function BookingFormInner() {
     );
   }
 
+  if (!property.isLive) {
+    return (
+      <div className="text-center py-32 border border-[var(--border)] bg-[var(--surface)]">
+        <h2 className="font-serif text-3xl text-white mb-4">Coming Soon</h2>
+        <p className="text-[var(--text-muted)] mb-8">This property is currently being prepared for guests.</p>
+        <Link href="/properties" className="btn-gold">Explore Live Properties</Link>
+      </div>
+    );
+  }
+
   const pricing = calculatePrice(property, checkIn, checkOut, currency);
   const hero    = property.images[0];
 
@@ -394,7 +404,7 @@ function BookingFormInner() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setCurrency(c => c === 'USD' ? 'GHS' : 'USD')}
-                  className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors"
+                  className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors rounded-[3%]"
                 >
                   {currency === 'USD' ? '$ USD' : '₵ GHS'}
                 </button>

@@ -86,6 +86,7 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
     type: 'apartment',
     badge: 'Editors Choice',
     featured: true,
+    isLive: true,
   },
 
   // ─── Property 2: SIMULATED ─────────────────────────────────────────────────
@@ -156,6 +157,7 @@ Managed by Rehoboth Properties with the same standard of care and professionalis
     type: 'apartment',
     badge: 'Most Booked',
     featured: true,
+    isLive: false,
   },
 
   // ─── Property 3: SIMULATED ─────────────────────────────────────────────────
@@ -230,6 +232,7 @@ Rehoboth Properties provides a house manager, daily housekeeping, and airport pi
     type: 'villa',
     badge: 'New Arrival',
     featured: true,
+    isLive: false,
   },
 ];
 

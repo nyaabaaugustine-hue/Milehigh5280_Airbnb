@@ -4,8 +4,34 @@ import Link from 'next/link';
 import { ArrowRight, Globe, Heart, Award } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Our Story — Luxe Ghana Stays',
-  description: 'The story behind Ghana\'s most exclusive luxury property collection.',
+  title: 'Our Story | Milehigh5280 Airbnb',
+  description: "The story behind Ghana's most exclusive luxury property collection in Ayi Mensah.",
+  icons: {
+    icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+    apple: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+  },
+  openGraph: {
+    title: 'Milehigh5280 Airbnb | Luxury Stays in Accra',
+    description: 'Experience premium private apartments in the lush greenery of Ayi Mensah, Ghana.',
+    url: 'https://milehigh5280.com',
+    siteName: 'Milehigh5280 Airbnb',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Milehigh5280 Logo',
+      },
+    ],
+    locale: 'en_GH',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Milehigh5280 Airbnb | Luxury Stays in Accra',
+    description: 'Experience premium private apartments in the lush greenery of Ayi Mensah, Ghana.',
+    images: ['https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg'],
+  },
 };
 
 const milestones = [

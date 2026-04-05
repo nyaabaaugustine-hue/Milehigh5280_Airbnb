@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Calendar, User, Mail, Phone, MessageSquare, CreditCard, CheckCircle, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import toast from 'react-hot-toast';
 import { USD_TO_GHS } from '@/lib/data';
+import toast from 'react-hot-toast';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -14,62 +14,52 @@ interface BookingModalProps {
 type Step = 'warning' | 'details' | 'payment' | 'success';
 
 interface BookingForm {
-  name: string;
-  email: string;
-  phone: string;
-  checkIn: string;
-  checkOut: string;
-  guests: string;
-  specialRequests: string;
+  name: string; email: string; phone: string;
+  checkIn: string; checkOut: string; guests: string; specialRequests: string;
+}
+interface PaymentForm {
+  cardNumber: string; cardName: string; expiry: string; cvv: string;
 }
 
-interface PaymentForm {
-  cardNumber: string;
-  cardName: string;
-  expiry: string;
-  cvv: string;
-}
+const WA_NUMBER = '233541988383';
+
+const WaIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
-  const [step, setStep] = useState<Step>('details');
+  const [step, setStep] = useState<Step>('warning');
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [form, setForm] = useState<BookingForm>({
-    name: '', email: '', phone: '', checkIn: '', checkOut: '',
-    guests: '1', specialRequests: '',
+    name: '', email: '', phone: '', checkIn: '', checkOut: '', guests: '1', specialRequests: '',
   });
-
   const [payment, setPayment] = useState<PaymentForm>({
     cardNumber: '', cardName: '', expiry: '', cvv: '',
   });
-
   const [errors, setErrors] = useState<Partial<BookingForm>>({});
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setStep('warning');
+      setForm({ name: '', email: '', phone: '', checkIn: '', checkOut: '', guests: '1', specialRequests: '' });
+      setErrors({});
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
-  // Smooth scroll modal content to top on step change
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [step]);
-
   const validate = () => {
     const e: Partial<BookingForm> = {};
-    if (!form.name.trim())    e.name = 'Full name is required';
+    if (!form.name.trim())  e.name = 'Full name is required';
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email required';
-    if (!form.phone.trim())   e.phone = 'Phone number is required';
-    if (!form.checkIn)        e.checkIn = 'Check-in date required';
-    if (!form.checkOut)       e.checkOut = 'Check-out date required';
+    if (!form.phone.trim()) e.phone = 'Phone number is required';
+    if (!form.checkIn)      e.checkIn = 'Check-in date required';
+    if (!form.checkOut)     e.checkOut = 'Check-out date required';
     if (form.checkIn && form.checkOut && form.checkIn >= form.checkOut) e.checkOut = 'Check-out must be after check-in';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -77,188 +67,185 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const getNights = () => {
     if (!form.checkIn || !form.checkOut) return 0;
-    const diff = new Date(form.checkOut).getTime() - new Date(form.checkIn).getTime();
-    return Math.max(0, Math.round(diff / (1000 * 60 * 60 * 24)));
+    return Math.max(0, Math.round(
+      (new Date(form.checkOut).getTime() - new Date(form.checkIn).getTime()) / 86400000
+    ));
   };
 
-  const nights = getNights();
+  const nights       = getNights();
   const ratePerNight = 250;
-  const cleaningFee = 30;
-  const total = nights * ratePerNight + cleaningFee;
+  const cleaningFee  = 30;
+  const total        = nights * ratePerNight + cleaningFee;
+  const totalGHS     = Math.round(total * USD_TO_GHS);
 
-  const handleDetails = () => {
-    if (!validate()) return;
-    setStep('payment');
+  const handleDetails = () => { if (validate()) setStep('payment'); };
+
+  // Send booking data to API (email to admin + guest auto-reply)
+  const sendBookingEmail = async () => {
+    const nameParts = form.name.trim().split(' ');
+    const firstName = nameParts[0];
+    const lastName  = nameParts.slice(1).join(' ') || '-';
+
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email:          form.email,
+          phone:          form.phone,
+          nationality:    '',
+          specialRequests: form.specialRequests,
+          propertyName:   'Milehigh5280 🌴 – Ayi Mensah',
+          propertySlug:   'the-palm-ayi-mensah',
+          checkIn:        form.checkIn,
+          checkOut:       form.checkOut,
+          guests:         Number(form.guests),
+          nights,
+          total:          `$${total} / GHS ${totalGHS.toLocaleString()}`,
+          currency:       'USD',
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        console.warn('Booking email warning:', data.error);
+        // Don't block success UX for email failures
+      }
+    } catch (err) {
+      console.warn('Booking email failed (non-blocking):', err);
+    }
   };
 
+  // Also send via WhatsApp as backup
   const sendWhatsApp = () => {
     const msg = encodeURIComponent(
-      `🌴 *New Booking Request — Milehigh5280 Airbnb*\n\n` +
-      `*Guest:* ${form.name}\n` +
-      `*Email:* ${form.email}\n` +
-      `*Phone:* ${form.phone}\n` +
-      `*Check-in:* ${form.checkIn}\n` +
-      `*Check-out:* ${form.checkOut}\n` +
-      `*Guests:* ${form.guests}\n` +
-      `*Nights:* ${nights}\n` +
-      `*Total:* GHS ${(total * USD_TO_GHS).toLocaleString()} / $${total}\n` +
-      `${form.specialRequests ? `*Special Requests:* ${form.specialRequests}` : ''}`
+      `🌴 *New Booking — Milehigh5280, Ayi Mensah*\n\n` +
+      `*Guest:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n` +
+      `*Check-in:* ${form.checkIn}\n*Check-out:* ${form.checkOut}\n` +
+      `*Guests:* ${form.guests}\n*Nights:* ${nights}\n` +
+      `*Total:* GHS ${totalGHS.toLocaleString()} ($${total})\n` +
+      (form.specialRequests ? `*Requests:* ${form.specialRequests}` : '')
     );
-    window.open(`https://wa.me/17207059849?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
   };
 
   const handlePayment = async () => {
-    if (!process.env.NEXT_PUBLIC_FORMSPREE_ID) {
-      console.error('Formspree ID missing.');
-      toast.error('Booking configuration error.');
-      setStep('success'); // Move to success anyway so they see the WhatsApp option
-      return;
-    }
-
     setPaymentLoading(true);
     try {
-      // Prepare data for Formspree
-      const submissionData = {
-        ...form,
-        nights,
-        totalUSD: total,
-        totalGHS: total * USD_TO_GHS,
-        property: "Milehigh5280 Airbnb, Ayi Mensah",
-        _subject: `New Booking: ${form.name} (${form.checkIn})`
-      };
-
-      const response = await fetch(`https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionData),
-      });
-
-      if (!response.ok) throw new Error('Booking notification failed');
-
+      // Simulate payment processing (replace with real Paystack later)
+      await new Promise(r => setTimeout(r, 2000));
+      // Fire email notification (non-blocking)
+      await sendBookingEmail();
       setStep('success');
-    } catch (error) {
-      console.error(error);
-      // Still move to success so user isn't stuck, but they can use the WhatsApp link there
-      setStep('success');
+      sendWhatsApp();
+      toast.success('Booking confirmed! Check your email for details.');
+    } catch {
+      toast.error('Something went wrong. Please try WhatsApp instead.');
     } finally {
       setPaymentLoading(false);
     }
   };
 
-  const formatCardNumber = (value: string) => {
-    return value.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19);
-  };
-
-  const formatExpiry = (value: string) => {
-    return value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2').slice(0, 5);
-  };
+  const formatCard   = (v: string) => v.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19);
+  const formatExpiry = (v: string) => v.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2').slice(0, 5);
 
   if (!isOpen) return null;
 
-  // Step indicator helper
-  const stepOrder: Step[] = ['warning', 'details', 'payment', 'success'];
-  const currentStepIndex = stepOrder.indexOf(step);
+  const visibleSteps: Step[] = ['details', 'payment', 'success'];
 
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ animation: 'fadeIn 0.2s ease' }}
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-obsidian/90 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-[#080808]/90 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
-      {/* Modal */}
       <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[var(--surface)] border border-[var(--border)] shadow-2xl"
-        style={{ animation: 'slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1)' }}
+        className="relative w-full max-w-lg max-h-[92vh] flex flex-col bg-[var(--surface)] border border-[var(--border)] shadow-2xl overflow-hidden"
+        style={{ animation: 'slideUp 0.35s cubic-bezier(0.4,0,0.2,1)' }}
         role="dialog"
         aria-modal="true"
         aria-label="Booking form"
       >
-        {/* Header */}
-        <div className="sticky top-0 bg-[var(--surface)] z-10 px-6 pt-6 pb-4 border-b border-[var(--border)] flex items-center justify-between">
-          <div>
-            {/* Step indicators */}
-            <div className="flex items-center gap-2 mb-1">
-              {stepOrder.filter(s => s !== 'warning').map((s, i) => {
-                const isDone = stepOrder.indexOf(step) > stepOrder.indexOf(s);
-                const isCurrent = step === s;
-                return (
-                  <div key={s} className="flex items-center gap-2">
-                    <div className={cn(
-                      'w-5 h-5 rounded-full flex items-center justify-center text-[0.6rem] font-bold transition-all duration-300',
-                      isCurrent ? 'bg-[var(--gold)] text-obsidian' :
-                      isDone    ? 'bg-[var(--gold)]/30 text-[var(--gold)]' :
-                                  'bg-[var(--surface-3)] text-[var(--text-subtle)]',
-                    )}>
-                      {isDone ? '✓' : i + 1}
-                    </div>
-                    {i < stepOrder.length - 2 && (
+        {/* ── Sticky Header ── */}
+        {step !== 'warning' && (
+          <div className="shrink-0 px-6 pt-5 pb-4 border-b border-[var(--border)] flex items-start justify-between bg-[var(--surface)]">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                {visibleSteps.map((s, i) => {
+                  const idx = visibleSteps.indexOf(step);
+                  const isDone    = i < idx;
+                  const isCurrent = s === step;
+                  return (
+                    <div key={s} className="flex items-center gap-2">
                       <div className={cn(
-                        'w-6 h-px transition-colors duration-300',
-                        i < currentStepIndex ? 'bg-[var(--gold)]' : 'bg-[var(--border)]',
-                      )} />
-                    )}
-                  </div>
-                );
-              })}
+                        'w-5 h-5 rounded-full flex items-center justify-center text-[0.6rem] font-bold transition-all duration-300',
+                        isCurrent ? 'bg-[var(--gold)] text-[#080808]' :
+                        isDone    ? 'bg-[var(--gold)]/30 text-[var(--gold)]' :
+                                    'bg-[var(--surface-3)] text-[var(--text-subtle)]',
+                      )}>
+                        {isDone ? '✓' : i + 1}
+                      </div>
+                      {i < visibleSteps.length - 1 && (
+                        <div className={cn('w-6 h-px transition-colors duration-300', isDone ? 'bg-[var(--gold)]' : 'bg-[var(--border)]')} />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <h2 className="font-serif text-xl font-light text-[var(--text-primary)]">
+                {step === 'details' ? 'Reserve Your Stay' : step === 'payment' ? 'Secure Payment' : 'Booking Confirmed!'}
+              </h2>
+              <p className="text-[var(--text-muted)] text-xs mt-0.5">Milehigh5280 🌴 · Ayi Mensah, Accra</p>
             </div>
-            <h2 className="font-serif text-xl font-light text-white">
-              {step === 'details' ? 'Reserve Your Stay' : step === 'payment' ? 'Secure Payment' : 'Booking Confirmed!'}
-            </h2>
-            <p className="text-[var(--text-muted)] text-xs mt-0.5">Milehigh5280 Airbnb 🌴 · Ayi Mensah, Accra</p>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--gold)] transition-colors duration-200 shrink-0 mt-1"
+            >
+              <X size={14} />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            aria-label="Close booking form"
-            className="w-8 h-8 flex items-center justify-center border border-[var(--border)] text-[var(--text-muted)] hover:text-white hover:border-[var(--gold)] transition-colors duration-200"
-          >
-            <X size={14} />
-          </button>
-        </div>
+        )}
 
-        <div ref={scrollContainerRef} className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
+        {/* ── Scrollable Body ── */}
+        <div className="overflow-y-auto flex-1">
 
-          {/* ── STEP 0: Warning (Burgundy) ── */}
+          {/* STEP 0 — Warning */}
           {step === 'warning' && (
-            <div className="bg-[#800020] -m-6 p-10 text-center text-white mb-6">
+            <div className="bg-[#800020] p-8 lg:p-10 text-center text-white min-h-[360px] flex flex-col justify-center">
+              <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border border-white/20 text-white/60 hover:text-white transition-colors">
+                <X size={14} />
+              </button>
               <div className="w-16 h-16 border border-white/20 flex items-center justify-center mx-auto mb-6">
                 <Shield size={32} />
               </div>
               <h3 className="font-serif text-2xl mb-4 font-light tracking-wide">Important Notice</h3>
-              <p className="text-white/80 mb-8 leading-relaxed text-sm">
-                Before proceeding, please acknowledge: <br />
-                <span className="text-white font-medium italic">"I expect the initial lease term to be one year."</span>
+              <p className="text-white/80 mb-8 leading-relaxed text-sm max-w-sm mx-auto">
+                By proceeding, you acknowledge this booking is for short-stay accommodation.
+                Minimum stay is 1 night. Full payment is required to confirm your reservation.
               </p>
-              <button 
+              <button
                 onClick={() => setStep('details')}
-                className="bg-white text-[#800020] w-full py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 transition-colors"
+                className="bg-white text-[#800020] w-full max-w-xs mx-auto py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 transition-colors"
               >
-                I Understand & Proceed
+                I Understand — Proceed
               </button>
             </div>
           )}
 
-          {/* ── STEP 1: Details ── */}
+          {/* STEP 1 — Details */}
           {step === 'details' && (
-            <div className="space-y-4">
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Full Name *</label>
                   <div className="relative">
                     <User size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                    <input
-                      type="text"
-                      className={cn('input-luxury pl-9', errors.name && 'border-red-500/60')}
-                      placeholder="John Mensah"
-                      value={form.name}
-                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    />
+                    <input type="text" className={cn('input-luxury pl-9', errors.name && 'border-red-500/60')}
+                      placeholder="John Mensah" value={form.name}
+                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
                   </div>
                   {errors.name && <p className="text-red-400 text-[0.65rem] mt-1">{errors.name}</p>}
                 </div>
@@ -266,59 +253,42 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Email *</label>
                   <div className="relative">
                     <Mail size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                    <input
-                      type="email"
-                      className={cn('input-luxury pl-9', errors.email && 'border-red-500/60')}
-                      placeholder="john@example.com"
-                      value={form.email}
-                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    />
+                    <input type="email" className={cn('input-luxury pl-9', errors.email && 'border-red-500/60')}
+                      placeholder="john@example.com" value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
                   </div>
                   {errors.email && <p className="text-red-400 text-[0.65rem] mt-1">{errors.email}</p>}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Phone *</label>
                   <div className="relative">
                     <Phone size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                    <input
-                      type="tel"
-                      className={cn('input-luxury pl-9', errors.phone && 'border-red-500/60')}
-                      placeholder="+233 XX XXX XXXX"
-                      value={form.phone}
-                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                    />
+                    <input type="tel" className={cn('input-luxury pl-9', errors.phone && 'border-red-500/60')}
+                      placeholder="+233 XX XXX XXXX" value={form.phone}
+                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
                   </div>
                   {errors.phone && <p className="text-red-400 text-[0.65rem] mt-1">{errors.phone}</p>}
                 </div>
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Guests</label>
-                  <select
-                    className="input-luxury"
-                    value={form.guests}
-                    onChange={e => setForm(f => ({ ...f, guests: e.target.value }))}
-                  >
-                    {[1,2,3,4].map(n => (
-                      <option key={n} value={n}>{n} Guest{n > 1 ? 's' : ''}</option>
-                    ))}
+                  <select className="input-luxury" value={form.guests}
+                    onChange={e => setForm(f => ({ ...f, guests: e.target.value }))}>
+                    {[1,2,3,4].map(n => <option key={n} value={n}>{n} Guest{n > 1 ? 's' : ''}</option>)}
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Check-In *</label>
                   <div className="relative">
                     <Calendar size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                    <input
-                      type="date"
-                      className={cn('input-luxury pl-9', errors.checkIn && 'border-red-500/60')}
-                      min={new Date().toISOString().split('T')[0]}
-                      value={form.checkIn}
-                      onChange={e => setForm(f => ({ ...f, checkIn: e.target.value }))}
-                    />
+                    <input type="date" className={cn('input-luxury pl-9', errors.checkIn && 'border-red-500/60')}
+                      min={new Date().toISOString().split('T')[0]} value={form.checkIn}
+                      onChange={e => setForm(f => ({ ...f, checkIn: e.target.value }))} />
                   </div>
                   {errors.checkIn && <p className="text-red-400 text-[0.65rem] mt-1">{errors.checkIn}</p>}
                 </div>
@@ -326,13 +296,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Check-Out *</label>
                   <div className="relative">
                     <Calendar size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                    <input
-                      type="date"
-                      className={cn('input-luxury pl-9', errors.checkOut && 'border-red-500/60')}
-                      min={form.checkIn || new Date().toISOString().split('T')[0]}
-                      value={form.checkOut}
-                      onChange={e => setForm(f => ({ ...f, checkOut: e.target.value }))}
-                    />
+                    <input type="date" className={cn('input-luxury pl-9', errors.checkOut && 'border-red-500/60')}
+                      min={form.checkIn || new Date().toISOString().split('T')[0]} value={form.checkOut}
+                      onChange={e => setForm(f => ({ ...f, checkOut: e.target.value }))} />
                   </div>
                   {errors.checkOut && <p className="text-red-400 text-[0.65rem] mt-1">{errors.checkOut}</p>}
                 </div>
@@ -342,35 +308,29 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Special Requests</label>
                 <div className="relative">
                   <MessageSquare size={13} className="absolute left-3 top-3.5 text-[var(--text-subtle)]" />
-                  <textarea
-                    className="input-luxury pl-9 resize-none"
-                    rows={3}
-                    placeholder="Any special arrangements, early check-in, dietary needs..."
+                  <textarea className="input-luxury pl-9 resize-none" rows={3}
+                    placeholder="Early check-in, dietary needs, special arrangements..."
                     value={form.specialRequests}
-                    onChange={e => setForm(f => ({ ...f, specialRequests: e.target.value }))}
-                  />
+                    onChange={e => setForm(f => ({ ...f, specialRequests: e.target.value }))} />
                 </div>
               </div>
 
               {nights > 0 && (
-                <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4 space-y-2">
-                  <p className="section-label">Price Summary</p>
-                  <div className="space-y-1.5 mt-2">
+                <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4">
+                  <p className="section-label mb-3">Price Summary</p>
+                  <div className="space-y-1.5">
                     <div className="flex justify-between text-sm text-[var(--text-muted)]">
                       <span>${ratePerNight} × {nights} night{nights > 1 ? 's' : ''}</span>
                       <span>${nights * ratePerNight}</span>
                     </div>
                     <div className="flex justify-between text-sm text-[var(--text-muted)]">
-                      <span>Cleaning fee</span>
-                      <span>${cleaningFee}</span>
+                      <span>Cleaning fee</span><span>${cleaningFee}</span>
                     </div>
-                    <div className="flex justify-between text-white font-medium border-t border-[var(--border)] pt-2 mt-2">
-                      <span>Total</span>
+                    <div className="flex justify-between font-medium border-t border-[var(--border)] pt-2 mt-2">
+                      <span className="text-[var(--text-primary)]">Total</span>
                       <span className="text-[var(--gold)]">
                         ${total}{' '}
-                        <span className="text-[var(--text-muted)] text-xs font-normal">
-                          ≈ GHS ${(total * USD_TO_GHS).toLocaleString()}
-                        </span>
+                        <span className="text-[var(--text-muted)] text-xs font-normal">≈ GHS {totalGHS.toLocaleString()}</span>
                       </span>
                     </div>
                   </div>
@@ -383,14 +343,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* ── STEP 2: Payment ── */}
+          {/* STEP 2 — Payment */}
           {step === 'payment' && (
-            <div className="space-y-4">
+            <div className="p-6 space-y-4">
               <div className="flex items-center gap-2 bg-[var(--surface-2)] border border-[var(--border)] px-4 py-3">
-                <div className="w-8 h-5 bg-[#00C3F7] flex items-center justify-center rounded-sm">
+                <div className="w-8 h-5 bg-[#00C3F7] flex items-center justify-center rounded-sm shrink-0">
                   <span className="text-white text-[0.5rem] font-black">P</span>
                 </div>
-                <span className="text-[var(--text-muted)] text-xs">Secured by <strong className="text-white">Paystack</strong></span>
+                <span className="text-[var(--text-muted)] text-xs">Secured by <strong className="text-[var(--text-primary)]">Paystack</strong></span>
                 <div className="ml-auto flex items-center gap-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
                   <span className="text-green-400 text-[0.6rem]">Encrypted</span>
@@ -399,8 +359,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               <div className="text-center py-2">
                 <p className="text-[var(--text-muted)] text-xs">Amount due</p>
-                <p className="font-serif text-3xl font-light text-white">
-                  ${total} <span className="text-[var(--gold)] text-lg">/ GHS ${(total * USD_TO_GHS).toLocaleString()}</span>
+                <p className="font-serif text-3xl font-light text-[var(--text-primary)]">
+                  ${total} <span className="text-[var(--gold)] text-lg">/ GHS {totalGHS.toLocaleString()}</span>
                 </p>
                 <p className="text-[var(--text-muted)] text-xs mt-1">
                   {nights} night{nights > 1 ? 's' : ''} · {form.checkIn} → {form.checkOut}
@@ -411,17 +371,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Card Number</label>
                 <div className="relative">
                   <CreditCard size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]" />
-                  <input
-                    type="text"
-                    className="input-luxury pl-9"
-                    placeholder="1234 5678 9012 3456"
-                    value={payment.cardNumber}
-                    onChange={e => setPayment(p => ({ ...p, cardNumber: formatCardNumber(e.target.value) }))}
-                    maxLength={19}
-                  />
+                  <input type="text" className="input-luxury pl-9" placeholder="1234 5678 9012 3456"
+                    value={payment.cardNumber} maxLength={19}
+                    onChange={e => setPayment(p => ({ ...p, cardNumber: formatCard(e.target.value) }))} />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                    {['VISA', 'MC'].map(brand => (
-                      <span key={brand} className="text-[0.5rem] border border-[var(--border)] px-1 py-0.5 text-[var(--text-subtle)]">{brand}</span>
+                    {['VISA','MC'].map(b => (
+                      <span key={b} className="text-[0.5rem] border border-[var(--border)] px-1 py-0.5 text-[var(--text-subtle)]">{b}</span>
                     ))}
                   </div>
                 </div>
@@ -429,53 +384,33 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               <div>
                 <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Name on Card</label>
-                <input
-                  type="text"
-                  className="input-luxury"
-                  placeholder="John Mensah"
+                <input type="text" className="input-luxury" placeholder="John Mensah"
                   value={payment.cardName}
-                  onChange={e => setPayment(p => ({ ...p, cardName: e.target.value }))}
-                />
+                  onChange={e => setPayment(p => ({ ...p, cardName: e.target.value }))} />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">Expiry</label>
-                  <input
-                    type="text"
-                    className="input-luxury"
-                    placeholder="MM/YY"
-                    value={payment.expiry}
-                    onChange={e => setPayment(p => ({ ...p, expiry: formatExpiry(e.target.value) }))}
-                    maxLength={5}
-                  />
+                  <input type="text" className="input-luxury" placeholder="MM/YY"
+                    value={payment.expiry} maxLength={5}
+                    onChange={e => setPayment(p => ({ ...p, expiry: formatExpiry(e.target.value) }))} />
                 </div>
                 <div>
                   <label className="block text-[0.65rem] tracking-widest uppercase text-[var(--gold)] mb-1.5">CVV</label>
-                  <input
-                    type="password"
-                    className="input-luxury"
-                    placeholder="• • •"
-                    value={payment.cvv}
-                    onChange={e => setPayment(p => ({ ...p, cvv: e.target.value.slice(0, 4) }))}
-                    maxLength={4}
-                  />
+                  <input type="password" className="input-luxury" placeholder="• • •"
+                    value={payment.cvv} maxLength={4}
+                    onChange={e => setPayment(p => ({ ...p, cvv: e.target.value.slice(0, 4) }))} />
                 </div>
               </div>
 
               <p className="text-[var(--text-subtle)] text-[0.65rem] text-center">
-                🔒 This is a simulation. No real charge will be made.
+                🔒 Simulation only — no real charge will be made
               </p>
 
-              <div className="flex gap-3 mt-2">
-                <button onClick={() => setStep('details')} className="btn-ghost flex-1 justify-center">
-                  Back
-                </button>
-                <button
-                  onClick={handlePayment}
-                  disabled={paymentLoading}
-                  className="btn-gold flex-1 justify-center"
-                >
+              <div className="flex gap-3">
+                <button onClick={() => setStep('details')} className="btn-ghost flex-1 justify-center">Back</button>
+                <button onClick={handlePayment} disabled={paymentLoading} className="btn-gold flex-1 justify-center">
                   {paymentLoading ? (
                     <span className="flex items-center gap-2">
                       <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -490,53 +425,50 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* ── STEP 3: Success ── */}
+          {/* STEP 3 — Success */}
           {step === 'success' && (
-            <div className="text-center py-6 space-y-5">
+            <div className="p-6 text-center space-y-5 py-8">
               <div className="flex justify-center">
                 <div className="w-16 h-16 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center">
                   <CheckCircle size={32} className="text-green-400" />
                 </div>
               </div>
               <div>
-                <h3 className="font-serif text-2xl font-light text-white mb-2">Booking Confirmed!</h3>
+                <h3 className="font-serif text-2xl font-light text-[var(--text-primary)] mb-2">Booking Confirmed!</h3>
                 <p className="text-[var(--text-muted)] text-sm leading-relaxed">
-                  Thank you, <strong className="text-white">{form.name}</strong>! Your reservation at Milehigh5280 Airbnb has been received.
+                  Thank you, <strong className="text-[var(--text-primary)]">{form.name}</strong>!
+                  Your reservation at Milehigh5280 has been received. A confirmation has been sent to{' '}
+                  <strong className="text-[var(--text-primary)]">{form.email}</strong>.
                 </p>
               </div>
               <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4 text-left space-y-2">
                 <p className="section-label mb-2">Booking Summary</p>
                 {[
-                  ['Check-in',   form.checkIn],
-                  ['Check-out',  form.checkOut],
-                  ['Guests',     form.guests],
-                  ['Total Paid', `$${total}`],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex justify-between text-sm">
-                    <span className="text-[var(--text-muted)]">{label}</span>
-                    <span className="text-white">{value}</span>
+                  ['Check-in',  form.checkIn],
+                  ['Check-out', form.checkOut],
+                  ['Guests',    form.guests],
+                  ['Total',     `$${total} / GHS ${totalGHS.toLocaleString()}`],
+                ].map(([l, v]) => (
+                  <div key={l} className="flex justify-between text-sm">
+                    <span className="text-[var(--text-muted)]">{l}</span>
+                    <span className="text-[var(--text-primary)]">{v}</span>
                   </div>
                 ))}
               </div>
               <p className="text-[var(--text-muted)] text-xs">
-                A confirmation has been sent to <strong className="text-white">{form.email}</strong>.
-                Our team will contact you on WhatsApp within 15 minutes.
+                Our team will contact you on WhatsApp within 15 minutes to confirm all details.
               </p>
               <div className="flex flex-col gap-3">
                 <a
-                  href={`https://wa.me/17207059849?text=${encodeURIComponent(`Hi! I just booked Milehigh5280 Airbnb for ${form.checkIn} - ${form.checkOut}. My name is ${form.name}.`)}`}
+                  href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hi! I booked Milehigh5280 for ${form.checkIn}–${form.checkOut}. Guest: ${form.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-gold w-full justify-center gap-2"
                 >
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                  </svg>
+                  <WaIcon />
                   Chat on WhatsApp
                 </a>
-                <button onClick={onClose} className="btn-ghost w-full justify-center">
-                  Close
-                </button>
+                <button onClick={onClose} className="btn-ghost w-full justify-center">Close</button>
               </div>
             </div>
           )}

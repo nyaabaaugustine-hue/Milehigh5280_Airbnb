@@ -25,6 +25,9 @@ export default function ClientShell({ children }: { children: React.ReactNode })
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
+  const openBooking  = useCallback(() => setBookingOpen(true),  []);
+  const closeBooking = useCallback(() => setBookingOpen(false), []);
+
   const viewProperty = useCallback((property: Property) => {
     setSelectedProperty(property);
   }, []);
@@ -35,18 +38,14 @@ export default function ClientShell({ children }: { children: React.ReactNode })
   }, []);
 
   return (
-    <BookingContext.Provider value={{ 
-      openBooking: () => setBookingOpen(true), 
-      closeBooking: () => setBookingOpen(false),
-      viewProperty 
-    }}>
-      <Navbar onBookNow={() => setBookingOpen(true)} />
+    <BookingContext.Provider value={{ openBooking, closeBooking, viewProperty }}>
+      <Navbar onBookNow={openBooking} />
       <main>{children}</main>
-      <WhatsAppButton onBookNow={() => setBookingOpen(true)} />
-      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
-      <PropertyModal 
-        property={selectedProperty} 
-        isOpen={!!selectedProperty} 
+      <WhatsAppButton onBookNow={openBooking} />
+      <BookingModal isOpen={bookingOpen} onClose={closeBooking} />
+      <PropertyModal
+        property={selectedProperty}
+        isOpen={!!selectedProperty}
         onClose={() => setSelectedProperty(null)}
         onBook={handleBookFromModal}
       />

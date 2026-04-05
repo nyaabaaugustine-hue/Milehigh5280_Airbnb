@@ -5,8 +5,8 @@ import { Instagram, Facebook, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-r
 const footerLinks = {
   Property: [
     { label: 'The Palm 🌴',           href: '/properties/the-palm-ayi-mensah' },
-    { label: 'Jade Suite',            href: '/properties/jade-suite-east-legon' },
-    { label: 'Serenity Villa',        href: '/properties/serenity-villa-trasacco' },
+    { label: 'Jade Suite (Coming Soon)', href: '#', disabled: true },
+    { label: 'Serenity Villa (Coming Soon)', href: '#', disabled: true },
     { label: 'View All Properties',   href: '/properties' },
   ],
   Company: [
@@ -136,14 +136,20 @@ export default function Footer() {
             <div key={category}>
               <h3 className="section-label mb-5">{category}</h3>
               <ul className="space-y-3">
-                {links.map(({ label, href }) => (
-                  <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200"
-                    >
-                      {label}
-                    </Link>
+                {links.map((link) => (
+                  <li key={link.label}>
+                    {link.disabled ? (
+                      <span className="text-sm text-[var(--text-subtle)] cursor-not-allowed">
+                        {link.label}
+                      </span>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

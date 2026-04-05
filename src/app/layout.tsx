@@ -23,14 +23,14 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Milehigh5280 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
-    template: '%s | Milehigh5280 · Ayi Mensah',
+    default: 'The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
+    template: '%s | The Palm · Ayi Mensah',
   },
   description:
-    'Book Milehigh5280, a beautiful private apartment in the serene Ayi Mensah area of Accra. Managed by Rehoboth Properties — offering comfort, privacy, and premium hospitality.',
+    'Book The Palm, a beautiful private apartment in the serene Ayi Mensah area of Accra. Managed by Rehoboth Properties — offering comfort, privacy, and premium hospitality.',
   keywords: [
     'luxury apartment Ghana', 'Ayi Mensah accommodation', 'Accra short stay',
-    'Rehoboth Properties', 'Milehigh5280 Ayi Mensah', 'private apartment Accra',
+    'Rehoboth Properties', 'The Palm Ayi Mensah', 'private apartment Accra',
     'Ghana holiday rental', 'airbnb Accra', 'serviced apartment Ghana',
   ],
   authors: [{ name: 'Rehoboth Properties' }],
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_GB',
-    url: 'https://milehigh5280.com',
-    siteName: 'Milehigh5280 · Ayi Mensah',
-    title: 'Milehigh5280 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
+    url: 'https://thepalmayimensah.com',
+    siteName: 'The Palm · Ayi Mensah',
+    title: 'The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
     description: 'A beautifully furnished private apartment in the tranquil Ayi Mensah area of Accra, managed by Rehoboth Properties.',
     images: [{
       url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Milehigh5280 🌴 · Ayi Mensah',
+    title: 'The Palm 🌴 · Ayi Mensah',
     description: 'A luxury private apartment in Ayi Mensah, Accra — by Rehoboth Properties.',
   },
   icons: {
@@ -57,21 +57,18 @@ export const metadata: Metadata = {
     apple: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
   },
   robots: { index: true, follow: true },
-  metadataBase: new URL('https://milehigh5280.com'),
+  metadataBase: new URL('https://thepalmayimensah.com'),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body className="bg-obsidian text-[var(--text-primary)] font-sans antialiased overflow-x-hidden">
+      <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden">
         <div className="grain-overlay" aria-hidden="true" />
-
         <ClientShell>
           {children}
         </ClientShell>
-
         <Footer />
-
         <Toaster
           position="bottom-right"
           toastOptions={{
