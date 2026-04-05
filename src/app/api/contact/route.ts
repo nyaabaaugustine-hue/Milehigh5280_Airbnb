@@ -3,14 +3,14 @@ import nodemailer from 'nodemailer';
 import type { ContactFormData } from '@/types';
 
 // ─── Admin email (your inbox) ─────────────────────────────────────────────────
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'nyaaba.augustine@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
 
 // ─── Build a Gmail SMTP transporter ──────────────────────────────────────────
 function createTransporter() {
   return nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.GMAIL_USER,   // e.g. rehobothproperties@gmail.com
+      user: process.env.GMAIL_USER,   // e.g. herbertprempeh@gmail.com
       pass: process.env.GMAIL_PASS,   // 16-char App Password from Google
     },
   });
@@ -58,7 +58,7 @@ function adminEmailHtml(data: ContactFormData): string {
   <div class="wrapper">
     <div class="header">
       <h1>🌴 Milehigh5280 · New Enquiry</h1>
-      <p>Rehoboth Properties · Ayi Mensah, Accra</p>
+      <p>Milehigh Properties · Ayi Mensah, Accra</p>
     </div>
     <div class="body">
       <div class="badge">${typeLabels[data.type] ?? '✉️ Enquiry'}</div>
@@ -134,7 +134,7 @@ function guestAutoReplyHtml(name: string): string {
   <div class="wrapper">
     <div class="header">
       <h1>🌴 Thank You, ${firstName}!</h1>
-      <p>Milehigh5280 · Rehoboth Properties</p>
+      <p>Milehigh5280 · Milehigh Properties</p>
     </div>
     <div class="body">
       <p>We have received your message and our team will get back to you <span class="highlight">within 2 hours</span> — often much sooner.</p>
@@ -142,7 +142,7 @@ function guestAutoReplyHtml(name: string): string {
 
       <div class="info-box">
         <p>📞 <strong>Phone / WhatsApp:</strong> +233 54 198 8383</p>
-        <p style="margin-top:8px;">📧 <strong>Email:</strong> rehobothproperties@gmail.com</p>
+        <p style="margin-top:8px;">📧 <strong>Email:</strong> herbertprempeh@gmail.com</p>
         <p style="margin-top:8px;">📍 <strong>Location:</strong> Ayi Mensah, Accra, Ghana</p>
       </div>
 
@@ -153,7 +153,7 @@ function guestAutoReplyHtml(name: string): string {
     </div>
     <div class="footer">
       <p>Milehigh5280 🌴 · <a href="https://milehigh5280.com">milehigh5280.com</a></p>
-      <p style="margin-top:4px;">Managed by Rehoboth Properties · Ayi Mensah, Accra</p>
+      <p style="margin-top:4px;">Managed by Milehigh Properties · Ayi Mensah, Accra</p>
     </div>
   </div>
 </body>

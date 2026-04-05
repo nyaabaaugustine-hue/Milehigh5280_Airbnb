@@ -198,7 +198,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               <h2 className="font-serif text-xl font-light text-[var(--text-primary)]">
                 {step === 'details' ? 'Reserve Your Stay' : step === 'payment' ? 'Secure Payment' : 'Booking Confirmed!'}
               </h2>
-              <p className="text-[var(--text-muted)] text-xs mt-0.5">Milehigh5280 🌴 · Ayi Mensah, Accra</p>
+              <p className="text-[var(--text-muted)] text-xs mt-0.5">Milehigh5280 🌴 · Ayi Mensah, Milehigh Properties</p>
             </div>
             <button
               onClick={onClose}

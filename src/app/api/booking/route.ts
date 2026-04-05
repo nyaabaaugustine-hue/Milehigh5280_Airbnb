@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import type { BookingEmailData } from '@/types';
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'nyaaba.augustine@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -45,7 +45,7 @@ function adminBookingHtml(d: BookingEmailData): string {
   <div class="wrapper">
     <div class="header">
       <h1>🏠 New Booking Request</h1>
-      <p>Milehigh5280 · Rehoboth Properties</p>
+      <p>Milehigh5280 · Milehigh Properties</p>
     </div>
     <div class="body">
       <div class="total-box">
@@ -117,7 +117,7 @@ function guestBookingHtml(d: BookingEmailData): string {
   <div class="wrapper">
     <div class="header">
       <h1>🌴 Booking Received, ${d.firstName}!</h1>
-      <p>Milehigh5280 · Rehoboth Properties</p>
+      <p>Milehigh5280 · Milehigh Properties</p>
     </div>
     <div class="body">
       <p>Thank you for choosing Milehigh5280! We have received your booking request and our team will confirm your reservation and reach out within <strong style="color:#C9963A;">2 hours</strong>.</p>
@@ -138,7 +138,7 @@ function guestBookingHtml(d: BookingEmailData): string {
     </div>
     <div class="footer">
       <p>Milehigh5280 🌴 · <a href="https://milehigh5280.com">milehigh5280.com</a></p>
-      <p style="margin-top:4px;">Rehoboth Properties · Ayi Mensah, Accra, Ghana</p>
+      <p style="margin-top:4px;">Milehigh Properties · Ayi Mensah, Accra, Ghana</p>
     </div>
   </div>
 </body>

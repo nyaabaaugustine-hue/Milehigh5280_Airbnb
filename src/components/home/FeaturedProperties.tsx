@@ -167,7 +167,7 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Featur
         </div>
         <div className="flex flex-col items-start lg:items-end gap-3">
           <p className="text-[var(--text-muted)] text-sm max-w-xs text-left lg:text-right leading-relaxed">
-            Every property personally selected and managed by Rehoboth Properties to the highest
+            Every property personally selected and managed by Milehigh Properties to the highest
             standards of Ghanaian luxury hospitality.
           </p>
           <Link href="/properties" className="btn-ghost">

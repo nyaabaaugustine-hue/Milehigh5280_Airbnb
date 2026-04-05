@@ -103,7 +103,7 @@ export default function Experience() {
           vis ? 'opacity-100' : 'opacity-0',
         )} style={{ transitionDelay: '700ms' }}>
           {[
-            'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80',
+            'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380288/1_qwgwqd.png',
             'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
             'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80',
           ].map((src, i) => (

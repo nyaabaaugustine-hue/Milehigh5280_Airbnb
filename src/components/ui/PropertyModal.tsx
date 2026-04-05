@@ -2,6 +2,7 @@
 
 import { Property } from '@/types';
 import { X, MapPin, Users, BedDouble, Bath, Star, CheckCircle2, Phone } from 'lucide-react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { formatCurrency } from '@/lib/data';

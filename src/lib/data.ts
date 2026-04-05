@@ -14,7 +14,7 @@ export const properties: Property[] = [
 
 Step inside to discover a thoughtfully curated living space — warm tones, high-quality furnishings, and an abundance of natural light. Whether you're here for business, leisure, or a quiet getaway, Milehigh5280 Airbnbdelivers a hotel-quality experience with the warmth and privacy of your own home.
 
-The property is managed by Rehoboth Properties, a trusted name in premium short-stay accommodation in Ghana. You'll be hosted with care, attentiveness, and the highest standards of hospitality from check-in to check-out.`,
+The property is managed by Milehigh Properties, a trusted name in premium short-stay accommodation in Ghana. You'll be hosted with care, attentiveness, and the highest standards of hospitality from check-in to check-out.`,
     location: {
       city: 'Accra',
       region: 'Greater Accra',
@@ -26,8 +26,7 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
       perNight: 250,
       perNightGHS: 3950,
       cleaningFee: 30,
-      serviceFee: 25,
-      minNights: 1,
+      serviceFee: 25,      minNights: 365,
     },
     capacity: {
       guests: 4,
@@ -74,7 +73,7 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
       {
         id: 'r1', author: 'Kwame A.', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80',
         country: 'Ghana', rating: 5, date: 'March 2025', stayDuration: '5 nights',
-        comment: 'Milehigh5280 Airbnbexceeded all my expectations. The apartment is immaculate, modern, and so peaceful. Ayi Mensah is such a beautiful area — I woke up to birds every morning. Highly recommend Rehoboth Properties!',
+        comment: 'Milehigh5280 Airbnbexceeded all my expectations. The apartment is immaculate, modern, and so peaceful. Ayi Mensah is such a beautiful area — I woke up to birds every morning. Highly recommend Milehigh Properties!',
       },
       {
         id: 'r2', author: 'Diana O.', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80',
@@ -94,13 +93,13 @@ The property is managed by Rehoboth Properties, a trusted name in premium short-
     id: '2',
     slug: 'jade-suite-east-legon',
     name: 'Jade Suite',
-    tagline: 'Sleek urban luxury in the heart of East Legon',
-    description: 'A refined studio-to-2-bed suite in a secure East Legon residence — ideal for executives, couples, and diaspora visitors seeking polished Accra living.',
+    tagline: 'Sleek urban luxury in East Legon — Coming Soon',
+    description: 'COMING SOON: A refined studio-to-2-bed suite in a secure East Legon residence. We are currently finalizing the interiors to meet our luxury standards.',
     longDescription: `Jade Suite is your elevated urban retreat in East Legon, one of Accra's most vibrant and cosmopolitan neighbourhoods. The property features contemporary interiors with bold African accents — think kente-woven throw pillows, reclaimed teak furniture, and a statement gallery wall of Ghanaian photography.
 
 Steps from the best restaurants on the East Legon strip, with quick access to Kotoka International Airport, the Jade Suite is designed for the modern traveller who wants style without compromise.
 
-Managed by Rehoboth Properties with the same standard of care and professionalism as all our listings.`,
+Managed by Milehigh Properties with the same standard of care and professionalism as all our listings.`,
     location: {
       city: 'Accra',
       region: 'Greater Accra',
@@ -157,7 +156,7 @@ Managed by Rehoboth Properties with the same standard of care and professionalis
     type: 'apartment',
     badge: 'Most Booked',
     featured: true,
-    isLive: false,
+    isLive: true,
   },
 
   // ─── Property 3: SIMULATED ─────────────────────────────────────────────────
@@ -165,13 +164,13 @@ Managed by Rehoboth Properties with the same standard of care and professionalis
     id: '3',
     slug: 'serenity-villa-trasacco',
     name: 'Serenity Villa',
-    tagline: 'Expansive family villa with pool in Trasacco Valley',
-    description: 'A stunning 4-bedroom private villa within the prestigious Trasacco Valley estate — gated, staffed, and built for families and groups who want space and security.',
+    tagline: 'Expansive family villa in Trasacco Valley — Coming Soon',
+    description: 'COMING SOON: A stunning 4-bedroom private villa within the prestigious Trasacco Valley estate. This property is currently undergoing a full landscape and pool renovation.',
     longDescription: `Serenity Villa offers generous, resort-style living within the walled tranquility of Trasacco Valley, one of Accra's most coveted gated communities. Set on a landscaped plot with a private pool, outdoor dining pavilion, and lush tropical garden, this is the perfect setting for family holidays, reunion gatherings, or an extended executive stay.
 
 Inside, you'll find four spacious en-suite bedrooms, a grand open-plan living and dining area, a fully equipped gourmet kitchen, and a dedicated home office for remote workers.
 
-Rehoboth Properties provides a house manager, daily housekeeping, and airport pickup for all Serenity Villa guests.`,
+Milehigh Properties provides a house manager, daily housekeeping, and airport pickup for all Serenity Villa guests.`,
     location: {
       city: 'Accra',
       region: 'Greater Accra',
@@ -232,7 +231,7 @@ Rehoboth Properties provides a house manager, daily housekeeping, and airport pi
     type: 'villa',
     badge: 'New Arrival',
     featured: true,
-    isLive: false,
+    isLive: true,
   },
 ];
 

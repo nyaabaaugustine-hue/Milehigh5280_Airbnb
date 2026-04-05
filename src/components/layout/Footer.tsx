@@ -5,8 +5,8 @@ import { Instagram, Facebook, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-r
 const footerLinks = {
   Property: [
     { label: 'The Palm 🌴',           href: '/properties/the-palm-ayi-mensah' },
-    { label: 'Jade Suite (Coming Soon)', href: '#', disabled: true },
-    { label: 'Serenity Villa (Coming Soon)', href: '#', disabled: true },
+    { label: 'Jade Suite',            href: '/properties/jade-suite-east-legon' },
+    { label: 'Serenity Villa',        href: '/properties/serenity-villa-trasacco' },
     { label: 'View All Properties',   href: '/properties' },
   ],
   Company: [
@@ -82,12 +82,12 @@ export default function Footer() {
               </div>
               <div className="flex flex-col leading-none">
                 <span className="font-serif text-xl font-light text-white group-hover:text-[var(--gold)] transition-colors">The Palm 🌴</span>
-                <span className="text-[0.48rem] tracking-[0.22em] uppercase text-[var(--gold)] font-sans mt-0.5">Ayi Mensah · Rehoboth Properties</span>
+                <span className="text-[0.48rem] tracking-[0.22em] uppercase text-[var(--gold)] font-sans mt-0.5">Ayi Mensah · Milehigh Properties</span>
               </div>
             </Link>
             <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-6 max-w-xs">
               A premium private apartment in Ayi Mensah, Accra — managed with care and warmth
-              by Rehoboth Properties. Your home away from home in Ghana.
+              by Milehigh Properties. Your home away from home in Ghana.
             </p>
 
             {/* Contact Info */}
@@ -95,7 +95,7 @@ export default function Footer() {
               {[
                 { Icon: MapPin, text: 'Ayi Mensah, Accra, Greater Accra Region' },
                 { Icon: Phone, text: '+233 54 198 8383' },
-                { Icon: Mail,  text: 'rehobothproperties@gmail.com' },
+                { Icon: Mail,  text: 'herbertprempeh@gmail.com' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex items-start gap-3 text-[var(--text-muted)] text-sm">
                   <Icon size={14} className="shrink-0 mt-0.5 text-[var(--gold)]" />
@@ -162,7 +162,7 @@ export default function Footer() {
       <div className="border-t border-[var(--border)] py-6 px-6 lg:px-12 max-w-[1440px] mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[var(--text-subtle)] text-xs">
-            &copy; {year} Rehoboth Properties. All rights reserved.
+            &copy; {year} Milehigh Properties. All rights reserved.
           </p>
           <div className="flex items-center gap-1">
             <div className="divider-gold w-8" />

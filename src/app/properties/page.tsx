@@ -5,8 +5,8 @@ import { Star, MapPin, Users, Bed, Bath, ArrowRight } from 'lucide-react';
 import { properties, formatCurrency } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'Properties — The Palm & Rehoboth Properties',
-  description: 'Browse our curated collection of premium private apartments and villas across Accra, Ghana — by Rehoboth Properties.',
+  title: 'Properties — The Palm & Milehigh Properties',
+  description: 'Browse our curated collection of premium private apartments and villas across Accra, Ghana — by Milehigh Properties.',
 };
 
 const typeLabels: Record<string, string> = {
@@ -36,7 +36,7 @@ export default function PropertiesPage() {
             All <span className="italic text-gold-gradient">Properties</span>
           </h1>
           <p className="text-[var(--text-muted)] max-w-xl leading-relaxed">
-            Every property managed by Rehoboth Properties to the highest standards of Ghanaian
+            Every property managed by Milehigh Properties to the highest standards of Ghanaian
             luxury hospitality — private, secure, and beautifully maintained.
           </p>
         </div>
@@ -60,11 +60,6 @@ export default function PropertiesPage() {
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent" />
-                  {property.badge && (
-                    <div className={`absolute top-4 left-4 text-[0.6rem] tracking-widest uppercase px-3 py-1.5 font-sans font-medium ${badgeColors[property.badge] ?? 'bg-[var(--gold)] text-obsidian'}`}>
-                      {property.badge}
-                    </div>
-                  )}
                   <div className="absolute bottom-4 right-4 bg-obsidian/80 backdrop-blur-sm border border-[var(--border)] px-3 py-2">
                     <span className="font-serif text-lg font-light text-white">{formatCurrency(property.pricing.perNight)}</span>
                     <span className="text-[var(--text-muted)] text-xs"> / night</span>

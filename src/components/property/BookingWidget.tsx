@@ -48,7 +48,7 @@ export default function BookingWidget({ property }: Props) {
   return (
     <div
       className={cn(
-        'bg-[var(--surface)] border border-[var(--border)] transition-all duration-500 rounded-[3%]',
+        'bg-[var(--surface)] border border-[var(--border)] transition-all duration-500',
         sticky ? 'lg:shadow-dark lg:border-[var(--border-bright)]' : '',
       )}
     >
@@ -65,7 +65,7 @@ export default function BookingWidget({ property }: Props) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCurrency(c => c === 'USD' ? 'GHS' : 'USD')}
-              className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors duration-300 rounded-[3%]"
+              className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors duration-300"
             >
               {currency === 'USD' ? '$ USD' : '₵ GHS'}
             </button>
@@ -155,7 +155,7 @@ export default function BookingWidget({ property }: Props) {
                   <button
                     onClick={() => changeGuests(-1)}
                     disabled={guests <= 1}
-                    className="w-8 h-8 border border-[var(--border)] flex items-center justify-center text-white hover:border-[var(--gold)] disabled:opacity-30 transition-colors rounded-[3%]"
+                    className="w-8 h-8 border border-[var(--border)] flex items-center justify-center text-white hover:border-[var(--gold)] disabled:opacity-30 transition-colors"
                     aria-label="Decrease guests"
                   >
                     <Minus size={13} />
@@ -164,7 +164,7 @@ export default function BookingWidget({ property }: Props) {
                   <button
                     onClick={() => changeGuests(1)}
                     disabled={guests >= property.capacity.guests}
-                    className="w-8 h-8 border border-[var(--border)] flex items-center justify-center text-white hover:border-[var(--gold)] disabled:opacity-30 transition-colors rounded-[3%]"
+                    className="w-8 h-8 border border-[var(--border)] flex items-center justify-center text-white hover:border-[var(--gold)] disabled:opacity-30 transition-colors"
                     aria-label="Increase guests"
                   >
                     <Plus size={13} />
@@ -177,7 +177,7 @@ export default function BookingWidget({ property }: Props) {
 
         {/* ── Price Breakdown ── */}
         {pricing && (
-          <div className="border border-[var(--border)] p-4 space-y-3 bg-[var(--surface-2)] rounded-[3%]"
+          <div className="border border-[var(--border)] p-4 space-y-3 bg-[var(--surface-2)]"
             style={{ animation: 'fadeIn 0.4s ease' }}>
             <div className="flex justify-between text-sm text-[var(--text-muted)]">
               <span>
@@ -225,25 +225,6 @@ export default function BookingWidget({ property }: Props) {
           </button>
         </div>
 
-        {/* ── Trust Signals ── */}
-        <div className="flex items-center gap-2 pt-2">
-          <Shield size={13} className="text-[var(--gold)] shrink-0" />
-          <p className="text-[var(--text-muted)] text-xs">
-            Free cancellation up to 7 days before check-in. Secure payment via Paystack &amp; Stripe.
-          </p>
-        </div>
-      </div>
-
-      {/* ── Contact alternative ── */}
-      <div className="px-6 pb-6 text-center">
-        <p className="text-[var(--text-subtle)] text-xs">
-          Questions?{' '}
-          <Link href="/contact" className="text-[var(--gold)] hover:underline">
-            Speak to our concierge
-          </Link>
-        </p>
-      </div>
-
       {/* ── Burgundy Warning Modal ── */}
       {showWarning && (
         <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-obsidian/90 backdrop-blur-md">
@@ -266,7 +247,7 @@ export default function BookingWidget({ property }: Props) {
                     window.open(`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`, '_blank');
                   }
                 }}
-                className="bg-white text-[#800020] py-3 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-colors rounded-[3%]"
+                className="bg-white text-[#800020] py-3 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-colors"
               >
                 I Understand & Proceed
               </button>

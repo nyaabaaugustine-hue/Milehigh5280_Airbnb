@@ -74,7 +74,7 @@ export default function Navbar({ onBookNow }: NavbarProps) {
                 The Palm 🌴
               </span>
               <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[var(--gold)] font-sans font-medium mt-0.5">
-                Ayi Mensah · Rehoboth Properties
+                Ayi Mensah · Milehigh Properties
               </span>
             </div>
           </Link>

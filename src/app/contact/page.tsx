@@ -200,7 +200,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="text-[var(--text-subtle)] text-xs">
-                  Your message is delivered directly to nyaaba.augustine@gmail.com. We respond within 2 hours.
+                  Your message is delivered directly to herbertprempeh@gmail.com. We respond within 2 hours.
                 </p>
               </form>
             )}
@@ -258,7 +258,7 @@ export default function ContactPage() {
               <h3 className="section-label mb-2">Contact Details</h3>
               {[
                 { Icon: Phone,  label: 'Phone',  value: '+233 54 198 8383',           href: 'tel:+233541988383' },
-                { Icon: Mail,   label: 'Email',  value: 'nyaaba.augustine@gmail.com', href: 'mailto:nyaaba.augustine@gmail.com' },
+                { Icon: Mail,   label: 'Email',  value: 'herbertprempeh@gmail.com', href: 'mailto:herbertprempeh@gmail.com' },
                 { Icon: MapPin, label: 'Office', value: 'Ayi Mensah, Accra, Ghana',   href: 'https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana' },
               ].map(({ Icon, label, value, href }) => (
                 <a
