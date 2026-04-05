@@ -17,7 +17,7 @@ export default function WhatsAppButton({ onBookNow }: WhatsAppButtonProps) {
     return () => clearTimeout(t);
   }, []);
 
-  const waLink = 'https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment%20in%20Ayi%20Mensah';
+  const waLink = 'https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20Milehigh5280%20Airbnb%20in%20Ayi%20Mensah';
 
   const WhatsAppIcon = () => (
     <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +41,7 @@ export default function WhatsAppButton({ onBookNow }: WhatsAppButtonProps) {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-              <span className="text-white text-sm font-medium">The Palm 🌴</span>
+              <span className="text-white text-sm font-medium">Milehigh5280 🌴</span>
             </div>
             <button
               onClick={() => setExpanded(false)}
@@ -52,7 +52,7 @@ export default function WhatsAppButton({ onBookNow }: WhatsAppButtonProps) {
             </button>
           </div>
           <p className="text-[var(--text-muted)] text-xs leading-relaxed mb-3">
-            👋 Hi! Chat with us on WhatsApp for instant help with bookings and availability at The Palm, Ayi Mensah.
+            👋 Hi! Chat with us on WhatsApp for instant help with bookings and availability at Milehigh5280 Airbnb, Ayi Mensah.
           </p>
           <div className="flex flex-col gap-2">
             <a

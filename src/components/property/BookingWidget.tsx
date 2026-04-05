@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,6 +21,9 @@ export default function BookingWidget({ property }: Props) {
   const [currency,  setCurrency]  = useState<Currency>('USD');
   const [guestsOpen, setGuestsOpen] = useState(false);
   const [sticky,    setSticky]    = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'reserve' | 'whatsapp' | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setSticky(window.scrollY > 500);
@@ -58,12 +62,15 @@ export default function BookingWidget({ property }: Props) {
             <span className="text-[var(--text-muted)] text-sm"> / night</span>
           </div>
           {/* Currency toggle */}
-          <button
-            onClick={() => setCurrency(c => c === 'USD' ? 'GHS' : 'USD')}
-            className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors duration-300"
-          >
-            {currency === 'USD' ? '$ USD' : '₵ GHS'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrency(c => c === 'USD' ? 'GHS' : 'USD')}
+              className="text-[0.65rem] tracking-widest uppercase border border-[var(--border)] px-3 py-1.5 text-[var(--gold)] hover:border-[var(--gold)] transition-colors duration-300"
+            >
+              {currency === 'USD' ? '$ USD' : '₵ GHS'}
+            </button>
+            <span className="text-base" title="Ghana">🇬🇭</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 mt-2">
@@ -197,22 +204,25 @@ export default function BookingWidget({ property }: Props) {
 
         {/* ── CTA Buttons ── */}
         <div className="space-y-3">
-          <Link
-            href={`/booking?property=${property.id}&checkIn=${checkIn?.toISOString() ?? ''}&checkOut=${checkOut?.toISOString() ?? ''}&guests=${guests}`}
-            className="btn-gold w-full justify-center block text-center"
-            style={{ textDecoration: 'none' }}
+          <button
+            onClick={() => {
+              setPendingAction('reserve');
+              setShowWarning(true);
+            }}
+            className="btn-gold w-full justify-center"
           >
             {checkIn && checkOut ? 'Reserve Now' : 'Check Availability'}
-          </Link>
-          <a
-            href={`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          </button>
+          <button
+            onClick={() => {
+              setPendingAction('whatsapp');
+              setShowWarning(true);
+            }}
             className="btn-ghost w-full justify-center"
           >
             <Phone size={13} />
             Book via WhatsApp
-          </a>
+          </button>
         </div>
 
         {/* ── Trust Signals ── */}
@@ -233,6 +243,43 @@ export default function BookingWidget({ property }: Props) {
           </Link>
         </p>
       </div>
+
+      {/* ── Burgundy Warning Modal ── */}
+      {showWarning && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-obsidian/90 backdrop-blur-md">
+          <div className="bg-[#800020] border border-white/10 p-8 max-w-md w-full text-center shadow-2xl animate-in fade-in zoom-in duration-300">
+            <div className="w-16 h-16 border border-white/20 flex items-center justify-center mx-auto mb-6">
+              <Shield size={28} className="text-white" />
+            </div>
+            <h3 className="font-serif text-2xl text-white mb-4 font-light">Lease Requirement</h3>
+            <p className="text-white/80 mb-8 leading-relaxed text-sm">
+              Before proceeding, please acknowledge: <br />
+              <span className="text-white font-medium italic">"I expect the initial lease term to be one year."</span>
+            </p>
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => {
+                  setShowWarning(false);
+                  if (pendingAction === 'reserve') {
+                    router.push(`/booking?property=${property.id}&checkIn=${checkIn?.toISOString() ?? ''}&checkOut=${checkOut?.toISOString() ?? ''}&guests=${guests}`);
+                  } else {
+                    window.open(`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`, '_blank');
+                  }
+                }}
+                className="bg-white text-[#800020] py-3 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-colors"
+              >
+                I Understand & Proceed
+              </button>
+              <button 
+                onClick={() => setShowWarning(false)}
+                className="text-white/40 text-[0.65rem] uppercase tracking-widest hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

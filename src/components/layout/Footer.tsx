@@ -161,7 +161,7 @@ export default function Footer() {
           <div className="flex items-center gap-1">
             <div className="divider-gold w-8" />
             <span className="text-[0.6rem] tracking-[0.3em] uppercase text-[var(--gold)] px-3">
-              The Palm 🌴 · Ayi Mensah
+              The Palm 🌴 · Ayi Mensah 🇬🇭
             </span>
             <div className="divider-gold w-8" />
           </div>

@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { X, Calendar, User, Mail, Phone, MessageSquare, CreditCard, CheckCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X, Calendar, User, Mail, Phone, MessageSquare, CreditCard, CheckCircle, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
+import { USD_TO_GHS } from '@/lib/data';
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type Step = 'details' | 'payment' | 'success';
+type Step = 'warning' | 'details' | 'payment' | 'success';
 
 interface BookingForm {
   name: string;
@@ -31,6 +33,7 @@ interface PaymentForm {
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState<Step>('details');
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [form, setForm] = useState<BookingForm>({
     name: '', email: '', phone: '', checkIn: '', checkOut: '',
@@ -46,12 +49,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      setStep('details');
+      setStep('warning');
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
+
+  // Smooth scroll modal content to top on step change
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [step]);
 
   const validate = () => {
     const e: Partial<BookingForm> = {};
@@ -83,7 +93,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const sendWhatsApp = () => {
     const msg = encodeURIComponent(
-      `🌴 *New Booking Request — The Palm, Ayi Mensah*\n\n` +
+      `🌴 *New Booking Request — Milehigh5280 Airbnb*\n\n` +
       `*Guest:* ${form.name}\n` +
       `*Email:* ${form.email}\n` +
       `*Phone:* ${form.phone}\n` +
@@ -91,18 +101,48 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       `*Check-out:* ${form.checkOut}\n` +
       `*Guests:* ${form.guests}\n` +
       `*Nights:* ${nights}\n` +
-      `*Total:* GHS ${(total * 15.8).toLocaleString()} / $${total}\n` +
+      `*Total:* GHS ${(total * USD_TO_GHS).toLocaleString()} / $${total}\n` +
       `${form.specialRequests ? `*Special Requests:* ${form.specialRequests}` : ''}`
     );
     window.open(`https://wa.me/17207059849?text=${msg}`, '_blank');
   };
 
   const handlePayment = async () => {
+    if (!process.env.NEXT_PUBLIC_FORMSPREE_ID) {
+      console.error('Formspree ID missing.');
+      toast.error('Booking configuration error.');
+      setStep('success'); // Move to success anyway so they see the WhatsApp option
+      return;
+    }
+
     setPaymentLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setPaymentLoading(false);
-    setStep('success');
-    sendWhatsApp();
+    try {
+      // Prepare data for Formspree
+      const submissionData = {
+        ...form,
+        nights,
+        totalUSD: total,
+        totalGHS: total * USD_TO_GHS,
+        property: "Milehigh5280 Airbnb, Ayi Mensah",
+        _subject: `New Booking: ${form.name} (${form.checkIn})`
+      };
+
+      const response = await fetch(`https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) throw new Error('Booking notification failed');
+
+      setStep('success');
+    } catch (error) {
+      console.error(error);
+      // Still move to success so user isn't stuck, but they can use the WhatsApp link there
+      setStep('success');
+    } finally {
+      setPaymentLoading(false);
+    }
   };
 
   const formatCardNumber = (value: string) => {
@@ -116,7 +156,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   if (!isOpen) return null;
 
   // Step indicator helper
-  const stepOrder: Step[] = ['details', 'payment', 'success'];
+  const stepOrder: Step[] = ['warning', 'details', 'payment', 'success'];
   const currentStepIndex = stepOrder.indexOf(step);
 
   return (
@@ -144,9 +184,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           <div>
             {/* Step indicators */}
             <div className="flex items-center gap-2 mb-1">
-              {stepOrder.map((s, i) => {
-                const isDone = i < currentStepIndex;
-                const isCurrent = i === currentStepIndex;
+              {stepOrder.filter(s => s !== 'warning').map((s, i) => {
+                const isDone = stepOrder.indexOf(step) > stepOrder.indexOf(s);
+                const isCurrent = step === s;
                 return (
                   <div key={s} className="flex items-center gap-2">
                     <div className={cn(
@@ -157,7 +197,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     )}>
                       {isDone ? '✓' : i + 1}
                     </div>
-                    {i < stepOrder.length - 1 && (
+                    {i < stepOrder.length - 2 && (
                       <div className={cn(
                         'w-6 h-px transition-colors duration-300',
                         i < currentStepIndex ? 'bg-[var(--gold)]' : 'bg-[var(--border)]',
@@ -170,7 +210,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <h2 className="font-serif text-xl font-light text-white">
               {step === 'details' ? 'Reserve Your Stay' : step === 'payment' ? 'Secure Payment' : 'Booking Confirmed!'}
             </h2>
-            <p className="text-[var(--text-muted)] text-xs mt-0.5">The Palm 🌴 · Ayi Mensah, Accra</p>
+            <p className="text-[var(--text-muted)] text-xs mt-0.5">Milehigh5280 Airbnb 🌴 · Ayi Mensah, Accra</p>
           </div>
           <button
             onClick={onClose}
@@ -181,7 +221,27 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           </button>
         </div>
 
-        <div className="p-6">
+        <div ref={scrollContainerRef} className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
+
+          {/* ── STEP 0: Warning (Burgundy) ── */}
+          {step === 'warning' && (
+            <div className="bg-[#800020] -m-6 p-10 text-center text-white mb-6">
+              <div className="w-16 h-16 border border-white/20 flex items-center justify-center mx-auto mb-6">
+                <Shield size={32} />
+              </div>
+              <h3 className="font-serif text-2xl mb-4 font-light tracking-wide">Important Notice</h3>
+              <p className="text-white/80 mb-8 leading-relaxed text-sm">
+                Before proceeding, please acknowledge: <br />
+                <span className="text-white font-medium italic">"I expect the initial lease term to be one year."</span>
+              </p>
+              <button 
+                onClick={() => setStep('details')}
+                className="bg-white text-[#800020] w-full py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white/90 transition-colors"
+              >
+                I Understand & Proceed
+              </button>
+            </div>
+          )}
 
           {/* ── STEP 1: Details ── */}
           {step === 'details' && (
@@ -309,7 +369,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       <span className="text-[var(--gold)]">
                         ${total}{' '}
                         <span className="text-[var(--text-muted)] text-xs font-normal">
-                          ≈ GHS {(total * 15.8).toLocaleString()}
+                          ≈ GHS ${(total * USD_TO_GHS).toLocaleString()}
                         </span>
                       </span>
                     </div>
@@ -340,7 +400,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               <div className="text-center py-2">
                 <p className="text-[var(--text-muted)] text-xs">Amount due</p>
                 <p className="font-serif text-3xl font-light text-white">
-                  ${total} <span className="text-[var(--gold)] text-lg">/ GHS {(total * 15.8).toLocaleString()}</span>
+                  ${total} <span className="text-[var(--gold)] text-lg">/ GHS ${(total * USD_TO_GHS).toLocaleString()}</span>
                 </p>
                 <p className="text-[var(--text-muted)] text-xs mt-1">
                   {nights} night{nights > 1 ? 's' : ''} · {form.checkIn} → {form.checkOut}
@@ -441,7 +501,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               <div>
                 <h3 className="font-serif text-2xl font-light text-white mb-2">Booking Confirmed!</h3>
                 <p className="text-[var(--text-muted)] text-sm leading-relaxed">
-                  Thank you, <strong className="text-white">{form.name}</strong>! Your reservation at The Palm has been received.
+                  Thank you, <strong className="text-white">{form.name}</strong>! Your reservation at Milehigh5280 Airbnb has been received.
                 </p>
               </div>
               <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4 text-left space-y-2">
@@ -464,7 +524,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </p>
               <div className="flex flex-col gap-3">
                 <a
-                  href={`https://wa.me/17207059849?text=${encodeURIComponent(`Hi! I just booked The Palm for ${form.checkIn} - ${form.checkOut}. My name is ${form.name}.`)}`}
+                  href={`https://wa.me/17207059849?text=${encodeURIComponent(`Hi! I just booked Milehigh5280 Airbnb for ${form.checkIn} - ${form.checkOut}. My name is ${form.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-gold w-full justify-center gap-2"

@@ -27,7 +27,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           <Image
             src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg"
-            alt="The Palm apartment interior"
+            alt="Milehigh5280 Airbnb interior"
             fill
             className="object-cover"
           />
@@ -49,7 +49,7 @@ export default function HomePage() {
               Book Your Stay
             </button>
             <a
-              href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20The%20Palm%20apartment"
+              href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20Milehigh5280%20Airbnb"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost"
@@ -78,7 +78,7 @@ export default function HomePage() {
               <span className="italic text-gold-gradient">Heart of Accra</span>
             </h2>
             <p className="text-[var(--text-muted)] leading-relaxed mb-6">
-              Tucked away in the lush, tree-lined community of Ayi Mensah, The Palm offers
+              Tucked away in the lush, tree-lined community of Ayi Mensah, Milehigh5280 Airbnb offers
               the perfect balance of tranquil retreat and urban convenience — just 20 minutes
               from Accra&apos;s CBD and business districts.
             </p>
@@ -98,12 +98,12 @@ export default function HomePage() {
             <div className="flex items-center gap-2 p-4 bg-[var(--surface-2)] border border-[var(--border)] mb-6">
               <MapPin size={16} className="text-[var(--gold)] shrink-0" />
               <div>
-                <p className="text-white text-sm font-medium">The Palm 🌴</p>
+                <p className="text-white text-sm font-medium">Milehigh5280 Airbnb 🌴</p>
                 <p className="text-[var(--text-muted)] text-xs">Ayi Mensah, Accra, Ghana</p>
               </div>
               <div className="ml-auto flex items-center gap-1">
                 <Star size={12} className="fill-[var(--gold)] text-[var(--gold)]" />
-                <span className="text-white text-xs font-medium">4.92</span>
+              <span className="text-white text-xs font-medium">4.92</span>
               </div>
             </div>
             <button onClick={openBooking} className="btn-gold">

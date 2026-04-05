@@ -1,4 +1,4 @@
-// ─── Core Domain Types ────────────────────────────────────────────────────────
+export type PropertyType = 'villa' | 'penthouse' | 'estate' | 'cottage' | 'mansion' | 'apartment';
 
 export interface Property {
   id: string;
@@ -15,8 +15,8 @@ export interface Property {
     address: string;
   };
   pricing: {
-    perNight: number;       // in USD
-    perNightGHS: number;    // in GHS
+    perNight: number;
+    perNightGHS: number;
     cleaningFee: number;
     serviceFee: number;
     minNights: number;
@@ -33,8 +33,8 @@ export interface Property {
   rating: number;
   reviewCount: number;
   reviews: Review[];
-  availability: string[];   // ISO date strings of UNAVAILABLE dates
-  type: 'villa' | 'penthouse' | 'estate' | 'cottage' | 'mansion' | 'apartment';
+  availability: string[];
+  type: PropertyType;
   badge?: 'Editors Choice' | 'Most Booked' | 'New Arrival' | 'Exclusive';
   featured: boolean;
   virtualTourUrl?: string;
@@ -93,3 +93,30 @@ export interface PriceBreakdown {
 }
 
 export type Currency = 'USD' | 'GHS';
+
+// ─── Contact / Email ─────────────────────────────────────────────────────────
+export interface ContactFormData {
+  name: string;
+  email: string;
+  phone: string;
+  property: string;
+  message: string;
+  type: 'booking' | 'concierge' | 'event' | 'listing' | 'other';
+}
+
+export interface BookingEmailData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  nationality: string;
+  specialRequests: string;
+  propertyName: string;
+  propertySlug: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  nights: number;
+  total: string;
+  currency: string;
+}

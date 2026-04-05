@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { ArrowDown } from 'lucide-react';
 
 const slides = [
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',  alt: 'The Palm - Luxury living room' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/1_ijqfai.jpg',  alt: 'The Palm - Bedroom suite' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',  alt: 'The Palm - Dining area' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/2_xvzt1y.jpg',  alt: 'The Palm - Exterior view' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',  alt: 'The Palm - Pool area' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',  alt: 'Milehigh5280 Airbnb - Luxury living room' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/1_ijqfai.jpg',  alt: 'Milehigh5280 Airbnb - Bedroom suite' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',  alt: 'Milehigh5280 Airbnb - Dining area' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/2_xvzt1y.jpg',  alt: 'Milehigh5280 Airbnb - Exterior view' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',  alt: 'Milehigh5280 Airbnb - Pool area' },
 ];
 
 interface HeroProps {
@@ -143,7 +143,7 @@ export default function Hero({ onBookNow }: HeroProps) {
             Book Your Stay
           </button>
           <a
-            href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment"
+            href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20Milehigh5280%20Airbnb"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost"
