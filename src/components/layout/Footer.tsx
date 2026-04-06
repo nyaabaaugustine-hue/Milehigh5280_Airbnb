@@ -54,7 +54,7 @@ export default function Footer() {
               <div className="space-y-3 mb-6">
                 {[
                   { label: '📍 Address',    value: 'Ayi Mensah, Accra, Ghana' },
-                  { label: '📞 Phone',      value: '+233 54 198 8383' },
+                  { label: '📞 Phone',      value: '+17207059849' },
                   { label: '⏱ From Airport', value: '~35 min drive' },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex items-start gap-3 text-sm">
@@ -112,7 +112,7 @@ export default function Footer() {
               Explore Properties
             </Link>
             <a
-              href="https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm"
+              href="https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost"
@@ -154,7 +154,7 @@ export default function Footer() {
             <div className="space-y-3 mb-8">
               {[
                 { Icon: MapPin, text: 'Ayi Mensah, Accra, Greater Accra Region' },
-                { Icon: Phone, text: '+233 54 198 8383' },
+                { Icon: Phone, text: '+17207059849' },
                 { Icon: Mail,  text: 'herbertprempeh@gmail.com' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex items-start gap-3 text-[var(--text-muted)] text-sm">
@@ -180,82 +180,8 @@ export default function Footer() {
               ))}
               {/* WhatsApp social */}
               <a
-                href="https://wa.me/233541988383"
+                href="https://wa.me/17207059849"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="w-9 h-9 border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:border-[#25D366] hover:text-[#25D366] transition-all duration-300"
-              >
-                <WhatsAppIcon />
-              </a>
-
-              {/* Airbnb Trust Badge */}
-              <Link
-                href="https://www.airbnb.com/rooms/11234567" // Update with your actual Airbnb link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="h-9 px-3 border border-[var(--border)] flex items-center gap-2 text-[var(--text-muted)] hover:border-[#FF5A5F] hover:text-white transition-all duration-300 group/ab"
-              >
-                <div className="relative w-4 h-4 grayscale group-hover/ab:grayscale-0 transition-all">
-                  <Image 
-                    src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775385071/download_zhjmpt.png" 
-                    alt="Airbnb" 
-                    fill 
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-[0.6rem] uppercase tracking-[0.15em] font-bold">Verified on Airbnb</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Link Columns */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h3 className="section-label mb-5">{category}</h3>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Bottom Bar ── */}
-      <div className="border-t border-[var(--border)] py-6 px-6 lg:px-12 max-w-[1440px] mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[var(--gold)] text-xs font-medium">
-            &copy; {year} Milehigh Properties. All rights reserved.
-          </p>
-          <div className="flex items-center gap-1">
-            <div className="divider-gold w-8" />
-            <span className="text-[0.6rem] tracking-[0.3em] uppercase text-[var(--gold)] px-3">
-              Milehigh5280 🌴 · Ayi Mensah 🇬🇭
-            </span>
-            <div className="divider-gold w-8" />
-          </div>
-          <div className="flex gap-4">
-            {['Privacy', 'Terms'].map(item => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase()}`}
-                className="text-[var(--text-subtle)] text-xs hover:text-white transition-colors"
-              >
-                {item}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+ 

@@ -16,7 +16,7 @@ const slides = [
   { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',  alt: 'The Palm - Lounge area' },
 ];
 
-const WA_LINK = 'https://wa.me/233541988383?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment%20in%20Ayi%20Mensah';
+const WA_LINK = 'https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20enquire%20about%20The%20Palm%20apartment%20in%20Ayi%20Mensah';
 
 interface HeroProps {
   onBookNow?: () => void;
@@ -42,7 +42,7 @@ export default function Hero({ onBookNow }: HeroProps) {
 
   return (
     <section
-      className="relative min-h-[calc(100vh-80px)] mt-[80px] flex flex-col justify-end overflow-hidden"
+      className="relative min-h-[calc(100vh-72px)] mt-[72px] flex flex-col justify-end overflow-hidden"
       aria-label="Hero section"
     >
       {/* ── Background Slider ── */}
@@ -142,7 +142,7 @@ export default function Hero({ onBookNow }: HeroProps) {
             </svg>
             WhatsApp Us
           </a>
-        </motion.div>
+        </div>
 
         <div
           className={`flex flex-wrap gap-x-10 gap-y-4 mt-16 pt-10 border-t border-[var(--border)] transition-all duration-1000 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}

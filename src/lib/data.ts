@@ -4,8 +4,8 @@ export const USD_TO_GHS = 15.8;
 
 // ─── Contact Info — single source of truth ────────────────────────────────────
 export const CONTACT_INFO = {
-  phone:     '+233 54 198 8383',
-  whatsapp:  '233541988383',      // Ghana number, no +, no spaces
+  phone:     '+17207059849',
+  whatsapp:  '17207059849',
   email:     'nyaaba.augustine@gmail.com',
   location:  'Ayi Mensah, Accra, Ghana',
 };

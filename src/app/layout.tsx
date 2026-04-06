@@ -54,10 +54,16 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'The Palm 🌴 · Ayi Mensah',
     description: 'A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties.',
+    images: ['https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg'],
   },
   icons: {
     icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+    shortcut: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
     apple: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
+    },
   },
   robots: { index: true, follow: true },
   metadataBase: new URL('https://thepalmayimensah.com'),
