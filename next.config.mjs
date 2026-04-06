@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Allow unoptimized images globally (Cloudinary already optimises them)
     unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
@@ -9,17 +8,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'plus.unsplash.com' },
     ],
   },
-
-  // Tell Next.js to bundle nodemailer server-side (not split into edge chunks)
-  experimental: {
-    serverComponentsExternalPackages: ['nodemailer'],
-  },
-
-  // Silence the "Critical dependency" warning from nodemailer
-  webpack: (config) => {
-    config.externals = config.externals || [];
-    return config;
-  },
+  // nodemailer must run in Node.js runtime, not edge
+  serverExternalPackages: ['nodemailer'],
 };
 
 export default nextConfig;

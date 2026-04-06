@@ -9,9 +9,9 @@ const posts = [
     id: 1,
     category: 'Travel Tips',
     categoryColor: 'text-emerald-400',
-    title: 'Hidden Gems of Ayi Mensah: A Local's Guide to Ghana's Quietest Hill Town',
+    title: "Hidden Gems of Ayi Mensah: A Local Guide to Ghana's Quietest Hill Town",
     excerpt:
-      'Tucked away from Accra's buzz, Ayi Mensah is a lush, unhurried corner of Greater Accra where waterfalls meet red-dirt roads and birdsong replaces traffic. Here's what to do, eat, and explore.',
+      "Tucked away from Accra's buzz, Ayi Mensah is a lush, unhurried corner of Greater Accra where waterfalls meet red-dirt roads and birdsong replaces traffic. Here is what to do, eat, and explore.",
     author: 'Milehigh Team',
     date: 'March 2025',
     readTime: '5 min read',
@@ -22,9 +22,9 @@ const posts = [
     id: 2,
     category: 'Ghana Culture',
     categoryColor: 'text-amber-400',
-    title: 'Beyond the Beach: Why Discerning Travellers Are Choosing Accra Over Cape Town in 2025',
+    title: 'Beyond the Beach: Why Travellers Are Choosing Accra Over Cape Town in 2025',
     excerpt:
-      'With world-class restaurants, vibrant art galleries, and a booming short-stay market, Accra has quietly become West Africa's hottest luxury destination — and Ayi Mensah sits right at the heart of it.',
+      "With world-class restaurants, vibrant art galleries, and a booming short-stay market, Accra has quietly become West Africa's hottest luxury destination — and Ayi Mensah sits right at the heart of it.",
     author: 'Augustine N.',
     date: 'February 2025',
     readTime: '7 min read',
@@ -35,9 +35,9 @@ const posts = [
     id: 3,
     category: 'Host Spotlight',
     categoryColor: 'text-rose-400',
-    title: 'Inside Milehigh Properties: How We Turned One Apartment into a Luxury Hospitality Brand',
+    title: 'Inside Milehigh Properties: How We Built a Luxury Hospitality Brand in Accra',
     excerpt:
-      'From furnishing the first bedroom to managing five-star guest reviews, Milehigh Properties co-founder Herbert shares the journey of building Ghana's most thoughtful short-stay experience.',
+      "From furnishing the first bedroom to managing five-star guest reviews, Milehigh Properties co-founder Herbert shares the journey of building Ghana's most thoughtful short-stay experience.",
     author: 'Herbert P.',
     date: 'January 2025',
     readTime: '6 min read',
@@ -67,10 +67,10 @@ export default function BlogSection() {
   return (
     <section
       className="py-24 lg:py-36 px-6 lg:px-12 max-w-[1440px] mx-auto"
-      aria-label="Blog — Our News and Stories"
+      aria-label="Blog News and Stories"
     >
       <div ref={ref}>
-        {/* ── Header ── */}
+        {/* Header */}
         <div
           className={cn(
             'flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-6 transition-all duration-700',
@@ -99,14 +99,14 @@ export default function BlogSection() {
           </div>
         </div>
 
-        {/* ── Gold Divider ── */}
+        {/* Gold Divider */}
         <div className="flex items-center gap-4 mb-16">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[var(--border)]" />
           <div className="w-2 h-2 rotate-45 border border-[var(--gold)] opacity-60" />
           <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[var(--border)]" />
         </div>
 
-        {/* ── Cards Grid ── */}
+        {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post, i) => (
             <BlogCard key={post.id} post={post} index={i} parentVis={vis} />
@@ -117,7 +117,6 @@ export default function BlogSection() {
   );
 }
 
-// ─── Individual Blog Card ─────────────────────────────────────────────────────
 function BlogCard({
   post,
   index,
@@ -143,7 +142,7 @@ function BlogCard({
       )}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      {/* ── Image ── */}
+      {/* Image */}
       <div className="relative h-56 overflow-hidden bg-[var(--surface-2)] shrink-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -156,31 +155,26 @@ function BlogCard({
             imgLoaded ? 'opacity-100' : 'opacity-0',
           )}
         />
-        {/* Skeleton while loading */}
         {!imgLoaded && (
           <div className="absolute inset-0 bg-[var(--surface-3)] animate-pulse" />
         )}
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--obsidian)]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/80 via-transparent to-transparent" />
 
-        {/* Category badge */}
-        <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-[var(--obsidian)]/75 backdrop-blur-sm border border-[var(--border)] px-3 py-1.5">
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-[#080808]/75 backdrop-blur-sm border border-[var(--border)] px-3 py-1.5">
           <Tag size={9} className="text-[var(--gold)]" />
           <span className={cn('text-[0.58rem] font-sans font-medium tracking-widest uppercase', post.categoryColor)}>
             {post.category}
           </span>
         </div>
 
-        {/* Read time */}
-        <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-[var(--obsidian)]/75 backdrop-blur-sm border border-[var(--border)] px-3 py-1.5">
+        <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-[#080808]/75 backdrop-blur-sm border border-[var(--border)] px-3 py-1.5">
           <Clock size={9} className="text-[var(--gold)]" />
           <span className="text-[0.58rem] font-sans text-[var(--text-muted)] tracking-wider">{post.readTime}</span>
         </div>
       </div>
 
-      {/* ── Content ── */}
+      {/* Content */}
       <div className="flex flex-col flex-1 p-6">
-        {/* Tag pill */}
         <div className="flex items-center gap-2 mb-4">
           <span className="text-[0.55rem] tracking-[0.25em] uppercase font-sans font-medium text-[var(--gold)] border border-[var(--border)] px-2.5 py-1">
             {post.tag}
@@ -188,7 +182,6 @@ function BlogCard({
           <span className="text-[var(--text-subtle)] text-[0.6rem] tracking-wider">{post.date}</span>
         </div>
 
-        {/* Title */}
         <h3
           className={cn(
             'font-serif text-xl font-light leading-snug mb-3 transition-colors duration-300',
@@ -198,15 +191,12 @@ function BlogCard({
           {post.title}
         </h3>
 
-        {/* Excerpt */}
         <p className="text-[var(--text-muted)] text-sm leading-relaxed line-clamp-3 flex-1 mb-5">
           {post.excerpt}
         </p>
 
-        {/* Footer */}
         <div className="flex items-center justify-between border-t border-[var(--border)] pt-4">
           <div className="flex items-center gap-2">
-            {/* Author avatar placeholder */}
             <div
               className="w-7 h-7 rounded-full border border-[var(--border-bright)] flex items-center justify-center text-[0.55rem] font-bold text-[var(--gold)] uppercase"
               style={{ background: 'rgba(201,150,58,0.12)' }}
@@ -227,7 +217,7 @@ function BlogCard({
         </div>
       </div>
 
-      {/* ── Gold accent line on hover ── */}
+      {/* Gold accent line on hover */}
       <div
         className={cn(
           'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[var(--gold)] to-transparent transition-all duration-500',

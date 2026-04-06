@@ -1,4 +1,4 @@
-import type { Property } from '@/types';
+import type { Property, BlogPost } from '@/types';
 
 export const USD_TO_GHS = 15.8;
 
@@ -199,11 +199,57 @@ Milehigh Properties provides a house manager, daily housekeeping, and airport pi
   },
 ];
 
+export const blogPosts: BlogPost[] = [
+  {
+    id: 'post-1',
+    slug: 'exploring-ayi-mensah-hidden-gem',
+    title: 'Ayi Mensah: The Hidden Gem of Greater Accra',
+    excerpt: 'Discover why travelers are choosing the serene hills of Ayi Mensah over the busy city center.',
+    content: 'Full article content goes here...',
+    author: 'Milehigh Concierge',
+    date: 'March 15, 2025',
+    readTime: '5 min read',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/download_3_rmsiuk.jpg',
+    category: 'Ghana',
+    featured: true,
+  },
+  {
+    id: 'post-2',
+    slug: 'top-restaurants-east-legon',
+    title: 'A Foodie’s Guide to East Legon',
+    excerpt: 'From local Ghanaian flavors to international fine dining, these are the must-visit spots near Jade Suite.',
+    content: 'Full article content goes here...',
+    author: 'Herbert Prempeh',
+    date: 'March 10, 2025',
+    readTime: '8 min read',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/download_2_yntthc.jpg',
+    category: 'Travel',
+  },
+  {
+    id: 'post-3',
+    slug: 'ghana-heritage-tour-experience',
+    title: 'The Grand Ghana Heritage Tour 2025',
+    excerpt: 'A preview of our exclusive 10-day curated journey through Accra, Kumasi, and Cape Coast.',
+    content: 'Full article content goes here...',
+    author: 'Milehigh Concierge',
+    date: 'March 05, 2025',
+    readTime: '6 min read',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/gg_gq7hdb.jpg',
+    category: 'Ghana',
+    category: 'Travel',
+  },
+];
+
 // ─── Helper Functions ─────────────────────────────────────────────────────────
 export const getLiveProperties     = () => properties;
 export const getFeaturedProperties = () => properties.filter(p => p.featured);
 export const getPropertyById       = (id: string)   => properties.find(p => p.id === id);
 export const getPropertyBySlug     = (slug: string) => properties.find(p => p.slug === slug);
+
+// Blog Helpers
+export const getLatestPosts        = (limit = 3) => [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, limit);
+export const getPostBySlug         = (slug: string) => blogPosts.find(p => p.slug === slug);
+export const getFeaturedPost       = () => blogPosts.find(p => p.featured) || blogPosts[0];
 
 export const formatCurrency = (amount: number, currency: 'USD' | 'GHS' = 'USD') => {
   if (currency === 'GHS') {

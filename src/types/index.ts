@@ -95,6 +95,21 @@ export interface PriceBreakdown {
 
 export type Currency = 'USD' | 'GHS';
 
+// ─── Blog / News ─────────────────────────────────────────────────────────────
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  readTime: string;
+  image: string;
+  category: 'Travel' | 'Lifestyle' | 'Hosting' | 'Ghana';
+  featured?: boolean;
+}
+
 // ─── Contact / Email ─────────────────────────────────────────────────────────
 export interface ContactFormData {
   name: string;
