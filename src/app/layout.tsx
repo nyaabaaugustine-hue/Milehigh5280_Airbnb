@@ -7,6 +7,7 @@ import ClientShell from '@/components/layout/ClientShell';
 import SiteLoader from '@/components/ui/SiteLoader';
 import SocialSidebar from '@/components/ui/SocialSidebar';
 import GhanaTourAd from '@/components/ui/GhanaTourAd';
+import { CookieConsent, NewsletterSignup, SocialProofTicker } from '@/components/ui/SmartWidgets';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -70,17 +71,53 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const siteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: 'Milehigh5280 by Milehigh Properties',
+    url: 'https://thepalmayimensah.com',
+    telephone: '+17207059849',
+    email: 'herbertprempeh@gmail.com',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',
+    description: 'Luxury private apartment in Ayi Mensah, Accra, Ghana. Managed by Milehigh Properties.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Ayi Mensah',
+      addressLocality: 'Accra',
+      addressRegion: 'Greater Accra',
+      addressCountry: 'GH',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 5.792905,
+      longitude: -0.181711,
+    },
+    priceRange: '$',
+    sameAs: [
+      'https://www.airbnb.com',
+    ],
+  };
+
   return (
     <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
+      </head>
       <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden">
         <div className="grain-overlay" aria-hidden="true" />
         <SiteLoader />
         <SocialSidebar />
         <GhanaTourAd />
+        <SocialProofTicker />
         <ClientShell>
           {children}
         </ClientShell>
         <Footer />
+        <CookieConsent />
+        <NewsletterSignup />
         <Toaster
           position="bottom-right"
           toastOptions={{

@@ -341,7 +341,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               )}
 
               <button onClick={handleDetails} className="btn-gold w-full justify-center mt-2">
-                Continue to Deposite
+                Continue to Deposit
               </button>
             </div>
           )}

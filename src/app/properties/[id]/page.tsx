@@ -42,6 +42,64 @@ const AmenityIcon = ({ icon }: { icon: string }) => {
   return <span className="text-base">{iconMap[icon] ?? '✦'}</span>;
 };
 
+// ─── JSON-LD Structured Data (Feature 22/23) ────────────────────────────────
+function PropertyJsonLd({ property }: { property: NonNullable<ReturnType<typeof getPropertyBySlug>> }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: property.name,
+    description: property.description,
+    url: `https://thepalmayimensah.com/properties/${property.slug}`,
+    image: property.images.map(i => i.url),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: property.location.address,
+      addressLocality: property.location.city,
+      addressRegion: property.location.region,
+      addressCountry: 'GH',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: property.location.coordinates.lat,
+      longitude: property.location.coordinates.lng,
+    },
+    telephone: '+17207059849',
+    priceRange: `${property.pricing.perNight}/night`,
+    starRating: {
+      '@type': 'Rating',
+      ratingValue: property.rating,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: property.rating,
+      reviewCount: property.reviewCount,
+      bestRating: 5,
+    },
+    review: property.reviews.map(r => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author },
+      reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 },
+      reviewBody: r.comment,
+      datePublished: r.date,
+    })),
+    amenityFeature: property.amenities.map(a => ({
+      '@type': 'LocationFeatureSpecification',
+      name: a.label,
+      value: true,
+    })),
+    numberOfRooms: property.capacity.bedrooms,
+    occupancy: { '@type': 'QuantitativeValue', maxValue: property.capacity.guests },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 export default async function PropertyPage(
   { params }: { params: Promise<{ id: string }> }
@@ -60,6 +118,7 @@ export default async function PropertyPage(
 
   return (
     <>
+      <PropertyJsonLd property={property} />
       {/* ── Breadcrumb ── */}
       <div className="pt-28 pb-0 px-6 lg:px-12 max-w-[1440px] mx-auto">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[var(--text-muted)] mb-6">

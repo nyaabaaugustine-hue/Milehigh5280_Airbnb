@@ -6,7 +6,7 @@ export const USD_TO_GHS = 15.8;
 export const CONTACT_INFO = {
   phone:     '+17207059849',
   whatsapp:  '17207059849',
-  email:     'nyaaba.augustine@gmail.com',
+  email:     'herbertprempeh@gmail.com',
   location:  'Ayi Mensah, Accra, Ghana',
 };
 

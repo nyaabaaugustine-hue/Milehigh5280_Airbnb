@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import type { BookingEmailData } from '@/types';
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com'; // correct email
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -132,7 +132,7 @@ function guestBookingHtml(d: BookingEmailData): string {
       </div>
 
       <p>For any immediate questions, message us directly on WhatsApp:</p>
-      <a class="wa-btn" href="https://wa.me/233541988383?text=Hello%2C%20I%20just%20submitted%20a%20booking%20for%20${encodeURIComponent(d.propertyName)}">
+      <a class="wa-btn" href="https://wa.me/17207059849?text=Hello%2C%20I%20just%20submitted%20a%20booking%20for%20${encodeURIComponent(d.propertyName)}">
         Chat on WhatsApp
       </a>
     </div>

@@ -1,14 +1,52 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Users, Calendar, ChevronDown, Minus, Plus, Shield, Phone } from 'lucide-react';
+import { Users, Calendar, ChevronDown, Minus, Plus, Shield, Phone, CheckCircle, Lock, Star, Zap } from 'lucide-react';
 import { calculatePrice, formatCurrency } from '@/lib/data';
 import type { Property, Currency } from '@/types';
 import { cn } from '@/lib/utils';
+
+// ─── Simulated blocked dates (unavailable) ────────────────────────────────────
+// In production these would come from an API / calendar sync
+function getBlockedDates(): Date[] {
+  const today = new Date();
+  const blocked: Date[] = [];
+  // Simulate a few booked windows
+  const ranges = [
+    [3, 5], [12, 14], [20, 22], [28, 30],
+  ];
+  ranges.forEach(([start, end]) => {
+    for (let d = start; d <= end; d++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + d);
+      blocked.push(date);
+    }
+  });
+  return blocked;
+}
+
+// ─── Trust Badges (Feature 18) ────────────────────────────────────────────────
+function TrustBadges() {
+  const badges = [
+    { icon: <Lock size={13} className="text-[var(--gold)]" />,         label: 'Secure Booking' },
+    { icon: <CheckCircle size={13} className="text-[var(--gold)]" />,  label: 'Verified Host' },
+    { icon: <Zap size={13} className="text-[var(--gold)]" />,          label: 'Instant Confirm' },
+    { icon: <Star size={13} className="text-[var(--gold)]" />,         label: '4.9★ Rated' },
+  ];
+  return (
+    <div className="grid grid-cols-2 gap-2 mt-4">
+      {badges.map(({ icon, label }) => (
+        <div key={label} className="flex items-center gap-2 border border-[var(--border)] px-3 py-2 bg-[var(--surface-2)]">
+          {icon}
+          <span className="text-[var(--text-muted)] text-[0.6rem] uppercase tracking-wider">{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 interface Props {
   property: Property;
@@ -24,6 +62,9 @@ export default function BookingWidget({ property }: Props) {
   const [showWarning, setShowWarning] = useState(false);
   const [pendingAction, setPendingAction] = useState<'reserve' | 'whatsapp' | null>(null);
   const router = useRouter();
+
+  // Feature #1: availability calendar blocked dates
+  const blockedDates = useMemo(() => getBlockedDates(), []);
 
   useEffect(() => {
     const onScroll = () => setSticky(window.scrollY > 500);
@@ -81,6 +122,19 @@ export default function BookingWidget({ property }: Props) {
       </div>
 
       <div className="p-6 space-y-4">
+        {/* ── Availability Legend ── */}
+        <div className="flex items-center gap-4 text-[0.6rem] text-[var(--text-muted)] border border-[var(--border)] px-3 py-2 bg-[var(--surface-2)]">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-3 h-3 rounded-full bg-[var(--gold)] opacity-80" />Available
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-3 h-3 rounded-full bg-red-800/80" />Unavailable
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-3 h-3 rounded-full bg-[var(--gold)]/30" />Selected
+          </span>
+        </div>
+
         {/* ── Date Inputs ── */}
         <div className="grid grid-cols-2 gap-2">
           {/* Check-in */}
@@ -94,11 +148,18 @@ export default function BookingWidget({ property }: Props) {
                 startDate={checkIn}
                 endDate={checkOut}
                 minDate={new Date()}
+                excludeDates={blockedDates}
                 placeholderText="Select date"
                 dateFormat="dd MMM yyyy"
                 className="input-luxury text-sm cursor-pointer w-full"
                 wrapperClassName="w-full"
                 calendarClassName="!font-sans"
+                dayClassName={(date) => {
+                  const isBlocked = blockedDates.some(
+                    b => b.toDateString() === date.toDateString()
+                  );
+                  return isBlocked ? '!bg-red-900/60 !text-red-300 !cursor-not-allowed' : '';
+                }}
               />
               <Calendar size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--gold)] pointer-events-none" />
             </div>
@@ -115,10 +176,17 @@ export default function BookingWidget({ property }: Props) {
                 startDate={checkIn}
                 endDate={checkOut}
                 minDate={checkIn ? new Date(checkIn.getTime() + 86400000 * property.pricing.minNights) : new Date()}
+                excludeDates={blockedDates}
                 placeholderText="Select date"
                 dateFormat="dd MMM yyyy"
                 className="input-luxury text-sm cursor-pointer w-full"
                 wrapperClassName="w-full"
+                dayClassName={(date) => {
+                  const isBlocked = blockedDates.some(
+                    b => b.toDateString() === date.toDateString()
+                  );
+                  return isBlocked ? '!bg-red-900/60 !text-red-300 !cursor-not-allowed' : '';
+                }}
               />
               <Calendar size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--gold)] pointer-events-none" />
             </div>
@@ -224,6 +292,13 @@ export default function BookingWidget({ property }: Props) {
             Book via WhatsApp
           </button>
         </div>
+
+        {/* Feature #18: Trust Badges */}
+        <TrustBadges />
+
+        <p className="text-[var(--text-subtle)] text-[0.6rem] text-center leading-relaxed">
+          No charge until confirmed · Free cancellation 7+ days before check-in
+        </p>
       </div>
 
       {/* ── Burgundy Warning Modal ── */}

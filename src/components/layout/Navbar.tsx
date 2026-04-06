@@ -8,10 +8,11 @@ import { Menu, X, Phone, Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '/',           label: 'Home' },
-  { href: '/properties', label: 'Properties' },
-  { href: '/about',      label: 'Our Story' },
-  { href: '/contact',    label: 'Concierge' },
+  { href: '/',            label: 'Home' },
+  { href: '/properties',  label: 'Properties' },
+  { href: '/ghana-guide', label: 'Ghana Guide' },
+  { href: '/about',       label: 'Our Story' },
+  { href: '/contact',     label: 'Concierge' },
 ];
 
 interface NavbarProps {
@@ -181,7 +182,7 @@ export default function Navbar({ onBookNow }: NavbarProps) {
           </div>
         </nav>
         <div className="px-10 py-8">
-          <p className="section-label text-[var(--text-subtle)]">The Palm 🌴 · Ayi Mensah · Rehoboth Properties</p>
+          <p className="section-label text-[var(--text-subtle)]">The Palm 🌴 · Ayi Mensah · Milehigh Properties</p>
         </div>
       </div>
     </>

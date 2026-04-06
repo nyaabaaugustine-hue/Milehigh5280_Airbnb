@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import type { ContactFormData } from '@/types';
 
 // ─── Admin inbox — all emails land here ──────────────────────────────────────
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'nyaaba.augustine@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
         <div style="font-family:Arial,sans-serif;max-width:600px;background:#111;color:#F5F0E8;padding:32px;border:1px solid rgba(201,150,58,0.2);">
           <h2 style="color:#C9963A;margin-top:0;">Thank you, ${body.name.split(' ')[0]}! 🌴</h2>
           <p style="color:#ccc;line-height:1.8;">We have received your message and will respond within <strong style="color:#F5F0E8;">2 hours</strong>. For faster assistance, reach us on WhatsApp:</p>
-          <a href="https://wa.me/233541988383" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;text-decoration:none;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin-top:8px;">Chat on WhatsApp</a>
+          <a href="https://wa.me/17207059849" style="display:inline-block;background:#25D366;color:#fff;padding:12px 24px;text-decoration:none;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin-top:8px;">Chat on WhatsApp</a>
           <hr style="border-color:rgba(201,150,58,0.2);margin:24px 0;"/>
           <p style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.1em;">Milehigh5280 🌴 · Ayi Mensah, Accra, Ghana</p>
         </div>

@@ -11,6 +11,7 @@ const footerLinks = {
   ],
   Company: [
     { label: 'Our Story',             href: '/about' },
+    { label: 'Ghana Guide',           href: '/ghana-guide' },
     { label: 'Concierge Service',     href: '/contact' },
     { label: 'List Your Property',    href: '/contact#list' },
   ],
@@ -155,7 +156,7 @@ export default function Footer() {
               {[
                 { Icon: MapPin, text: 'Ayi Mensah, Accra, Greater Accra Region' },
                 { Icon: Phone, text: '+17207059849' },
-                { Icon: Mail,  text: 'herbertprempeh@gmail.com' },
+                { Icon: Mail,  text: 'nyaaba.augustine@gmail.com' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex items-start gap-3 text-[var(--text-muted)] text-sm">
                   <Icon size={14} className="shrink-0 mt-0.5 text-[var(--gold)]" />

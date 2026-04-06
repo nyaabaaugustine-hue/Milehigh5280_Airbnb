@@ -5,6 +5,8 @@ import Experience from '@/components/home/Experience';
 import FeaturedProperties from '@/components/home/FeaturedProperties';
 import AmenitiesMarquee from '@/components/home/AmenitiesMarquee';
 import Testimonials from '@/components/home/Testimonials';
+import BlogSection from '@/components/home/BlogSection';
+import PriceCalculator from '@/components/home/PriceCalculator';
 import { useBooking } from '@/components/layout/ClientShell';
 
 export default function HomePage() {
@@ -16,7 +18,9 @@ export default function HomePage() {
       <Experience />
       <FeaturedProperties onBookNow={openBooking} onViewProperty={viewProperty} />
       <AmenitiesMarquee />
+      <PriceCalculator onBookNow={openBooking} />
       <Testimonials />
+      <BlogSection />
     </>
   );
 }
