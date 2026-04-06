@@ -44,3 +44,6 @@ yarn-error.log*
 
 # Fix script (dev only)
 fix-deploy.ps1
+
+# Backup files from cleanup
+*.bak

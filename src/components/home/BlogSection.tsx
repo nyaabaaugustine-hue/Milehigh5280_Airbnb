@@ -167,6 +167,12 @@ export default function BlogSection() {
 function BlogCard({ post, index, parentVis }: { post: typeof posts[0]; index: number; parentVis: boolean }) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Fix: if image is already cached it won't fire onLoad — check on mount
+  useEffect(() => {
+    if (imgRef.current?.complete) setImgLoaded(true);
+  }, []);
 
   return (
     <Link
@@ -184,9 +190,11 @@ function BlogCard({ post, index, parentVis }: { post: typeof posts[0]; index: nu
       <div className="relative h-56 overflow-hidden bg-[var(--surface-2)] shrink-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          ref={imgRef}
           src={post.image}
           alt={post.title}
           onLoad={() => setImgLoaded(true)}
+          onError={() => setImgLoaded(true)}
           className={cn(
             'absolute inset-0 w-full h-full object-cover transition-all duration-700',
             hovered ? 'scale-105' : 'scale-100',

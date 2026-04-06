@@ -225,8 +225,8 @@ export default function Footer() {
               <Image
                 src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464415/download_4_oq9yab.jpg"
                 alt="Verified & Trusted"
-                width={48}
-                height={48}
+                width={80}
+                height={80}
                 className="rounded-full object-cover border border-[var(--border)]"
                 unoptimized
               />
@@ -234,7 +234,7 @@ export default function Footer() {
                 src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775385071/download_zhjmpt.png"
                 alt="Listed on Airbnb"
                 width={80}
-                height={24}
+                height={80}
                 className="object-contain"
                 unoptimized
               />

@@ -8,8 +8,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'plus.unsplash.com' },
     ],
   },
-  // nodemailer must run in Node.js runtime, not edge
-  serverExternalPackages: ['nodemailer'],
+  experimental: {
+    serverComponentsExternalPackages: ['nodemailer'],
+  },
 };
 
 export default nextConfig;
