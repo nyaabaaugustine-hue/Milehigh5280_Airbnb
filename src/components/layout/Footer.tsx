@@ -229,7 +229,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-[var(--border)] px-6 lg:px-12 py-6 max-w-[1440px] mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--text-subtle)] text-xs">
-          <p>&copy; {year} Milehigh Properties &middot; All rights reserved</p>
+          <p className="text-[var(--gold)] font-medium">&copy; {year} Milehigh Properties &middot; All rights reserved</p>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             <span>Accepting bookings &middot; Ayi Mensah, Accra, Ghana 🇬🇭</span>

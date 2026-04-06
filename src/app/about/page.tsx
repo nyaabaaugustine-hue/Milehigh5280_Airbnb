@@ -66,19 +66,19 @@ const team = [
     name: 'Adwoa Mensah',
     role: 'Founder & CEO',
     bio: 'A hospitality veteran with 15 years across London, Dubai, and Accra. Adwoa\'s vision: to create the luxury Ghana deserves.',
-    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1771669782/yu_cu6o2s.jpg',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775440036/-1x-1_wipegu.webp',
   },
   {
     name: 'Kwame Osei',
     role: 'Head of Properties',
     bio: 'Architect and interior designer who has curated every space with meticulous attention to both global luxury standards and Ghanaian cultural authenticity.',
-    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1771670757/cvA_ki5o4o.jpg',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775440120/dfff_wjh8fy.avif',
   },
   {
     name: 'Abena Darko',
     role: 'Chief Concierge',
     bio: 'Former luxury hotel concierge in Cape Town and Singapore. Abena\'s team handles everything — from airport transfers to private chef menus.',
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1771670757/cvA_ki5o4o.jpg',
   },
 ];
 
@@ -172,8 +172,8 @@ export default function AboutPage() {
               </div>
               <div className="relative h-64 mt-8 overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80"
-                  alt="Villa bedroom"
+                  src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380288/1_qwgwqd.png"
+                  alt="The Palm exterior"
                   unoptimized
                   fill className="object-cover"
                 />

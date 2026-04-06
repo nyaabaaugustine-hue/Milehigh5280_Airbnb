@@ -1,11 +1,12 @@
-import { cn } from '@/lib/utils';
-import { properties, CONTACT_INFO } from '@/lib/data';
-import toast from 'react-hot-toast';'use client';
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { properties, CONTACT_INFO } from '@/lib/data';
+import toast from 'react-hot-toast';
 
 const FAQs = [
   {
@@ -74,7 +75,6 @@ export default function ContactPage() {
   };
 
   return (
-      {/* ── Detailed Location Map removed — shown in Footer ── */}
     <>
       {/* ── Hero ── */}
       <section className="relative pt-40 pb-20 px-6 lg:px-12 border-b border-[var(--border)]">
@@ -211,7 +211,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="text-[var(--text-subtle)] text-xs">
-                  Your message is delivered directly to herbertprempeh@gmail.com. We respond within 2 hours.
+                  Your message is delivered directly to {CONTACT_INFO.email}. We respond within 2 hours.
                 </p>
               </form>
             )}
@@ -268,9 +268,9 @@ export default function ContactPage() {
             <div className="border border-[var(--border)] p-6 space-y-5">
               <h3 className="section-label mb-2">Contact Details</h3>
               {[
-                { Icon: Phone,  label: 'Phone',  value: CONTACT_INFO.phone,           href: `tel:${CONTACT_INFO.whatsapp}` },
-                { Icon: Mail,   label: 'Email',  value: CONTACT_INFO.email,           href: `mailto:${CONTACT_INFO.email}` },
-                { Icon: MapPin, label: 'Office', value: 'Ayi Mensah, Accra, Ghana',   href: 'https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana' },
+                { Icon: Phone,  label: 'Phone',  value: CONTACT_INFO.phone,         href: `tel:${CONTACT_INFO.phone}` },
+                { Icon: Mail,   label: 'Email',  value: CONTACT_INFO.email,         href: `mailto:${CONTACT_INFO.email}` },
+                { Icon: MapPin, label: 'Office', value: 'Ayi Mensah, Accra, Ghana', href: 'https://maps.google.com/?q=Ayi+Mensah+Accra+Ghana' },
               ].map(({ Icon, label, value, href }) => (
                 <a
                   key={label}
@@ -313,9 +313,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-
-      {/* ── Detailed Location Map ── */}
-      <LocationMap />
     </>
   );
 }
