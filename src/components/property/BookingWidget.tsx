@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Users, Calendar, ChevronDown, Minus, Plus, Shield, Phone, CheckCircle, Lock, Star, Zap } from 'lucide-react';
-import { calculatePrice, formatCurrency } from '@/lib/data';
+import { calculatePrice, formatCurrency, CONTACT_INFO } from '@/lib/data';
 import type { Property, Currency } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -320,7 +320,7 @@ export default function BookingWidget({ property }: Props) {
                   if (pendingAction === 'reserve') {
                     router.push(`/booking?property=${property.id}&checkIn=${checkIn?.toISOString() ?? ''}&checkOut=${checkOut?.toISOString() ?? ''}&guests=${guests}`);
                   } else {
-                    window.open(`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`, '_blank');
+                    window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello%2C%20I%27d%20like%20to%20book%20${encodeURIComponent(property.name)}`, '_blank');
                   }
                 }}
                 className="bg-white text-[#800020] py-3 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-colors"

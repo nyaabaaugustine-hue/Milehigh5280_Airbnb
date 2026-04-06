@@ -1,13 +1,11 @@
-'use client';
+import { cn } from '@/lib/utils';
+import { properties, CONTACT_INFO } from '@/lib/data';
+import toast from 'react-hot-toast';'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { properties, CONTACT_INFO } from '@/lib/data';
-import toast from 'react-hot-toast';
-import LocationMap from '@/components/LocationMap';
 
 const FAQs = [
   {
@@ -76,6 +74,7 @@ export default function ContactPage() {
   };
 
   return (
+      {/* ── Detailed Location Map removed — shown in Footer ── */}
     <>
       {/* ── Hero ── */}
       <section className="relative pt-40 pb-20 px-6 lg:px-12 border-b border-[var(--border)]">
