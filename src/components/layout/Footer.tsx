@@ -12,8 +12,6 @@ const footerLinks = {
   ],
   Company: [
     { label: 'Our Story',           href: '/about' },
-    { label: 'News & Stories',      href: '/news' },
-    { label: 'Ghana Guide',         href: '/ghana-guide' },
     { label: 'Concierge Service',   href: '/contact' },
     { label: 'List Your Property',  href: '/contact#list' },
   ],
@@ -44,7 +42,7 @@ export default function Footer() {
   return (
     <footer className="bg-[var(--surface)] border-t border-[var(--border)] mt-24">
 
-      {/* Google Map Section */}
+      {/* ── Google Map Section ── */}
       <div className="border-b border-[var(--border)]">
         <div className="max-w-[1440px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr]">
@@ -108,7 +106,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* CTA Banner */}
+      {/* ── CTA Banner ── */}
       <div className="border-b border-[var(--border)] py-16 px-6 lg:px-12 max-w-[1440px] mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div>
@@ -121,12 +119,7 @@ export default function Footer() {
             <Link href="/properties" className="btn-gold">
               Explore Properties
             </Link>
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
+            <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn-ghost">
               <WhatsAppIcon />
               WhatsApp Us
               <ArrowUpRight size={14} />
@@ -135,9 +128,9 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Main Footer Grid */}
+      {/* ── Main Footer Grid ── */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
 
           {/* Brand Column */}
           <div className="lg:col-span-2">
@@ -161,19 +154,53 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-5 max-w-xs">
               A premium private apartment in Ayi Mensah, Accra &mdash; managed with care and warmth
               by Milehigh Properties. Your home away from home in Ghana.
             </p>
 
-            <div className="space-y-3 mb-8">
+            {/* Trust badges row */}
+            <div className="flex items-center gap-4 mb-5 flex-wrap">
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464415/download_4_oq9yab.jpg"
+                alt="Verified & Trusted"
+                width={52}
+                height={52}
+                className="rounded-full object-cover border border-[var(--border)]"
+                unoptimized
+              />
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775385071/download_zhjmpt.png"
+                alt="Listed on Airbnb"
+                width={80}
+                height={26}
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+
+            {/* Payment methods */}
+            <div className="mb-5">
+              <p className="text-[var(--text-subtle)] text-[0.6rem] uppercase tracking-widest mb-2">We Accept</p>
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464512/images_2_aaxcyb.jpg"
+                alt="Accepted payment methods — Visa, Mastercard, Paystack"
+                width={160}
+                height={32}
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+
+            {/* Contact info */}
+            <div className="space-y-2 mb-6">
               {[
                 { Icon: MapPin, text: 'Ayi Mensah, Accra, Greater Accra Region' },
                 { Icon: Phone,  text: CONTACT_INFO.phone },
                 { Icon: Mail,   text: CONTACT_INFO.email },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex items-start gap-3 text-[var(--text-muted)] text-sm">
-                  <Icon size={14} className="shrink-0 mt-0.5 text-[var(--gold)]" />
+                  <Icon size={13} className="shrink-0 mt-0.5 text-[var(--gold)]" />
                   <span>{text}</span>
                 </div>
               ))}
@@ -223,10 +250,11 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      {/* ── Bottom Bar ── */}
       <div className="border-t border-[var(--border)] px-6 lg:px-12 py-6 max-w-[1440px] mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--text-subtle)] text-xs">
           <p className="text-[var(--gold)] font-medium">&copy; {year} Milehigh Properties &middot; All rights reserved</p>
