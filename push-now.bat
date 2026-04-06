@@ -3,8 +3,8 @@ cd /d "%~dp0"
 echo === Staging all changes ===
 git add -A
 echo === Committing ===
-git commit -m "fix: new art banner image, flush on footer, click links to /contact; fix Vercel build errors (route.ts, lib/page.tsx, next.config.mjs serverExternalPackages, unused files)"
+git commit -m "feat: force logo as OG share image on WhatsApp/iMessage/Telegram/X; belt-and-suspenders meta tags in <head>"
 echo === Pushing to GitHub ===
 git push
-echo === Done! ===
+echo === Done! Check Vercel for auto-deploy ===
 pause
