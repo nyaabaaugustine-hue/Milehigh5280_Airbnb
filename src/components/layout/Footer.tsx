@@ -159,39 +159,6 @@ export default function Footer() {
               by Milehigh Properties. Your home away from home in Ghana.
             </p>
 
-            {/* Trust badges row */}
-            <div className="flex items-center gap-4 mb-5 flex-wrap">
-              <Image
-                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464415/download_4_oq9yab.jpg"
-                alt="Verified & Trusted"
-                width={52}
-                height={52}
-                className="rounded-full object-cover border border-[var(--border)]"
-                unoptimized
-              />
-              <Image
-                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775385071/download_zhjmpt.png"
-                alt="Listed on Airbnb"
-                width={80}
-                height={26}
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-
-            {/* Payment methods */}
-            <div className="mb-5">
-              <p className="text-[var(--text-subtle)] text-[0.6rem] uppercase tracking-widest mb-2">We Accept</p>
-              <Image
-                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464512/images_2_aaxcyb.jpg"
-                alt="Accepted payment methods — Visa, Mastercard, Paystack"
-                width={160}
-                height={32}
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-
             {/* Contact info */}
             <div className="space-y-2 mb-6">
               {[
@@ -250,6 +217,41 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+
+          {/* Trust & Payments Column */}
+          <div className="flex flex-col">
+            <p className="section-label mb-5">Trust &amp; Security</p>
+            <div className="flex items-center gap-4 mb-8">
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464415/download_4_oq9yab.jpg"
+                alt="Verified & Trusted"
+                width={48}
+                height={48}
+                className="rounded-full object-cover border border-[var(--border)]"
+                unoptimized
+              />
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775385071/download_zhjmpt.png"
+                alt="Listed on Airbnb"
+                width={80}
+                height={24}
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+            
+            <div className="mt-auto">
+              <p className="text-[var(--text-subtle)] text-[0.6rem] uppercase tracking-widest mb-3">Secure Payments</p>
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775464512/images_2_aaxcyb.jpg"
+                alt="Accepted payment methods"
+                width={150}
+                height={30}
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+          </div>
 
         </div>
       </div>

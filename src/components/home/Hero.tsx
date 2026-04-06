@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import SafeImage from '@/components/ui/SafeImage';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { CONTACT_INFO } from '@/lib/data';

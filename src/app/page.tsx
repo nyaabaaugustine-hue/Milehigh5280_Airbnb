@@ -15,6 +15,19 @@ export default function HomePage() {
   return (
     <>
       <Hero onBookNow={openBooking} />
+
+      {/* ── Art Banner — full-width end-to-end, original proportions ── */}
+      <div className="w-full overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775469261/POO_s607yy.png"
+          alt="Milehigh5280 art"
+          className="w-full block"
+          style={{ display: 'block', width: '100%', height: 'auto' }}
+          loading="lazy"
+        />
+      </div>
+
       <Experience />
       <FeaturedProperties onBookNow={openBooking} onViewProperty={viewProperty} />
       <AmenitiesMarquee />

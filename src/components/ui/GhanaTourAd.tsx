@@ -24,7 +24,7 @@ function calculateTimeLeft(): TimeLeft {
   };
 }
 
-export default function GhanaTourAd(): JSX.Element {
+export default function GhanaTourAd() {
   const [isVisible, setIsVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 

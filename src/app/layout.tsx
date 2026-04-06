@@ -57,20 +57,13 @@ export const metadata: Metadata = {
     description: 'A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties.',
     images: ['https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg'],
   },
-  icons: {
-    icon: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
-    shortcut: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
-    apple: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg',
-    },
-  },
   robots: { index: true, follow: true },
   metadataBase: new URL('https://thepalmayimensah.com'),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const FAVICON = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
+
   const siteJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
@@ -93,14 +86,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       longitude: -0.181711,
     },
     priceRange: '$',
-    sameAs: [
-      'https://www.airbnb.com',
-    ],
+    sameAs: ['https://www.airbnb.com'],
   };
 
   return (
     <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`}>
       <head>
+        {/* ── FORCED favicon via <link> tags — works with external URLs ── */}
+        <link rel="icon" type="image/jpeg" href={FAVICON} />
+        <link rel="shortcut icon" href={FAVICON} />
+        <link rel="apple-touch-icon" href={FAVICON} />
+        <link rel="apple-touch-icon-precomposed" href={FAVICON} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
