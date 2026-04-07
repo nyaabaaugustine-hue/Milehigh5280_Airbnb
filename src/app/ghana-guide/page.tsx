@@ -36,28 +36,28 @@ const tourOperators = [
     duration: 'Full Day',
     highlights: 'Independence Square, Kwame Nkrumah Memorial, Makola Market, Osu Castle',
     price: 'From $45/person',
-    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=600&q=80',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775558863/pmn_v6crrg.jpg',
   },
   {
     name: 'Cape Coast & Elmina Castle',
     duration: '2 Days',
     highlights: 'Elmina Slave Castle (UNESCO), Kakum Canopy Walk, Cape Coast Fishing Harbour',
     price: 'From $120/person',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775558720/ad_oujvyz.jpg',
   },
   {
     name: 'Kumasi & Ashanti Kingdom',
     duration: '2 Days',
     highlights: 'Manhyia Palace, Kejetia Market (largest in W. Africa), Kente weaving villages',
     price: 'From $110/person',
-    image: 'https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=600&q=80',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775558720/ubn_d0iz5b.jpg',
   },
   {
     name: 'Boti Falls Day Trip',
     duration: 'Half Day',
     highlights: 'Twin waterfalls 45 min from Ayi Mensah, jungle hiking, swimming hole',
     price: 'From $35/person',
-    image: 'https://images.unsplash.com/photo-1552083375-1447ce886485?w=600&q=80',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775558950/4722_Boti-Yaw-Pare_ej9nuw.jpg',
   },
 ];
 
