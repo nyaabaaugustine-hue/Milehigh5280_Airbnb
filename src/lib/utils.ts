@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { TRANSLATIONS } from './data';
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
@@ -20,4 +21,12 @@ export function formatDate(date: Date): string {
 
 export function generateStars(rating: number): string {
   return '★'.repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? '½' : '');
+}
+
+export function t(key: string, lang: string = 'en'): string {
+  const dict = (TRANSLATIONS as any)[lang] || TRANSLATIONS.en;
+  const keys = key.split('.');
+  let value: any = dict;
+  for (const k of keys) value = value?.[k];
+  return value || key;
 }

@@ -82,6 +82,85 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
       {
         id: 'r1', author: 'Kwame A.',
         avatar:       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80',
+
+// ─── Translation Dictionary ──────────────────────────────────────────────────
+export const TRANSLATIONS = {
+  en: {
+    guideHeroTitle: "Your Complete",
+    guideHeroSubtitle: "Ghana Guide",
+    guideHeroDesc: "Everything a first-time or returning visitor needs — from visa applications to hidden waterfalls, currency tips to safety essentials. Curated by the Milehigh team.",
+    labels: {
+      travelIntel: "Travel Intelligence",
+      airport: "Airport Transfer",
+      visa: "Visa & Entry",
+      safety: "Safety & Health",
+      tours: "Tours & Day Trips",
+      currency: "Currency",
+      accessibility: "Accessibility",
+      booking: "Booking Inquiry"
+    }
+  },
+  fr: {
+    guideHeroTitle: "Votre Complet",
+    guideHeroSubtitle: "Guide du Ghana",
+    guideHeroDesc: "Tout ce dont un visiteur a besoin — des demandes de visa aux cascades cachées, des conseils sur la devise aux essentiels de sécurité. Organisé par l'équipe Milehigh.",
+    labels: {
+      travelIntel: "Intelligence Voyage",
+      airport: "Transfert Aéroport",
+      visa: "Visa et Entrée",
+      safety: "Santé et Sécurité",
+      tours: "Tours et Excursions",
+      currency: "Devise",
+      accessibility: "Accessibilité",
+      booking: "Demande de Réservation"
+    }
+  },
+  es: {
+    guideHeroTitle: "Su Guía",
+    guideHeroSubtitle: "Completa de Ghana",
+    guideHeroDesc: "Todo lo que un visitante necesita: desde solicitudes de visa hasta cascadas ocultas, consejos sobre moneda y elementos esenciales de seguridad.",
+    labels: {
+      travelIntel: "Inteligencia de Viaje",
+      airport: "Traslado al Aeropuerto",
+      visa: "Visa y Entrada",
+      safety: "Seguridad y Salud",
+      tours: "Tours y Excursiones",
+      currency: "Moneda",
+      accessibility: "Accesibilidad",
+      booking: "Consulta de Reserva"
+    }
+  },
+  de: {
+    guideHeroTitle: "Ihr Kompletter",
+    guideHeroSubtitle: "Ghana Leitfaden",
+    guideHeroDesc: "Alles, was ein Erstbesucher braucht – von Visumanträgen bis hin zu versteckten Wasserfällen, Währungstipps und Sicherheitsvorkehrungen.",
+    labels: {
+      travelIntel: "Reise-Informationen",
+      airport: "Flughafentransfer",
+      visa: "Visum & Einreise",
+      safety: "Sicherheit & Gesundheit",
+      tours: "Touren & Ausflüge",
+      currency: "Währung",
+      accessibility: "Barrierefreiheit",
+      booking: "Buchungsanfrage"
+    }
+  },
+  zh: {
+    guideHeroTitle: "您的完整",
+    guideHeroSubtitle: "加纳指南",
+    guideHeroDesc: "首次或再次访问加纳的游客所需的一切——从签证申请到隐藏的瀑布，从货币提示到安全必备品。",
+    labels: {
+      travelIntel: "旅游情报",
+      airport: "机场接送",
+      visa: "签证和入境",
+      safety: "安全与健康",
+      tours: "旅行团和一日游",
+      currency: "货币",
+      accessibility: "无障碍设施",
+      booking: "预订查询"
+    }
+  }
+};
         country:      'Ghana',
         rating:       5, // Changed from 2025 to 2026
         date:         'March 2026',
