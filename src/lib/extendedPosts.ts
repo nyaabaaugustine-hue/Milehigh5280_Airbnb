@@ -99,4 +99,83 @@ More properties are in preparation — each selected for location, quality of bu
 
 If you have stayed with us, thank you. You made this possible. And if you haven't yet — we hope to welcome you soon.`,
   },
+
+  {
+    id: 4,
+    slug: 'best-luxury-stays-accra',
+    category: 'Travel Tips',
+    categoryColor: 'text-amber-400',
+    title: 'The 7 Best Luxury Stays in Accra for 2025 (Including Our Top Pick)',
+    excerpt: "Accra's luxury accommodation scene has transformed dramatically. Here's your definitive guide to sleeping in style in Ghana's capital.",
+    author: 'Milehigh Team',
+    date: 'April 2025',
+    readTime: '7 min read',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+    tag: 'Luxury Guide',
+    content: `Accra has quietly become one of West Africa's most exciting luxury destinations.
+
+**Airport Residential Area**
+The ARA remains Accra's most established luxury enclave with polished international hotel chains and exquisite private villas.
+
+**Cantonments & Labone**
+These leafy diplomatic neighbourhoods offer privacy, excellent road access, and some of the city's finest private residences.
+
+**Ayi Mensah — Our Top Pick**
+For travellers who want genuine luxury without the hotel-lobby feel, The Palm at Ayi Mensah stands apart. Situated 30 minutes from the city in the lush eastern hills, it offers private apartment living with premium finishes, full kitchen, and personal hosting by Milehigh Properties.
+
+**What to Look For**
+When evaluating luxury accommodation in Accra, prioritise: 24-hour power backup, professional hosting, proximity to good roads, and verified reviews on multiple platforms.`,
+  },
+  {
+    id: 5,
+    slug: 'ayi-mensah-travel-guide',
+    category: 'Destination',
+    categoryColor: 'text-emerald-400',
+    title: "Ayi Mensah Travel Guide: Ghana's Best-Kept Secret Retreat",
+    excerpt: "30 minutes from Accra's hustle lies a lush, bird-filled hill town where luxury meets authenticity.",
+    author: 'Milehigh Team',
+    date: 'April 2025',
+    readTime: '6 min read',
+    image: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800',
+    tag: 'Destination Guide',
+    content: `Ayi Mensah is what happens when you drive east out of Accra and keep going until the city noise fades to birdsong.
+
+**Getting There**
+From central Accra, the drive takes approximately 25–35 minutes. Uber and Bolt are widely available.
+
+**Best Time to Visit**
+June–September is lush season — waterfalls run full, the vegetation is impossibly green, and temperature sits cooler than coastal Accra. December–February brings drier, clearer days.
+
+**What to Do**
+Walking the hill trails is a must. Start early (6–7am) to catch the mist over the valley. Local food stalls along the Dodowa road serve authentic Ghanaian breakfast.
+
+**Where to Stay**
+The Palm by Milehigh Properties — a private luxury apartment that combines hotel-quality finishes with the intimacy of a private home.`,
+  },
+  {
+    id: 6,
+    slug: 'ghana-luxury-travel',
+    category: 'Lifestyle',
+    categoryColor: 'text-purple-400',
+    title: "Why Ghana is Africa's Most Exciting Luxury Travel Destination in 2025",
+    excerpt: "From Accra's booming restaurant scene to pristine Cape Coast beaches and world-class art, Ghana is having a major luxury travel moment.",
+    author: 'Milehigh Team',
+    date: 'May 2025',
+    readTime: '8 min read',
+    image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800',
+    tag: 'Ghana Travel',
+    content: `Something remarkable has happened to Ghana's relationship with luxury travel.
+
+**Accra's Restaurant Revolution**
+The food scene has transformed beyond recognition — from refined takes on Ghanaian classics to rooftop restaurants along Oxford Street.
+
+**Art & Culture**
+The Arts Centre has been revived, and a wave of young Ghanaian artists are gaining international recognition. Collecting Ghanaian art is now a serious pursuit for luxury travellers.
+
+**Cape Coast & Beyond**
+A three-hour drive west brings you to Cape Coast — UNESCO World Heritage castles, pristine beaches at Busua and Beyin, and the Kakum National Park canopy walk.
+
+**Why Now**
+Flight connectivity to Accra has never been stronger. Luxury accommodation options have multiplied. Ghana in 2025 is unmissable for the discerning traveller.`,
+  },
 ];

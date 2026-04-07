@@ -96,4 +96,83 @@ More properties are in preparation — each selected for location, quality of bu
 
 If you have stayed with us, thank you. You made this possible. And if you haven't yet — we hope to welcome you soon.`,
   },
+
+  {
+    id: 4,
+    slug: 'best-luxury-stays-accra',
+    category: 'Travel Tips',
+    categoryColor: 'text-amber-400',
+    title: 'The 7 Best Luxury Stays in Accra for 2025 (Including Our Top Pick)',
+    excerpt: "Accra's luxury accommodation scene has transformed dramatically. From sleek airport hotels to private villas in leafy Ayi Mensah, here's your definitive guide to sleeping in style in Ghana's capital.",
+    author: 'Milehigh Team',
+    date: 'April 2025',
+    readTime: '7 min read',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+    tag: 'Luxury Guide',
+    content: `Accra has quietly become one of West Africa's most exciting luxury destinations. The city's accommodation landscape has matured enormously — you can now find world-class stays that rival anything in Cape Town or Marrakech.
+
+**Airport Residential Area**
+The ARA remains Accra's most established luxury enclave. Here you'll find polished international hotel chains and several exquisite private villas available for short-term rental. Ideal for business travellers who need proximity to the airport.
+
+**Cantonments & Labone**
+These leafy diplomatic neighbourhoods offer privacy, excellent road access, and some of the city's finest private residences. Several luxury villa operators are now offering short-stay options here.
+
+**Ayi Mensah — Our Top Pick**
+For travellers who want genuine luxury without the hotel-lobby feel, The Palm at Ayi Mensah stands apart. Situated 30 minutes from the city in the lush eastern hills, it offers private apartment living with premium finishes, full kitchen facilities, and personal hosting by Milehigh Properties. The air is cooler, the nights quieter, and the sense of space unmatched. It is our top recommendation for 2025.
+
+**What to Look For**
+When evaluating luxury accommodation in Accra, prioritise: 24-hour power backup, professional hosting (not absentee landlords), proximity to good roads, and verified reviews on multiple platforms.`,
+  },
+  {
+    id: 5,
+    slug: 'ayi-mensah-travel-guide',
+    category: 'Destination',
+    categoryColor: 'text-emerald-400',
+    title: "Ayi Mensah Travel Guide: Ghana's Best-Kept Secret Retreat",
+    excerpt: "30 minutes from Accra's hustle lies a lush, bird-filled hill town where luxury meets authenticity. Here's everything you need to plan the perfect Ayi Mensah escape.",
+    author: 'Milehigh Team',
+    date: 'April 2025',
+    readTime: '6 min read',
+    image: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800',
+    tag: 'Destination Guide',
+    content: `Ayi Mensah is what happens when you drive east out of Accra on the Adenta-Dodowa road and keep going until the city noise fades to birdsong. It is a peri-urban hill town perched above the Greater Accra plains — lush, unhurried, and increasingly home to some of the region's most thoughtful luxury stays.
+
+**Getting There**
+From central Accra (Airport area), the drive takes approximately 25–35 minutes depending on traffic. Uber and Bolt are widely available. If you are arriving from Kotoka International Airport, allow 40–50 minutes. The roads are well-maintained and the journey itself is scenic.
+
+**Best Time to Visit**
+Ayi Mensah is beautiful year-round, but the lush season (June–September) is exceptional. Waterfalls run full, the vegetation is impossibly green, and the temperature sits several degrees cooler than coastal Accra. December–February brings drier, clearer days — ideal for outdoor activities.
+
+**What to Do**
+Walking the hill trails is a must. Start early (6–7am) to catch the mist over the valley and encounter minimal other walkers. Local food stalls along the Dodowa road serve authentic Ghanaian breakfast — don't miss the koose (fried bean fritters) and sobolo.
+
+**Where to Stay**
+The Palm by Milehigh Properties is the area's standout accommodation — a private luxury apartment that combines hotel-quality finishes with the intimacy of a private home.`,
+  },
+  {
+    id: 6,
+    slug: 'ghana-luxury-travel',
+    category: 'Lifestyle',
+    categoryColor: 'text-purple-400',
+    title: "Why Ghana is Africa's Most Exciting Luxury Travel Destination in 2025",
+    excerpt: "From Accra's booming restaurant scene to pristine Cape Coast beaches and world-class art, Ghana is having a major luxury travel moment. Here's why you should visit now.",
+    author: 'Milehigh Team',
+    date: 'May 2025',
+    readTime: '8 min read',
+    image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800',
+    tag: 'Ghana Travel',
+    content: `Something remarkable has happened to Ghana's relationship with luxury travel. The country that launched the Year of Return in 2019 — drawing hundreds of thousands of diaspora visitors from across the globe — has never looked back.
+
+**Accra's Restaurant Revolution**
+The food scene in Accra has transformed beyond recognition. From Chef Selasie's refined takes on Ghanaian classics to the rooftop restaurants along the Oxford Street strip, eating well in Accra is now a genuine pleasure. The city's fine dining landscape can hold its own against Lagos, Nairobi, or Cape Town.
+
+**Art & Culture**
+The Arts Centre has been revived, Nubuke Foundation continues to host world-class contemporary exhibitions, and a wave of young Ghanaian artists are gaining international recognition. Collecting Ghanaian art is now a serious pursuit for luxury travellers with a discerning eye.
+
+**Cape Coast & Beyond**
+A three-hour drive west of Accra brings you to Cape Coast — UNESCO World Heritage castles, pristine beaches at Busua and Beyin, and the lush Kakum National Park rainforest canopy walk. Day trips or overnight stays make for an essential addition to any Ghana itinerary.
+
+**Why Now**
+Flight connectivity to Accra has never been stronger. Luxury accommodation options have multiplied. And the warmth of Ghanaian hospitality — the kind that makes you feel genuinely welcome rather than commercially processed — remains uniquely its own. For the discerning luxury traveller seeking authenticity alongside comfort, Ghana in 2025 is unmissable.`,
+  },
 ];

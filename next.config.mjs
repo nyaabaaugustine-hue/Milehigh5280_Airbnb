@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -8,6 +9,8 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 86400,
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },

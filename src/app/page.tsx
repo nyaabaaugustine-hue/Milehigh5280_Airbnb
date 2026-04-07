@@ -7,6 +7,8 @@ import AmenitiesMarquee from '@/components/home/AmenitiesMarquee';
 import Testimonials from '@/components/home/Testimonials';
 import BlogSection from '@/components/home/BlogSection';
 import PriceCalculator from '@/components/home/PriceCalculator';
+import PressSection from '@/components/home/PressSection';
+import ViewerCounter from '@/components/ui/ViewerCounter';
 import { useBooking } from '@/components/layout/ClientShell';
 import { useRouter } from 'next/navigation';
 
@@ -22,9 +24,10 @@ export default function HomePage() {
       <AmenitiesMarquee />
       <PriceCalculator onBookNow={openBooking} />
       <Testimonials />
+      <PressSection />
       <BlogSection />
 
-      {/* ── Art Banner — sits flush on the Footer ── */}
+      {/* ── Art Banner ── */}
       <section
         className="bg-[var(--obsidian)] overflow-hidden cursor-pointer"
         onClick={() => router.push('/contact')}
@@ -38,15 +41,15 @@ export default function HomePage() {
               alt="Milehigh5280 Ghana culture art — click to contact us"
               loading="lazy"
               className="w-full h-auto block object-cover max-h-[450px] hover:opacity-90 transition-opacity duration-300"
-              style={{
-                mixBlendMode: 'luminosity',
-                filter: 'brightness(1.1) contrast(1.1)',
-              }}
+              style={{ mixBlendMode: 'luminosity', filter: 'brightness(1.1) contrast(1.1)' }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-obsidian/40 pointer-events-none" />
           </div>
         </div>
       </section>
+
+      {/* Floating viewer counter */}
+      <ViewerCounter />
     </>
   );
 }
