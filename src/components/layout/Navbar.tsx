@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Phone, Sun, Moon } from 'lucide-react';
+import { Menu, X, Phone, Sun, Moon, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LANGUAGES } from '@/lib/data';
+import { useLanguage, Language } from '@/lib/LanguageContext';
 
 const navLinks = [
   { href: '/',            label: 'Home' },
@@ -22,8 +24,11 @@ interface NavbarProps {
 export default function Navbar({ onBookNow }: NavbarProps) {
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
+  const [langOpen,  setLangOpen]  = useState(false);
   const [theme,     setTheme]     = useState<'dark' | 'light'>('dark');
   const pathname = usePathname();
+  const langRef = useRef<HTMLDivElement>(null);
+  const { language, setLanguage } = useLanguage();
 
   const handleScroll = useCallback(() => setScrolled(window.scrollY > 60), []);
 
@@ -44,7 +49,19 @@ export default function Navbar({ onBookNow }: NavbarProps) {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+
+  const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
 
   return (
     <>
@@ -114,6 +131,49 @@ export default function Navbar({ onBookNow }: NavbarProps) {
                 unoptimized
               />
             </div>
+
+            {/* Language Selector */}
+            <div className="relative" ref={langRef}>
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 border border-[var(--border)] hover:border-[var(--gold)] transition-colors duration-300 group"
+              >
+                <span className="text-sm">{currentLang.flag}</span>
+                <span className="text-[0.65rem] uppercase tracking-widest font-medium text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
+                  {currentLang.code}
+                </span>
+                <ChevronDown size={10} className={cn("text-[var(--text-subtle)] transition-transform duration-300", langOpen && "rotate-180")} />
+              </button>
+
+              {langOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--surface)] border border-[var(--border)] shadow-2xl py-2 z-[60] animate-in fade-in slide-in-from-top-2 duration-300 max-h-[70vh] overflow-y-auto scrollbar-hide">
+                  {LANGUAGES.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setLanguage(lang.code as Language);
+                        setLangOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[rgba(201,150,58,0.08)] transition-colors text-left",
+                        language === lang.code ? "bg-[rgba(201,150,58,0.05)]" : ""
+                      )}
+                    >
+                      <span className="text-base">{lang.flag}</span>
+                      <span className={cn(
+                        "text-[0.7rem] uppercase tracking-[0.1em] font-medium",
+                        language === lang.code ? "text-[var(--gold)]" : "text-[var(--text-muted)]"
+                      )}>
+                        {lang.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -171,6 +231,32 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             'mt-8 flex flex-col gap-3 transition-all duration-500',
             menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
           )} style={{ transitionDelay: '350ms' }}>
+            {/* Mobile Language Selector */}
+            <div className="grid grid-cols-4 gap-2 mb-2">
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setLanguage(lang.code as Language);
+                  }}
+                  className={cn(
+                    "flex flex-col items-center justify-center py-3 border border-[var(--border)] transition-all",
+                    language === lang.code ? "bg-[var(--gold)]/10 border-[var(--gold)]" : "bg-[var(--surface-2)]"
+                  )}
+                >
+                  <span className="text-xl mb-1">{lang.flag}</span>
+                  <span className={cn(
+                    "text-[0.55rem] uppercase tracking-tighter font-bold",
+                    language === lang.code ? "text-[var(--gold)]" : "text-[var(--text-subtle)]"
+                  )}>
+                    {lang.code}
+                  </span>
+                </button>
+              ))}
+            </div>
+
             <button onClick={toggleTheme} className="btn-ghost w-full justify-center gap-2">
               {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}

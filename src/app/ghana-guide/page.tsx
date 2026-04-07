@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import AudioPlayer from '../../../AudioPlayer';
+import { CONTACT_INFO } from '@/lib/data';
 
 export const metadata: Metadata = {
   title: 'Ghana Visitor Guide — Visa, Safety & Travel Tips | Milehigh5280',
@@ -23,7 +23,7 @@ const visaInfo = [
 ];
 
 const safetyTips = [
-  { icon: '🏥', title: 'Nearest Hospital', detail: 'Millennium Medical Centre — 12 min from Milehigh5280. Emergency: 999 (Ghana Police) / 112 (National Emergency).' },
+  { icon: '🏥', title: 'Nearest Hospital', detail: 'Millennium Medical Centre — 12 min from Milehigh5280. Emergency: 191 (Ghana Police) / 112 (National Emergency).' },
   { icon: '💊', title: 'Health Precautions', detail: 'Yellow fever vaccination required. Malaria prophylaxis strongly recommended. Pack insect repellent. Drink bottled or filtered water only.' },
   { icon: '💰', title: 'Currency & ATMs', detail: 'Ghana Cedi (GHS). USD widely accepted at hotels. ATMs available at all major banks. Avoid unlicensed money changers.' },
   { icon: '📱', title: 'SIM Cards', detail: 'Pick up an MTN, Vodafone, or AirtelTigo SIM at the airport. Bring your passport. Data is affordable (~GHS 30 for 5GB).' },
@@ -121,10 +121,10 @@ export default function GhanaGuidePage() {
           </p>
           <div className="flex flex-wrap gap-3">
             {['Visa & Entry', 'Safety & Health', 'Tours & Day Trips', 'Currency', 'Accessibility', 'Booking'].map(label => (
-              <a key={label} href={`#${label.toLowerCase().replace(/[^a-z]/g, '-')}`}
+              <Link key={label} href={`#${label.toLowerCase().replace(/[^a-z]/g, '-')}`}
                 className="btn-ghost text-[0.65rem] py-2.5 px-4">
                 {label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function GhanaGuidePage() {
                 <li className="flex gap-3"><span className="text-[var(--gold)] shrink-0">◆</span> We recommend pre-arranging for late-night arrivals</li>
               </ul>
               <a
-                href={`https://wa.me/17207059849?text=Hello%2C%20I%27d%20like%20to%20arrange%20airport%20pickup`}
+                href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello%2C%20I%27d%20like%20to%20arrange%20airport%20pickup`}
                 target="_blank" rel="noopener noreferrer"
                 className="btn-gold mt-6 text-[0.7rem] py-3 inline-flex items-center gap-2"
               >
@@ -263,7 +263,7 @@ export default function GhanaGuidePage() {
                   <div className="flex items-center justify-between">
                     <span className="text-[var(--gold)] font-medium text-sm">{tour.price}</span>
                     <a
-                      href={`https://wa.me/17207059849?text=Hello%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(tour.name)}%20tour`}
+                      href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(tour.name)}%20tour`}
                       target="_blank" rel="noopener noreferrer"
                       className="btn-ghost text-[0.65rem] py-2 px-4"
                     >
@@ -407,7 +407,7 @@ export default function GhanaGuidePage() {
                   name: 'Abena K.', country: '🇬🇧 UK-based Ghanaian', avatar: 'A',
                 },
                 {
-                  quote: 'Finally, a place in Accra that matches what I\'m used to in New York. Clean, modern, and the neighbourhood feels safe.',
+                  quote: 'Finally, a place in Accra that matches what I&apos;m used to in New York. Clean, modern, and the neighbourhood feels safe.',
                   name: 'Kofi B.', country: '🇺🇸 US-based Ghanaian', avatar: 'K',
                 },
                 {
@@ -552,7 +552,6 @@ export default function GhanaGuidePage() {
         </section>
 
       </div>
-      <AudioPlayer />
     </>
   );
 }

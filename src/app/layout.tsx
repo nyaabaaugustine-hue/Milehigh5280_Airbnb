@@ -4,6 +4,7 @@ import './globals.css';
 import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 import ClientShell from '@/components/layout/ClientShell';
+import { LanguageProvider } from '@/lib/LanguageContext';
 import SiteLoader from '@/components/ui/SiteLoader';
 import SocialSidebar from '@/components/ui/SocialSidebar';
 import GhanaTourAd from '@/components/ui/GhanaTourAd';
@@ -31,6 +32,7 @@ const SITE_URL   = 'https://thepalmayimensah.com';
 const LOGO_URL   = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
 // Hero photo used as a secondary OG image (rich previews on desktop)
 const HERO_URL   = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg';
+const FAVICON_URL = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -51,13 +53,12 @@ export const metadata: Metadata = {
 
   // ── Favicon / App Icon (used in browser tab) ────────────────────────────
   icons: {
-    icon:             [{ url: LOGO_URL, type: 'image/jpeg' }],
-    shortcut:         [{ url: LOGO_URL, type: 'image/jpeg' }],
-    apple:            [{ url: LOGO_URL, type: 'image/jpeg' }],
-    other: [
-      { rel: 'apple-touch-icon-precomposed', url: LOGO_URL },
-      { rel: 'mask-icon',                    url: LOGO_URL },
+    icon: [
+      { url: '/favicon.ico' },
+      { url: FAVICON_URL, type: 'image/jpeg' },
     ],
+    shortcut: FAVICON_URL,
+    apple: FAVICON_URL,
   },
 
   // ── Open Graph — controls WhatsApp, iMessage, Telegram, Slack, LinkedIn
@@ -89,12 +90,12 @@ export const metadata: Metadata = {
 
   // ── Twitter / X card ────────────────────────────────────────────────────
   twitter: {
-    card:        'summary',           // 'summary' shows a square thumb (logo) — not large image
+    card:        'summary_large_image',
     site:        '@milehigh5280',
     creator:     '@milehigh5280',
     title:       'The Palm 🌴 · Ayi Mensah',
     description: 'A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties.',
-    images:      [LOGO_URL],          // square logo as Twitter thumbnail
+    images:      [LOGO_URL],
   },
 
   robots:    { index: true, follow: true },
@@ -129,29 +130,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
-        {/* ── Hard-coded favicon tags (belt-and-suspenders for all browsers) ── */}
-        <link rel="icon"                     type="image/jpeg" href={LOGO_URL} />
-        <link rel="shortcut icon"                              href={LOGO_URL} />
-        <link rel="apple-touch-icon"                           href={LOGO_URL} />
-        <link rel="apple-touch-icon-precomposed"               href={LOGO_URL} />
+        {/* ── Standard Favicons ── */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/jpeg" href={FAVICON_URL} />
+        <link rel="shortcut icon" href={FAVICON_URL} />
+        <link rel="apple-touch-icon" href={FAVICON_URL} />
 
-        {/* ── Force Open Graph tags (belt-and-suspenders alongside Next metadata) ── */}
-        {/* Some crawlers (WhatsApp, Telegram) don't respect Next.js metadata output
-            and need raw <meta> tags in the HTML to pick up the image correctly.    */}
-        <meta property="og:image"              content={LOGO_URL} />
-        <meta property="og:image:width"        content="800" />
-        <meta property="og:image:height"       content="800" />
-        <meta property="og:image:type"         content="image/jpeg" />
-        <meta property="og:image:alt"          content="Milehigh5280 Logo" />
-        <meta property="og:site_name"          content="The Palm · Ayi Mensah" />
-        <meta property="og:url"                content={SITE_URL} />
-        <meta name="twitter:card"              content="summary" />
-        <meta name="twitter:image"             content={LOGO_URL} />
+        {/* ── Open Graph / Facebook / WhatsApp ── */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:title" content="The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra" />
+        <meta property="og:description" content="Book The Palm, a beautiful private apartment in the serene Ayi Mensah area of Accra. Managed by Milehigh Properties." />
+        <meta property="og:image" content={LOGO_URL} />
+        <meta property="og:image:secure_url" content={LOGO_URL} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="800" />
 
-        {/* ── WhatsApp / iMessage specific: og:image must be absolute & public ── */}
-        <meta property="og:image:secure_url"   content={LOGO_URL} />
+        {/* ── Twitter / X ── */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={SITE_URL} />
+        <meta name="twitter:title" content="The Palm 🌴 · Ayi Mensah" />
+        <meta name="twitter:description" content="A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties." />
+        <meta name="twitter:image" content={LOGO_URL} />
 
         {/* ── Structured data ── */}
         <script
@@ -159,15 +162,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
-      <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden">
+      <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden" suppressHydrationWarning>
         <div className="grain-overlay" aria-hidden="true" />
         <SiteLoader />
         <SocialSidebar />
         <GhanaTourAd />
         <SocialProofTicker />
-        <ClientShell>
-          {children}
-        </ClientShell>
+        <LanguageProvider>
+          <ClientShell>
+            {children}
+          </ClientShell>
+        </LanguageProvider>
         <Footer />
         <CookieConsent />
         <NewsletterSignup />

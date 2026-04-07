@@ -89,6 +89,33 @@
   background: #F0EBE0;
 }
 
+/* ─── Google Translate Overrides ────────────────────────────────────────────── */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-menu-value {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+#google_translate_element {
+  display: none !important;
+}
+
+.skiptranslate > iframe {
+  display: none !important;
+}
+
 /* ─── Base Resets ────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

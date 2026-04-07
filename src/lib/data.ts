@@ -4,6 +4,21 @@ import type { Property, BlogPost } from '@/types';
 
 export const USD_TO_GHS = 15.8;
 
+export const LANGUAGES = [
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'zh', label: '中文', flag: '🇨🇳' },
+  { code: 'ar', label: 'العربية', flag: '🇸🇦' },
+  { code: 'pt', label: 'Português', flag: '🇵🇹' },
+  { code: 'ja', label: '日本語', flag: '🇯🇵' },
+  { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+  { code: 'ko', label: '한국어', flag: '🇰🇷' },
+  { code: 'hi', label: 'हिन्दी', flag: '🇮🇳' },
+] as const;
+
 // ─── Contact Info — single source of truth ────────────────────────────────────
 export const CONTACT_INFO = {
   phone:    '+17207059849',
