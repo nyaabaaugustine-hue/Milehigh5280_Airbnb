@@ -25,9 +25,9 @@ export function generateStars(rating: number): string {
 }
 
 export function t(key: string, lang: string = 'en'): string {
-  const dictionary = (TRANSLATIONS as Record<string, any>)[lang] || TRANSLATIONS.en;
+  const dictionary = (TRANSLATIONS as Record<string, Record<string, unknown>>)[lang] || TRANSLATIONS.en;
   const keys = key.split('.');
-  let value: any = dictionary;
+  let value: unknown = dictionary;
   
   for (const k of keys) {
     if (
@@ -35,11 +35,11 @@ export function t(key: string, lang: string = 'en'): string {
       typeof value === 'object' && 
       Object.prototype.hasOwnProperty.call(value, k)
     ) {
-      value = value[k];
+      value = (value as Record<string, unknown>)[k];
     } else {
       return key; // Fallback to key if path is broken
     }
   }
   
-  return value || key;
+  return typeof value === 'string' ? value : key;
 }

@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true }, { status: 200 });
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Contact email error:', err);
     return NextResponse.json({ error: 'Failed to send message.' }, { status: 500 });
   }

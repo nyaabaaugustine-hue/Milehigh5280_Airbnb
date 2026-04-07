@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Clock, ArrowRight } from 'lucide-react';
-import { posts } from '@/components/home/BlogSection';
+import { extendedPosts as posts } from '@/lib/extendedPosts';
 
 // ── Static params so Next.js pre-renders all three posts ──────────────────────
 export async function generateStaticParams() {
