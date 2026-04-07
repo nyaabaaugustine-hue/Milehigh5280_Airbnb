@@ -191,8 +191,8 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
 // ─── Blog Posts ───────────────────────────────────────────────────────────────
 export const blogPosts: BlogPost[] = [
   {
-    id: 'post-1', slug: 'exploring-ayi-mensah-hidden-gem',
-    title:    'Ayi Mensah: The Hidden Gem of Greater Accra',
+    id: 'post-1', slug: 'hidden-gems-ayi-mensah',
+    title:    'Ayi Mensah: The Hidden Gems of Greater Accra',
     excerpt:  'Discover why travelers are choosing the serene hills of Ayi Mensah over the busy city center.',
     content:  'Full article content goes here...',
     author:   'Milehigh Concierge',
@@ -203,18 +203,18 @@ export const blogPosts: BlogPost[] = [
     featured: true,
   },
   {
-    id: 'post-2', slug: 'top-restaurants-east-legon',
-    title:    "A Foodie's Guide to East Legon",
-    excerpt:  'From local Ghanaian flavors to international fine dining, these are the must-visit spots near Ayi Mensah.',
+    id: 'post-2', slug: 'accra-vs-cape-town-2025',
+    title:    'Accra vs Cape Town: The 2025 Travel Guide',
+    excerpt:  'Comparing the two most vibrant cities in Africa for your next luxury stay.',
     content:  'Full article content goes here...',
     author:   'Herbert Prempeh',
     date:     'March 10, 2026',
     readTime: '8 min read',
     image:    'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/download_2_yntthc.jpg',
-    category: 'Travel',
+    category: 'Ghana',
   },
   {
-    id: 'post-3', slug: 'ghana-heritage-tour-experience',
+    id: 'post-3', slug: 'inside-milehigh-properties',
     title:    'The Grand Ghana Heritage Tour 2026',
     excerpt:  'A preview of our exclusive 10-day curated journey through Accra, Kumasi, and Cape Coast.',
     content:  'Full article content goes here...',
