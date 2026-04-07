@@ -139,7 +139,7 @@ export default function BlogSection() {
             <p className="text-[var(--text-muted)] text-sm max-w-xs text-left lg:text-right leading-relaxed">
               Travel tips, local discoveries, and behind-the-scenes stories from our team in Ayi Mensah, Accra.
             </p>
-            <Link href="/blog" className="btn-ghost text-[0.7rem] py-3 px-6 inline-flex items-center gap-2">
+            <Link href="/news" className="btn-ghost text-[0.7rem] py-3 px-6 inline-flex items-center gap-2">
               All Articles
               <ArrowRight size={13} />
             </Link>
@@ -169,14 +169,13 @@ function BlogCard({ post, index, parentVis }: { post: typeof posts[0]; index: nu
   const [hovered, setHovered] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // Fix: if image is already cached it won't fire onLoad — check on mount
   useEffect(() => {
     if (imgRef.current?.complete) setImgLoaded(true);
   }, []);
 
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={`/news/${post.slug}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(

@@ -11,7 +11,7 @@ export const CONTACT_INFO = {
 };
 
 export const properties: Property[] = [
-  // ─── Property 1: Milehigh5280 — YOUR REAL APARTMENT ──────────────────────
+  // ─── Milehigh5280 — The One & Only ────────────────────────────────────────
   {
     id: '1',
     slug: 'the-palm-ayi-mensah',
@@ -46,14 +46,14 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
     images: [
       { id: '1-1',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',   alt: 'Milehigh5280 - Scenic View',         category: 'hero' },
       { id: '1-2',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/1_ijqfai.jpg',     alt: 'Milehigh5280 - Master bedroom',      category: 'interior' },
-      { id: '1-3',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',     alt: 'Milehigh5280 - Dining and kitchen',   category: 'interior' },
+      { id: '1-3',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',     alt: 'Milehigh5280 - Dining and kitchen',  category: 'interior' },
       { id: '1-4',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/2_xvzt1y.jpg',     alt: 'Milehigh5280 - Second bedroom',      category: 'interior' },
       { id: '1-5',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',     alt: 'Milehigh5280 - Lounge area',         category: 'interior' },
       { id: '1-6',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/4_xgzoyo.jpg',     alt: 'Milehigh5280 - Bathroom',            category: 'interior' },
       { id: '1-7',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296670/7_wv1u9h.jpg',     alt: 'Milehigh5280 - Exterior view',       category: 'exterior' },
       { id: '1-8',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302731/A_2_kwg4sf.jpg',   alt: 'Milehigh5280 - Modern interior',     category: 'interior' },
-      { id: '1-9',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302731/A_4_pmp0ha.jpg',   alt: 'Milehigh5280 - Bedroom view',        category: 'interior' },
-      { id: '1-10', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_5_q0jfae.jpg',   alt: 'Milehigh5280 - Premium amenity',     category: 'amenity' },
+      { id: '1-9',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',   alt: 'Milehigh5280 - Bedroom view',        category: 'interior' },
+      { id: '1-10', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775548165/nwe1_vkdfe3.png',   alt: 'Milehigh5280 - Premium amenity',     category: 'amenity' },
       { id: '1-11', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_3_dcbuqu.jpg',   alt: 'Milehigh5280 - Interior detail',     category: 'amenity' },
     ],
     amenities: [
@@ -80,8 +80,7 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
     reviewCount: 38,
     reviews: [
       {
-        id: 'r1',
-        author:       'Kwame A.',
+        id: 'r1', author: 'Kwame A.',
         avatar:       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80',
         country:      'Ghana',
         rating:       5,
@@ -90,8 +89,7 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
         comment:      'Milehigh5280 exceeded all my expectations. The apartment is immaculate, modern, and so peaceful. Ayi Mensah is such a beautiful area — I woke up to birds every morning. Highly recommend!',
       },
       {
-        id: 'r2',
-        author:       'Diana O.',
+        id: 'r2', author: 'Diana O.',
         avatar:       'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80',
         country:      'United Kingdom',
         rating:       5,
@@ -106,149 +104,26 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
     featured: true,
     isLive:   true,
   },
-
-  // ─── Property 2: Coming Soon ───────────────────────────────────────────────
-  {
-    id: '2',
-    slug: 'jade-suite-east-legon',
-    name: 'Jade Suite',
-    tagline: 'Sleek urban luxury in East Legon — Coming Soon',
-    description: 'COMING SOON: A refined studio-to-2-bed suite in a secure East Legon residence. Currently finalizing interiors to meet our luxury standards.',
-    longDescription: `Jade Suite is your elevated urban retreat in East Legon, one of Accra's most vibrant and cosmopolitan neighbourhoods. The property features contemporary interiors with bold African accents.
-
-Steps from the best restaurants on the East Legon strip, with quick access to Kotoka International Airport, the Jade Suite is designed for the modern traveller who wants style without compromise.
-
-Managed by Milehigh Properties with the same standard of care and professionalism as all our listings.`,
-    location: {
-      city:    'Accra',
-      region:  'Greater Accra',
-      country: 'Ghana',
-      coordinates: { lat: 5.6395, lng: -0.1447 },
-      address: 'East Legon, Accra, Ghana',
-    },
-    pricing: { perNight: 190, perNightGHS: 3002, cleaningFee: 25, serviceFee: 19, minNights: 2 },
-    capacity: { guests: 3, bedrooms: 1, beds: 1, bathrooms: 1 },
-    images: [
-      { id: '2-1', url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1600&q=90', alt: 'Jade Suite - Contemporary living room', category: 'hero' },
-      { id: '2-2', url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=85', alt: 'Jade Suite - Stylish bedroom',           category: 'interior' },
-      { id: '2-3', url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85', alt: 'Jade Suite - Kitchen',                   category: 'interior' },
-      { id: '2-4', url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=85', alt: 'Jade Suite - Balcony view',              category: 'exterior' },
-    ],
-    amenities: [
-      { id: 'b1', label: 'High-Speed WiFi',   icon: 'Wifi',            category: 'essential' },
-      { id: 'b2', label: 'Air Conditioning',  icon: 'Wind',            category: 'essential' },
-      { id: 'b3', label: 'Smart TV',          icon: 'MonitorPlay',     category: 'entertainment' },
-      { id: 'b4', label: 'Equipped Kitchen',  icon: 'UtensilsCrossed', category: 'kitchen' },
-      { id: 'b5', label: 'Gym Access',        icon: 'Dumbbell',        category: 'premium' },
-      { id: 'b6', label: 'Private Parking',   icon: 'Car',             category: 'essential' },
-      { id: 'b7', label: '24/7 Security',     icon: 'Shield',          category: 'essential' },
-      { id: 'b8', label: 'City View Balcony', icon: 'Building2',       category: 'outdoor' },
-    ],
-    features: ['Minutes from airport', 'Walking distance to restaurants', 'Smart home controls', 'Concierge on call', 'Secure parking'],
-    rating:      4.88,
-    reviewCount: 24,
-    reviews: [
-      {
-        id:           'r3',
-        author:       'Marcus T.',
-        avatar:       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80',
-        country:      'United States',
-        rating:       5,
-        date:         'January 2025',
-        stayDuration: '4 nights',
-        comment:      'Perfect spot for a business trip. Clean, modern, close to everything in East Legon. The gym was a bonus and the WiFi was fast enough for video calls all day.',
-      },
-    ],
-    availability: [],
-    type:     'apartment',
-    badge:    'Most Booked',
-    featured: true,
-    isLive:   false,
-  },
-
-  // ─── Property 3: Coming Soon ───────────────────────────────────────────────
-  {
-    id: '3',
-    slug: 'serenity-villa-trasacco',
-    name: 'Serenity Villa',
-    tagline: 'Expansive family villa in Trasacco Valley — Coming Soon',
-    description: 'COMING SOON: A stunning 4-bedroom private villa within the prestigious Trasacco Valley estate — currently undergoing full renovation.',
-    longDescription: `Serenity Villa offers generous, resort-style living within the walled tranquility of Trasacco Valley, one of Accra's most coveted gated communities.
-
-Inside, you'll find four spacious en-suite bedrooms, a grand open-plan living and dining area, a fully equipped gourmet kitchen, and a dedicated home office for remote workers.
-
-Milehigh Properties provides a house manager, daily housekeeping, and airport pickup for all Serenity Villa guests.`,
-    location: {
-      city:    'Accra',
-      region:  'Greater Accra',
-      country: 'Ghana',
-      coordinates: { lat: 5.6521, lng: -0.1635 },
-      address: 'Trasacco Valley, East Legon Hills, Accra, Ghana',
-    },
-    pricing: { perNight: 480, perNightGHS: 7584, cleaningFee: 80, serviceFee: 48, minNights: 3 },
-    capacity: { guests: 10, bedrooms: 4, beds: 5, bathrooms: 4 },
-    images: [
-      { id: '3-1', url: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1600&q=90',        alt: 'Serenity Villa - Exterior with pool', category: 'hero' },
-      { id: '3-2', url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=85',           alt: 'Serenity Villa - Grand living room', category: 'interior' },
-      { id: '3-3', url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380288/1_qwgwqd.png',      alt: 'Serenity Villa - Master bedroom',    category: 'interior' },
-      { id: '3-4', url: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=1200&q=85',       alt: 'Serenity Villa - Private pool',      category: 'amenity' },
-      { id: '3-5', url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=85',          alt: 'Serenity Villa - Kitchen',           category: 'interior' },
-    ],
-    amenities: [
-      { id: 'c1',  label: 'Private Pool',              icon: 'Waves',           category: 'outdoor' },
-      { id: 'c2',  label: 'House Manager',             icon: 'Bell',            category: 'premium' },
-      { id: 'c3',  label: 'Private Chef (on request)', icon: 'ChefHat',         category: 'premium' },
-      { id: 'c4',  label: 'Home Cinema',               icon: 'MonitorPlay',     category: 'entertainment' },
-      { id: 'c5',  label: 'High-Speed WiFi',           icon: 'Wifi',            category: 'essential' },
-      { id: 'c6',  label: 'Gated Estate',              icon: 'Shield',          category: 'essential' },
-      { id: 'c7',  label: 'Outdoor BBQ',               icon: 'Flame',           category: 'outdoor' },
-      { id: 'c8',  label: 'Air Conditioning',          icon: 'Wind',            category: 'essential' },
-      { id: 'c9',  label: 'Gym',                       icon: 'Dumbbell',        category: 'premium' },
-      { id: 'c10', label: 'Tropical Garden',           icon: 'TreePalm',        category: 'outdoor' },
-    ],
-    features: ['Gated Trasacco Valley estate', 'Daily housekeeping', 'Airport pickup', 'Smart home system', 'Great for family gatherings', 'Home office'],
-    rating:      4.95,
-    reviewCount: 19,
-    reviews: [
-      {
-        id:           'r4',
-        author:       'Abena F.',
-        avatar:       'https://images.unsplash.com/photo-1548142813-c348350df52b?w=80&q=80',
-        country:      'Ghana',
-        rating:       5,
-        date:         'December 2024',
-        stayDuration: '5 nights',
-        comment:      'We used this for a family Christmas gathering and it was absolutely perfect. The pool was the highlight — kids loved it. Would book again in a heartbeat.',
-      },
-    ],
-    availability: [],
-    type:     'villa',
-    badge:    'New Arrival',
-    featured: true,
-    isLive:   false,
-  },
 ];
 
 // ─── Blog Posts ───────────────────────────────────────────────────────────────
 export const blogPosts: BlogPost[] = [
   {
-    id:       'post-1',
-    slug:     'exploring-ayi-mensah-hidden-gem',
+    id: 'post-1', slug: 'exploring-ayi-mensah-hidden-gem',
     title:    'Ayi Mensah: The Hidden Gem of Greater Accra',
     excerpt:  'Discover why travelers are choosing the serene hills of Ayi Mensah over the busy city center.',
     content:  'Full article content goes here...',
     author:   'Milehigh Concierge',
     date:     'March 15, 2025',
     readTime: '5 min read',
-    image:    'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/download_3_rmsiuk.jpg',
+    image:    'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775449500/download_2_yntthc.jpg',
     category: 'Ghana',
     featured: true,
   },
   {
-    id:       'post-2',
-    slug:     'top-restaurants-east-legon',
+    id: 'post-2', slug: 'top-restaurants-east-legon',
     title:    "A Foodie's Guide to East Legon",
-    excerpt:  'From local Ghanaian flavors to international fine dining, these are the must-visit spots near Jade Suite.',
+    excerpt:  'From local Ghanaian flavors to international fine dining, these are the must-visit spots near Ayi Mensah.',
     content:  'Full article content goes here...',
     author:   'Herbert Prempeh',
     date:     'March 10, 2025',
@@ -257,8 +132,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Travel',
   },
   {
-    id:       'post-3',
-    slug:     'ghana-heritage-tour-experience',
+    id: 'post-3', slug: 'ghana-heritage-tour-experience',
     title:    'The Grand Ghana Heritage Tour 2025',
     excerpt:  'A preview of our exclusive 10-day curated journey through Accra, Kumasi, and Cape Coast.',
     content:  'Full article content goes here...',
@@ -271,6 +145,8 @@ export const blogPosts: BlogPost[] = [
 ];
 
 // ─── Helper Functions ─────────────────────────────────────────────────────────
+export const posts = blogPosts; // Alias for generateStaticParams compatibility
+
 export const getLiveProperties     = () => properties.filter(p => p.isLive !== false);
 export const getFeaturedProperties = () => properties.filter(p => p.featured);
 export const getPropertyById       = (id: string)   => properties.find(p => p.id === id);
@@ -285,13 +161,9 @@ export const getFeaturedPost = () => blogPosts.find(p => p.featured) ?? blogPost
 
 export const formatCurrency = (amount: number, currency: 'USD' | 'GHS' = 'USD') => {
   if (currency === 'GHS') {
-    return new Intl.NumberFormat('en-GH', {
-      style: 'currency', currency: 'GHS', minimumFractionDigits: 0,
-    }).format(amount);
+    return new Intl.NumberFormat('en-GH', { style: 'currency', currency: 'GHS', minimumFractionDigits: 0 }).format(amount);
   }
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency', currency: 'USD', minimumFractionDigits: 0,
-  }).format(amount);
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
 };
 
 export const calculatePrice = (
@@ -303,19 +175,7 @@ export const calculatePrice = (
   const msPerDay = 1000 * 60 * 60 * 24;
   const nights   = Math.max(1, Math.round((checkOut.getTime() - checkIn.getTime()) / msPerDay));
   const rate     = currency === 'GHS' ? property.pricing.perNightGHS : property.pricing.perNight;
-  const cleaning = currency === 'GHS'
-    ? property.pricing.cleaningFee * USD_TO_GHS
-    : property.pricing.cleaningFee;
-  const service  = currency === 'GHS'
-    ? property.pricing.serviceFee * USD_TO_GHS
-    : property.pricing.serviceFee;
-  return {
-    nights,
-    nightlyRate: rate,
-    nightsTotal: rate * nights,
-    cleaningFee: cleaning,
-    serviceFee:  service,
-    total:       rate * nights + cleaning + service,
-    currency,
-  };
+  const cleaning = currency === 'GHS' ? property.pricing.cleaningFee * USD_TO_GHS : property.pricing.cleaningFee;
+  const service  = currency === 'GHS' ? property.pricing.serviceFee  * USD_TO_GHS : property.pricing.serviceFee;
+  return { nights, nightlyRate: rate, nightsTotal: rate * nights, cleaningFee: cleaning, serviceFee: service, total: rate * nights + cleaning + service, currency };
 };

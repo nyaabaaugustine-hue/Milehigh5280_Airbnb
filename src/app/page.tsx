@@ -25,7 +25,11 @@ export default function HomePage() {
       <BlogSection />
 
       {/* ── Art Banner — sits flush on the Footer ── */}
-      <section className="bg-[var(--obsidian)] overflow-hidden cursor-pointer" onClick={() => router.push('/contact')}>
+      <section
+        className="bg-[var(--obsidian)] overflow-hidden cursor-pointer"
+        onClick={() => router.push('/contact')}
+        title="Contact us"
+      >
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
           <div className="relative overflow-hidden border border-[var(--border)] border-b-0 shadow-2xl bg-[#0a0a0a]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -39,7 +43,6 @@ export default function HomePage() {
                 filter: 'brightness(1.1) contrast(1.1)',
               }}
             />
-            {/* Subtle Gradient Overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-obsidian/40 pointer-events-none" />
           </div>
         </div>
