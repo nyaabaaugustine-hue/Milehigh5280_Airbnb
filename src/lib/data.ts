@@ -137,7 +137,7 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
       guests:    4,
       bedrooms:  2,
       beds:      2,
-      bathrooms: 2,
+      bathrooms: 1,
     },
     images: [
       { id: '1-1',  url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',   alt: 'Milehigh5280 - Scenic View',         category: 'hero' },
