@@ -29,17 +29,20 @@ export default function AudioPlayer() {
   useEffect(() => {
     if (!isVisible) return;
 
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      if (audioRef.current) {
-        audioRef.current.play().catch(() => {
-          console.log("Autoplay blocked by browser. Awaiting user interaction.");
-        });
+    if (audioRef.current) {
+      setIsLoading(true);
+      audioRef.current.load();
+      
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch((error) => {
+            console.log("Autoplay prevented or interrupted. Awaiting interaction.", error);
+            setIsPlaying(false);
+          });
       }
-    }, 1200); // Reduced loading time for faster feedback
-
-    return () => clearTimeout(timer);
+    }
   }, [currentIndex, isVisible]);
 
   const handleClose = () => {
@@ -73,17 +76,23 @@ export default function AudioPlayer() {
 
         {/* Animation Icon */}
         <div className="relative flex-shrink-0">
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-slate-100 ${isPlaying ? 'animate-spin-slow' : ''}`}>
+          <div 
+            className={`w-12 h-12 rounded-full flex items-center justify-center bg-slate-100 cursor-pointer ${isPlaying ? 'animate-spin-slow' : ''}`}
+            onClick={() => {
+              if (isPlaying) audioRef.current?.pause();
+              else audioRef.current?.play().catch(console.error);
+            }}
+          >
             {isLoading ? (
               <div className="flex space-x-1">
                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
               </div>
+            ) : isPlaying ? (
+              <svg className="w-6 h-6 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             ) : (
-              <svg className="w-6 h-6 text-slate-900" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-              </svg>
+              <svg className="w-6 h-6 text-slate-900 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             )}
           </div>
           {!isLoading && isPlaying && (
@@ -125,16 +134,6 @@ export default function AudioPlayer() {
                 </svg>
               )}
             </button>
-
-            {/* Custom Play trigger if blocked by browser autoplay policy */}
-            {!isPlaying && (
-              <button 
-                onClick={() => audioRef.current?.play()}
-                className="p-1.5 text-slate-900 hover:scale-110 transition-transform"
-              >
-                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            )}
           </div>
         )}
 
@@ -144,6 +143,8 @@ export default function AudioPlayer() {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onEnded={handleEnded}
+          onCanPlay={() => setIsLoading(false)}
+          onWaiting={() => setIsLoading(true)}
           muted={isMuted}
           hidden
         />

@@ -17,9 +17,15 @@ export default function NewsPost({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <
-       "tl img src={po
+    <main className="pt-32 pb-20 px-6 max-w-4xl mx-auto">
+      {post.image && (
+        <img src={post.image} alt={post.title} className="w-full h-96 object-cover rounded-3xl mb-12 shadow-xl" />
+      )}
+      <h1 className="text-5xl font-serif font-bold text-white mb-8">{post.title}</h1>
+      <div className="prose prose-invert prose-lg max-w-none text-slate-300">
+        {post.content}
+      </div>
       <AudioPlayer />
-    </>
+    </main>
   );
 }
