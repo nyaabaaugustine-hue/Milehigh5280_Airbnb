@@ -1,3 +1,6 @@
+// Ensure this file DOES NOT have 'use client' at the top.
+// It should be a plain TypeScript file so it can be used by Server Components.
+
 import type { Property, BlogPost } from '@/types';
 
 export const USD_TO_GHS = 15.8;
