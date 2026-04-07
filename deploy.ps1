@@ -6,6 +6,9 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "=== Milehigh5280 Deploy ===" -ForegroundColor Cyan
 
+# Setup UTF8 without BOM encoding
+$Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+
 # Step 1: Remove git lock if stuck
 $lockFile = ".git\index.lock"
 if (Test-Path $lockFile) {
@@ -63,7 +66,7 @@ export default function PrivacyPage() {
   );
 }
 "@
-Set-Content -Path "src/app/privacy/page.tsx" -Value $privacy -Encoding UTF8
+[System.IO.File]::WriteAllText("$PSScriptRoot/src/app/privacy/page.tsx", $privacy, $Utf8NoBom)
 Write-Host "OK: privacy page" -ForegroundColor Green
 
 # Step 4: Write terms page
@@ -107,7 +110,7 @@ export default function TermsPage() {
   );
 }
 "@
-Set-Content -Path "src/app/terms/page.tsx" -Value $terms -Encoding UTF8
+[System.IO.File]::WriteAllText("$PSScriptRoot/src/app/terms/page.tsx", $terms, $Utf8NoBom)
 Write-Host "OK: terms page" -ForegroundColor Green
 
 # Step 5: Write cancellation page
@@ -156,7 +159,7 @@ export default function CancellationPage() {
   );
 }
 "@
-Set-Content -Path "src/app/cancellation/page.tsx" -Value $cancel -Encoding UTF8
+[System.IO.File]::WriteAllText("$PSScriptRoot/src/app/cancellation/page.tsx", $cancel, $Utf8NoBom)
 Write-Host "OK: cancellation page" -ForegroundColor Green
 
 # Step 6: Build
