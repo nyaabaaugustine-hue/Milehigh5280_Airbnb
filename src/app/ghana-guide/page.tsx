@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import AudioPlayer from '../../../AudioPlayer';
 
 export const metadata: Metadata = {
   title: 'Ghana Visitor Guide — Visa, Safety & Travel Tips | Milehigh5280',
@@ -119,7 +120,7 @@ export default function GhanaGuidePage() {
             currency tips to safety essentials. Curated by the Milehigh team.
           </p>
           <div className="flex flex-wrap gap-3">
-            {['Visa & Entry', 'Safety & Health', 'Tours & Day Trips', 'Currency', 'Accessibility', 'Languages'].map(label => (
+            {['Visa & Entry', 'Safety & Health', 'Tours & Day Trips', 'Currency', 'Accessibility', 'Booking'].map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/[^a-z]/g, '-')}`}
                 className="btn-ghost text-[0.65rem] py-2.5 px-4">
                 {label}
@@ -375,16 +376,16 @@ export default function GhanaGuidePage() {
                 colonial grandeur of Cape Coast, every corner tells a story.
               </p>
               <p>
-                For the diaspora and first-time African visitors alike, Accra in 2025 is
+                For the diaspora and first-time African visitors alike, Accra in 2026 is
                 experiencing a cultural renaissance. World-class restaurants, contemporary
                 art galleries, and a tech ecosystem rivalling Lagos have transformed the
                 city into a must-visit destination.
               </p>
               <p>
-                Ayi Mensah itself sits in the lush hills northeast of Accra — cooler, quieter,
-                and dramatically greener than the city below. It&apos;s become the address of
-                choice for discerning returnees, expats, and international visitors who want
-                the best of Ghana without the noise.
+                Ayi Mensah itself sits in the lush hills northeast of Accra — cooler, quieter, and
+                dramatically greener than the city below. It&apos;s become the address of choice
+                for discerning returnees, expats, and international visitors who want the best of
+                Ghana without the noise.
               </p>
             </div>
             <div className="relative h-80 overflow-hidden border border-[var(--border)]">
@@ -492,6 +493,49 @@ export default function GhanaGuidePage() {
           </div>
         </section>
 
+        {/* ── Booking Inquiry ── */}
+        <section id="booking" className="scroll-mt-24">
+          <p className="section-label mb-3">Plan Your Stays</p>
+          <h2 className="font-serif text-4xl font-light text-white mb-8">
+            Booking <span className="italic text-gold-gradient">Inquiry</span>
+          </h2>
+          <div className="max-w-3xl border border-[var(--border)] p-8 lg:p-12 bg-[var(--surface)] relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--gold)]/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-[var(--gold)]/10 transition-colors" />
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+              <div className="space-y-2">
+                <label className="text-[0.65rem] uppercase tracking-widest text-[var(--text-subtle)] font-bold">Full Name</label>
+                <input type="text" placeholder="e.g. Akwasi Prempeh" className="w-full bg-[var(--obsidian)] border border-[var(--border)] p-3 text-white text-sm focus:border-[var(--gold)] outline-none transition-colors rounded-none" required />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[0.65rem] uppercase tracking-widest text-[var(--text-subtle)] font-bold">Email Address</label>
+                <input type="email" placeholder="name@domain.com" className="w-full bg-[var(--obsidian)] border border-[var(--border)] p-3 text-white text-sm focus:border-[var(--gold)] outline-none transition-colors rounded-none" required />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[0.65rem] uppercase tracking-widest text-[var(--text-subtle)] font-bold">Travel Dates</label>
+                <input type="text" placeholder="Approx. Month or Dates" className="w-full bg-[var(--obsidian)] border border-[var(--border)] p-3 text-white text-sm focus:border-[var(--gold)] outline-none transition-colors rounded-none" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[0.65rem] uppercase tracking-widest text-[var(--text-subtle)] font-bold">Inquiry Type</label>
+                <select className="w-full bg-[var(--obsidian)] border border-[var(--border)] p-3 text-white text-sm focus:border-[var(--gold)] outline-none transition-colors cursor-pointer rounded-none">
+                  <option>Short Stay (1-7 nights)</option>
+                  <option>Extended Stay (1 week+)</option>
+                  <option>Corporate / Group Booking</option>
+                  <option>Tour Only Inquiry</option>
+                </select>
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-[0.65rem] uppercase tracking-widest text-[var(--text-subtle)] font-bold">How can we assist?</label>
+                <textarea rows={4} placeholder="Mention any specific tours, airport transfer needs, or property preferences..." className="w-full bg-[var(--obsidian)] border border-[var(--border)] p-3 text-white text-sm focus:border-[var(--gold)] outline-none transition-colors resize-none rounded-none" />
+              </div>
+              <div className="md:col-span-2 pt-2">
+                <button type="submit" className="btn-gold w-full py-4 text-[0.7rem] font-bold tracking-[0.2em] shadow-xl hover:shadow-[var(--gold)]/10 transition-all uppercase">
+                  Submit Booking Inquiry
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
         {/* ── CTA ── */}
         <section className="border-t border-[var(--border)] pt-16 text-center">
           <p className="section-label mb-4">Ready to Visit Ghana?</p>
@@ -508,6 +552,7 @@ export default function GhanaGuidePage() {
         </section>
 
       </div>
+      <AudioPlayer />
     </>
   );
 }

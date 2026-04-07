@@ -17,11 +17,17 @@ const playlist = [
 
 export default function AudioPlayer() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Trigger entry animation
+    setIsMounted(true);
+  }, []);
 
   const currentTrack = playlist[currentIndex];
 
@@ -40,6 +46,7 @@ export default function AudioPlayer() {
           .catch((error) => {
             console.log("Autoplay prevented or interrupted. Awaiting interaction.", error);
             setIsPlaying(false);
+            setIsLoading(false);
           });
       }
     }
@@ -63,13 +70,17 @@ export default function AudioPlayer() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] opacity-100">
-      <div className="bg-white border border-slate-200 shadow-2xl rounded-2xl p-4 w-72 flex items-center space-x-4 relative">
+    <div 
+      className={`fixed bottom-6 right-6 z-[9999] transition-all duration-1000 ease-out transform ${
+        isMounted ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+      }`}
+    >
+      <div className="bg-[#0a0a0a] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl p-4 w-72 flex items-center space-x-4 relative">
         
         {/* Close Button */}
         <button 
           onClick={handleClose}
-          className="absolute -top-2 -right-2 bg-slate-900 text-white rounded-full p-1 shadow-lg hover:bg-slate-700 transition-colors"
+          className="absolute -top-2 -right-2 bg-stone-200 text-black rounded-full p-1 shadow-lg hover:bg-white transition-colors"
         >
           <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </button>
@@ -77,7 +88,10 @@ export default function AudioPlayer() {
         {/* Animation Icon */}
         <div className="relative flex-shrink-0">
           <div 
-            className={`w-12 h-12 rounded-full flex items-center justify-center bg-slate-100 cursor-pointer ${isPlaying ? 'animate-spin-slow' : ''}`}
+            className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 border border-white/10 cursor-pointer"
+            style={{ 
+              animation: isPlaying && !isLoading ? 'spin 10s linear infinite' : 'none' 
+            }}
             onClick={() => {
               if (isPlaying) audioRef.current?.pause();
               else audioRef.current?.play().catch(console.error);
@@ -85,31 +99,31 @@ export default function AudioPlayer() {
           >
             {isLoading ? (
               <div className="flex space-x-1">
-                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
+                <div className="w-1.5 h-1.5 bg-stone-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-1.5 h-1.5 bg-stone-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-1.5 h-1.5 bg-stone-500 rounded-full animate-bounce"></div>
               </div>
             ) : isPlaying ? (
-              <svg className="w-6 h-6 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              <svg className="w-6 h-6 text-stone-200" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             ) : (
-              <svg className="w-6 h-6 text-slate-900 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg className="w-6 h-6 text-stone-200 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             )}
           </div>
           {!isLoading && isPlaying && (
-            <span className="absolute inset-0 rounded-full bg-slate-400 animate-ping opacity-20"></span>
+            <span className="absolute inset-0 rounded-full bg-stone-400 animate-ping opacity-10"></span>
           )}
         </div>
 
         {/* Text Details */}
         <div className="flex-1 overflow-hidden">
           {isLoading ? (
-            <p className="text-sm font-medium text-slate-500 animate-pulse uppercase tracking-wider">
+            <p className="text-xs font-bold text-stone-500 animate-pulse uppercase tracking-wider">
               Loading audio...
             </p>
           ) : (
             <>
-              <p className="text-xs text-slate-400 uppercase font-bold tracking-widest mb-0.5">Now Playing</p>
-              <p className="text-sm font-semibold text-slate-900 truncate">
+              <p className="text-[10px] text-stone-500 uppercase font-bold tracking-widest mb-0.5">Now Playing</p>
+              <p className="text-sm font-bold text-stone-200 truncate">
                 {currentTrack.title}
               </p>
             </>
@@ -121,7 +135,7 @@ export default function AudioPlayer() {
           <div className="flex items-center space-x-1">
             <button 
               onClick={() => setIsMuted(!isMuted)}
-              className="p-1.5 text-slate-900 hover:scale-110 transition-transform"
+              className="p-1.5 text-stone-400 hover:text-stone-200 hover:scale-110 transition-all"
               title={isMuted ? "Unmute" : "Mute"}
             >
               {isMuted ? (
@@ -144,21 +158,13 @@ export default function AudioPlayer() {
           onPause={() => setIsPlaying(false)}
           onEnded={handleEnded}
           onCanPlay={() => setIsLoading(false)}
+          onCanPlayThrough={() => setIsLoading(false)}
+          onLoadedMetadata={() => setIsLoading(false)}
           onWaiting={() => setIsLoading(true)}
           muted={isMuted}
           hidden
         />
       </div>
-
-      <style jsx global>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
