@@ -4,10 +4,10 @@ import AudioPlayer from './AudioPlayer';
 import Image from 'next/image';
 
 export async function generateStaticParams() {
-  // Ensure blogPosts exists and is an array before mapping
-  if (!blogPosts || !Array.isArray(blogPosts)) return [];
+  // Safeguard against empty data during build
+  const safePosts = blogPosts || [];
   
-  return blogPosts.map((p) => ({
+  return safePosts.map((p) => ({
     slug: p.slug,
   }));
 }

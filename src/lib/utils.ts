@@ -30,7 +30,11 @@ export function t(key: string, lang: string = 'en'): string {
   let value: any = dictionary;
   
   for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
+    if (
+      value !== null && 
+      typeof value === 'object' && 
+      Object.prototype.hasOwnProperty.call(value, k)
+    ) {
       value = value[k];
     } else {
       return key; // Fallback to key if path is broken
