@@ -1,5 +1,4 @@
-// Ensure this file DOES NOT have 'use client' at the top.
-// It should be a plain TypeScript file so it can be used by Server Components.
+// This is a server-safe data file. Do not add 'use client' here.
 
 import type { Property, BlogPost } from '@/types';
 

@@ -30,7 +30,11 @@ export function t(key: string, lang: string = 'en'): string {
   let value: any = dictionary;
   
   for (const k of keys) {
-    value = value?.[k];
+    if (value && typeof value === 'object' && k in value) {
+      value = value[k];
+    } else {
+      return key; // Fallback to key if path is broken
+    }
   }
   
   return value || key;
