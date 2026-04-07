@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useLanguage, Language } from './src/context/LanguageContext';
+import { useLanguage, Language } from './src/lib/LanguageContext';
 
 const languages = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
