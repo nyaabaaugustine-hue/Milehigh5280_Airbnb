@@ -212,7 +212,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 'post-3', slug: 'ghana-heritage-tour-experience',
-    title:    'The Grand Ghana Heritage Tour 2025',
+    title:    'The Grand Ghana Heritage Tour 2026',
     excerpt:  'A preview of our exclusive 10-day curated journey through Accra, Kumasi, and Cape Coast.',
     content:  'Full article content goes here...',
     author:   'Milehigh Concierge',
