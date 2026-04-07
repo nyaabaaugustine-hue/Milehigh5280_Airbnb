@@ -14,7 +14,7 @@ if (Test-Path $lockFile) {
 }
 
 # Step 2: Create missing page directories
-$dirs = @("src\app\privacy", "src\app\terms", "src\app\cancellation")
+$dirs = @("src/app/privacy", "src/app/terms", "src/app/cancellation")
 foreach ($d in $dirs) {
     if (-not (Test-Path $d)) {
         New-Item -ItemType Directory -Force -Path $d | Out-Null
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
   );
 }
 "@
-Set-Content -Path "src\app\privacy\page.tsx" -Value $privacy -Encoding UTF8
+Set-Content -Path "src/app/privacy/page.tsx" -Value $privacy -Encoding UTF8
 Write-Host "OK: privacy page" -ForegroundColor Green
 
 # Step 4: Write terms page
@@ -107,7 +107,7 @@ export default function TermsPage() {
   );
 }
 "@
-Set-Content -Path "src\app\terms\page.tsx" -Value $terms -Encoding UTF8
+Set-Content -Path "src/app/terms/page.tsx" -Value $terms -Encoding UTF8
 Write-Host "OK: terms page" -ForegroundColor Green
 
 # Step 5: Write cancellation page
@@ -156,7 +156,7 @@ export default function CancellationPage() {
   );
 }
 "@
-Set-Content -Path "src\app\cancellation\page.tsx" -Value $cancel -Encoding UTF8
+Set-Content -Path "src/app/cancellation/page.tsx" -Value $cancel -Encoding UTF8
 Write-Host "OK: cancellation page" -ForegroundColor Green
 
 # Step 6: Build
