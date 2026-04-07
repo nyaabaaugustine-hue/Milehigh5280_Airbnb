@@ -1,17 +1,20 @@
-import { posts } from '@/lib/data';
+import { blogPosts, getPostBySlug } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import AudioPlayer from './AudioPlayer';
 import Image from 'next/image';
 
-// This function now works because 'posts' is imported from a non-client file
 export async function generateStaticParams() {
-  return posts.map((p) => ({
+  // Ensure blogPosts exists and is an array before mapping
+  if (!blogPosts || !Array.isArray(blogPosts)) return [];
+  
+  return blogPosts.map((p) => ({
     slug: p.slug,
   }));
 }
 
 export default function NewsPost({ params }: { params: { slug: string } }) {
-  const post = posts.find((p) => p.slug === params.slug);
+  // Use the helper function for consistency
+  const post = getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
