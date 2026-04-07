@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
-import { posts } from '@/components/home/BlogSection';
+import { posts } from '@/lib/posts';
 
 export const metadata: Metadata = {
   title: 'News & Stories — Milehigh Properties',
