@@ -7,32 +7,32 @@ const symbols = [
   {
     name: 'Gye Nyame',
     meaning: 'Supremacy of God',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642580/gye_nyame_ajmocm.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775642580/gye_nyame_ajmocm.jpg',
   },
   {
     name: 'Sankofa',
     meaning: 'Return & Fetch It',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642579/sankofa_kuknsj.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775642579/sankofa_kuknsj.jpg',
   },
   {
     name: 'Dwennimmen',
     meaning: 'Humility & Strength',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642580/Dwennimmen_j3vort.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775643372/Vibrant_Adinkra_symbols_on_black_backdrop_ahymeb.png',
   },
   {
     name: 'Adinkrahene',
     meaning: 'Leadership',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642580/Adinkrahene_ek7egi.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775642580/Adinkrahene_ek7egi.jpg',
   },
   {
     name: 'Nyame Biribi',
     meaning: 'Hope & Faith',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642580/Nyame_Biribi_ptiq72.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775642580/Nyame_Biribi_ptiq72.jpg',
   },
   {
     name: 'Odo Nnyew',
     meaning: 'Power of Love',
-    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775642579/Odo_Nnyew_nlemky.jpg',
+    url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/c_fill,w_300,h_300,g_center/v1775643371/Odo_Nnyew_kp4n0j.jpg',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function AdinkraSection() {
           </p>
         </motion.div>
 
-        {/* Grid */}
+        {/* Grid — fixed square size for all cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 lg:gap-8">
           {symbols.map(({ name, meaning, url }, i) => (
             <motion.div
@@ -73,19 +73,19 @@ export default function AdinkraSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.08 }}
             >
-              {/* Image card */}
-              <div className="relative w-24 h-24 lg:w-28 lg:h-28 overflow-hidden border border-[var(--border)] group-hover:border-[var(--gold)] transition-all duration-500 group-hover:scale-105 bg-white/5">
+              {/* Uniform square image card */}
+              <div className="relative w-28 h-28 lg:w-32 lg:h-32 shrink-0 overflow-hidden border border-[var(--border)] group-hover:border-[var(--gold)] transition-all duration-500 group-hover:scale-105 bg-black">
                 {/* Gold shimmer on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[var(--gold)]/10 to-transparent z-10 pointer-events-none" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={url}
                   alt={name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   style={{ filter: 'brightness(0.95) contrast(1.1)' }}
                 />
                 {/* Bottom gold line reveal on hover */}
-                <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[2px] bg-[var(--gold)] transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[2px] bg-[var(--gold)] transition-all duration-500 z-20" />
               </div>
 
               {/* Label */}
