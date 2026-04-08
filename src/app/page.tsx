@@ -9,6 +9,7 @@ import BlogSection from '@/components/home/BlogSection';
 import PriceCalculator from '@/components/home/PriceCalculator';
 import PressSection from '@/components/home/PressSection';
 import ViewerCounter from '@/components/ui/ViewerCounter';
+import AdinkraSection from '@/components/home/AdinkraSection';
 import { useBooking } from '@/components/layout/ClientShell';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +27,9 @@ export default function HomePage() {
       <Testimonials />
       <PressSection />
       <BlogSection />
+
+      {/* Adinkra Heritage Section — last section before footer */}
+      <AdinkraSection />
 
       {/* Floating viewer counter */}
       <ViewerCounter />
