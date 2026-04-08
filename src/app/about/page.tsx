@@ -39,6 +39,15 @@ const milestones = [
   { year: '2025', event: 'Pearl Mansion debut. Expansion into Cape Coast and Kumasi planned.' },
 ];
 
+const adinkraSymbols = [
+  { name: 'Gye Nyame',        meaning: 'Supremacy of God',    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Adinkra_gye_nyame.svg/200px-Adinkra_gye_nyame.svg.png' },
+  { name: 'Sankofa',          meaning: 'Return & Fetch It',   url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Adinkra_sankofa.svg/200px-Adinkra_sankofa.svg.png' },
+  { name: 'Dwennimmen',       meaning: 'Humility & Strength', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adinkra_dwennimmen.svg/200px-Adinkra_dwennimmen.svg.png' },
+  { name: 'Adinkrahene',      meaning: 'Leadership',          url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Adinkra_adinkrahene.svg/200px-Adinkra_adinkrahene.svg.png' },
+  { name: 'Nyame Biribi',     meaning: 'Hope & Faith',        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Adinkra_nyame_biribi_wo_soro.svg/200px-Adinkra_nyame_biribi_wo_soro.svg.png' },
+  { name: 'Odo Nnyew',        meaning: 'Power of Love',       url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Adinkra_odo_nnyew_fie_kwan.svg/200px-Adinkra_odo_nnyew_fie_kwan.svg.png' },
+];
+
 const values = [
   {
     Icon: Heart,
@@ -128,6 +137,49 @@ export default function AboutPage() {
         />
       </section>
 
+
+      {/* ── Adinkra Heritage Strip ── */}
+      <section className="py-20 bg-[var(--obsidian)] border-b border-[var(--gold)]/20 overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div className="text-center mb-12">
+            <p className="section-label mb-3">Rooted in Heritage</p>
+            <h2 className="font-serif text-3xl lg:text-4xl font-light text-white">
+              The <span className="italic text-gold-gradient">Adinkra</span> Symbols That Guide Us
+            </h2>
+            <p className="text-[var(--text-muted)] text-sm mt-4 max-w-lg mx-auto leading-relaxed">
+              Ancient Ghanaian wisdom woven into every experience we create — these symbols
+              represent the values at the heart of Milehigh Properties.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4 lg:gap-8">
+            {adinkraSymbols.map(({ name, meaning, url }) => (
+              <div key={name} className="flex flex-col items-center gap-4 group">
+                <div className="relative w-20 h-20 lg:w-24 lg:h-24 flex items-center justify-center bg-[var(--surface)] border border-[var(--border)] group-hover:border-[var(--gold)] transition-all duration-500 p-4 group-hover:scale-105">
+                  {/* Gold shimmer background on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-[var(--gold)]" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt={name}
+                    className="w-full h-full object-contain transition-all duration-500"
+                    style={{ filter: 'invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.9)', mixBlendMode: 'screen' }}
+                  />
+                </div>
+                <div className="text-center">
+                  <p className="font-serif text-white text-sm leading-tight">{name}</p>
+                  <p className="text-[var(--gold)] text-[0.55rem] uppercase tracking-widest mt-1 opacity-70">{meaning}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Kente border accent */}
+          <div
+            className="mt-16 h-[3px] w-full opacity-25"
+            style={{ backgroundImage: 'url(https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775413445/kente-seamless-digital-paper-pattern_546783-186_kbgc49.jpg)', backgroundSize: '300px' }}
+          />
+        </div>
+      </section>
+
       {/* ── Origin Story ── */}
       <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -175,12 +227,15 @@ export default function AboutPage() {
                 />
               </div>
             </div>
-            {/* Kente Textured Accent Corner */}
-            <div 
-              className="absolute -bottom-4 -left-4 w-24 h-24 border border-[var(--gold)]/40 z-0 overflow-hidden"
-              style={{ backgroundColor: 'var(--surface)' }}
-            >
-              <div className="absolute inset-0 opacity-10 mix-blend-overlay" style={{ backgroundImage: 'url(https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775413445/kente-seamless-digital-paper-pattern_546783-186_kbgc49.jpg)', backgroundSize: '100px' }} />
+            {/* Website Logo */}
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 border border-[var(--gold)]/60 z-10 overflow-hidden bg-[var(--obsidian)] shadow-lg">
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg"
+                alt="Milehigh Properties Logo"
+                fill
+                className="object-cover"
+                unoptimized
+              />
             </div>
           </div>
         </div>
