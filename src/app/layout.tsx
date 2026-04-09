@@ -10,6 +10,7 @@ import SocialSidebar from '@/components/ui/SocialSidebar';
 import GhanaTourAd from '@/components/ui/GhanaTourAd';
 import { CookieConsent, NewsletterSignup, SocialProofTicker } from '@/components/ui/SmartWidgets';
 import CustomCursor from '@/components/ui/CustomCursor';
+import { Analytics } from '@vercel/analytics/next';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -169,6 +170,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             },
           }}
         />
+        <Analytics />
       </body>
     </html>
   );
