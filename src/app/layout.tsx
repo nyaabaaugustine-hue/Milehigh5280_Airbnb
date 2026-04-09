@@ -9,6 +9,7 @@ import SiteLoader from '@/components/ui/SiteLoader';
 import SocialSidebar from '@/components/ui/SocialSidebar';
 import GhanaTourAd from '@/components/ui/GhanaTourAd';
 import { CookieConsent, NewsletterSignup, SocialProofTicker } from '@/components/ui/SmartWidgets';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -108,6 +109,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
+        {/* ── Standard Favicons ── */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/jpeg" href={FAVICON_URL} />
         <link rel="shortcut icon" href={FAVICON_URL} />
@@ -136,6 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden" suppressHydrationWarning>
         <div className="grain-overlay" aria-hidden="true" />
+        <CustomCursor />
         <SiteLoader />
         <SocialSidebar />
         <GhanaTourAd />

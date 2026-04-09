@@ -386,7 +386,7 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
         <div className="grid grid-cols-2 sm:grid-cols-4 border border-[var(--border)] border-t-0 bg-[var(--surface-2)]">
           {[
             { num: '2',    unit: 'Bedrooms',   icon: '🛏️' },
-            { num: '2',    unit: 'Bathrooms',  icon: '🚿' },
+            { num: '1',    unit: 'Bathrooms',  icon: '🚿' },
             { num: '4',    unit: 'Max Guests', icon: '👥' },
             { num: '~20', unit: 'Min to CBD',  icon: '🚗' },
           ].map(({ num, unit, icon }, i) => (

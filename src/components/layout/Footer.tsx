@@ -40,7 +40,7 @@ export default function Footer() {
   const waHref = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hello, I'd like to enquire about The Palm")}`;
 
   return (
-    <footer className="bg-[var(--surface)] border-t border-[var(--border)] mt-24">
+    <footer className="bg-[var(--surface)] border-t border-[var(--border)]">
 
       {/* ── Google Map Section ── */}
       <div className="border-b border-[var(--border)]">
@@ -115,6 +115,29 @@ export default function Footer() {
               Ready for your <span className="italic text-gold-gradient">palm retreat?</span>
             </h2>
           </div>
+          {/* Colorful Gye Nyame Symbol */}
+          <div className="hidden lg:flex items-center justify-center shrink-0">
+            <div className="relative w-24 h-24 opacity-80 hover:opacity-100 transition-opacity duration-500 hover:scale-110 transform transition-transform">
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'conic-gradient(from 0deg, #CE1126 0%, #FCD116 33%, #006B3F 66%, #CE1126 100%)',
+                  WebkitMaskImage: 'url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Adinkra_gye_nyame.svg/200px-Adinkra_gye_nyame.svg.png)',
+                  WebkitMaskRepeat: 'no-repeat',
+                  WebkitMaskSize: 'contain',
+                  WebkitMaskPosition: 'center',
+                  maskImage: 'url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Adinkra_gye_nyame.svg/200px-Adinkra_gye_nyame.svg.png)',
+                  maskRepeat: 'no-repeat',
+                  maskSize: 'contain',
+                  maskPosition: 'center',
+                  filter: 'drop-shadow(0 0 12px rgba(252,209,22,0.5))',
+                }}
+              />
+              <p className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[0.45rem] text-[var(--text-subtle)] uppercase tracking-widest whitespace-nowrap">Gye Nyame</p>
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">
             <Link href="/properties" className="btn-gold">
               Explore Properties
@@ -235,7 +258,7 @@ export default function Footer() {
                 alt="Listed on Airbnb"
                 width={80}
                 height={80}
-                className="object-contain"
+                className="rounded-full object-cover border border-[var(--border)] overflow-hidden"
                 unoptimized
               />
             </div>

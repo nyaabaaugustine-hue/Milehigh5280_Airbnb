@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Globe, Heart, Award } from 'lucide-react';
+import AdinkraSection from '@/components/home/AdinkraSection';
 
 export const metadata: Metadata = {
   title: 'Our Story | Milehigh5280 Airbnb',
@@ -128,6 +129,10 @@ export default function AboutPage() {
         />
       </section>
 
+
+      {/* ── Adinkra Heritage Strip ── */}
+      <AdinkraSection />
+
       {/* ── Origin Story ── */}
       <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -175,12 +180,15 @@ export default function AboutPage() {
                 />
               </div>
             </div>
-            {/* Kente Textured Accent Corner */}
-            <div 
-              className="absolute -bottom-4 -left-4 w-24 h-24 border border-[var(--gold)]/40 z-0 overflow-hidden"
-              style={{ backgroundColor: 'var(--surface)' }}
-            >
-              <div className="absolute inset-0 opacity-10 mix-blend-overlay" style={{ backgroundImage: 'url(https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775413445/kente-seamless-digital-paper-pattern_546783-186_kbgc49.jpg)', backgroundSize: '100px' }} />
+            {/* Website Logo */}
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 border border-[var(--gold)]/60 z-10 overflow-hidden bg-[var(--obsidian)] shadow-lg">
+              <Image
+                src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg"
+                alt="Milehigh Properties Logo"
+                fill
+                className="object-cover"
+                unoptimized
+              />
             </div>
           </div>
         </div>

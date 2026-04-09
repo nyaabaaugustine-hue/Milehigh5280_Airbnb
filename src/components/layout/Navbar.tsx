@@ -15,6 +15,7 @@ const navLinks = [
   { href: '/ghana-guide', label: 'Ghana Guide' },
   { href: '/about',       label: 'Our Story' },
   { href: '/contact',     label: 'Concierge' },
+  { href: '/host',         label: 'Our Host'  },
 ];
 
 interface NavbarProps {
