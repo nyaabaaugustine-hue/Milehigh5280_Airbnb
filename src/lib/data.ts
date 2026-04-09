@@ -328,3 +328,108 @@ export const calculatePrice = (
   const service  = currency === 'GHS' ? property.pricing.serviceFee  * USD_TO_GHS : property.pricing.serviceFee;
   return { nights, nightlyRate: rate, nightsTotal: rate * nights, cleaningFee: cleaning, serviceFee: service, total: rate * nights + cleaning + service, currency };
 };
+
+// ─── About Page Data ─────────────────────────────────────────────────────────
+
+export const getAboutData = () => ({
+  team: [
+    { name: 'Adwoa Mensah', role: 'Founder & CEO', bio: '15 years in luxury hospitality', image: '' },
+    { name: 'Herbert Prempeh', role: 'Co-Founder', bio: 'Tech & Operations Lead', image: '' },
+    { name: 'Abena Darko', role: 'Chief Concierge', bio: 'Guest Experience Specialist', image: '' },
+  ],
+  milestones: [
+    { year: '2019', event: 'Founded in Accra with a single villa in Cantonments.' },
+    { year: '2020', event: 'Expanded to 3 properties. Launched our private concierge service.' },
+    { year: '2022', event: 'Named "Best Luxury Accommodation" by Ghana Tourism Authority.' },
+    { year: '2023', event: 'Lakeside Estate opened — our most ambitious property yet.' },
+    { year: '2024', event: 'Over 1,000 guests hosted. 4.97 average rating.' },
+    { year: '2025', event: 'Pearl Mansion debut. Expansion planned.' },
+  ],
+  values: [
+    { title: 'Genuine Hospitality', desc: 'Warmth of greeting, remembering your name.' },
+    { title: 'Ghana, Elevated', desc: 'World-class luxury exists right here in West Africa.' },
+    { title: 'Uncompromising Quality', desc: 'Global five-star hotel standards.' },
+  ],
+  stats: [
+    { value: '1,000+', label: 'Happy Guests' },
+    { value: '4.97', label: 'Average Rating' },
+    { value: '6', label: 'Years of Excellence' },
+    { value: '4', label: 'Exclusive Properties' },
+  ],
+});
+
+// ─── Contact Page Data ───────────────────────────────────────────────────────
+
+export const getFaqs = () => [
+  { q: 'What is included in my stay?', a: 'Daily housekeeping, high-speed WiFi, air conditioning, and 24/7 concierge support.' },
+  { q: 'Can I pay in Ghanaian Cedis?', a: 'Yes. We accept both GHS and USD. Paystack available for Ghanaian residents.' },
+  { q: 'What is your cancellation policy?', a: 'Full refund for cancellations 7+ days before check-in. 50% refund for 3-6 days.' },
+  { q: 'Do you host events and corporate retreats?', a: 'Absolutely. Several properties designed for groups and celebrations.' },
+  { q: 'Is airport transfer included?', a: 'Transfer from Kotoka International Airport can be arranged. Complimentary in some packages.' },
+];
+
+export const getConciergeHours = () => [
+  { day: 'Monday – Friday', hours: '7:00 AM – 10:00 PM GMT' },
+  { day: 'Saturday', hours: '8:00 AM – 9:00 PM GMT' },
+  { day: 'Sunday', hours: '9:00 AM – 7:00 PM GMT' },
+  { day: 'WhatsApp', hours: 'Available 24/7' },
+];
+
+// ─── Social Links ────────────────────────────────────────────────────────────
+
+export const getSocialLinks = () => [
+  { platform: 'instagram', url: 'https://instagram.com/milehigh5280', label: 'Instagram' },
+  { platform: 'facebook', url: 'https://facebook.com/milehigh5280', label: 'Facebook' },
+];
+
+// ─── Promo Codes ────────────────────────────────────────────────────────────
+
+export const getPromoCodes = () => ({
+  'WELCOME10': { discount: 10, type: 'percentage', label: 'Welcome Discount', description: '10% off your first booking' },
+  'DIASPORA15': { discount: 15, type: 'percentage', label: 'Diaspora Discount', description: '15% off for returning visitors' },
+});
+
+// ─── Ghana Guide Data ────────────────────────────────────────────────────────
+
+export const getTourOperators = () => [
+  { name: 'Accra City Tour', duration: 'Full Day', highlights: 'Independence Square, Kwame Nkrumah Memorial', price: 'From $45/person', image: '' },
+  { name: 'Cape Coast & Elmina Castle', duration: '2 Days', highlights: 'Elmina Slave Castle, Kakum Canopy Walk', price: 'From $120/person', image: '' },
+  { name: 'Kumasi & Ashanti Kingdom', duration: '2 Days', highlights: 'Manhyia Palace, Kejetia Market', price: 'From $110/person', image: '' },
+  { name: 'Boti Falls Day Trip', duration: 'Half Day', highlights: 'Twin waterfalls, jungle hiking', price: 'From $35/person', image: '' },
+];
+
+export const getVisaInfo = () => [
+  { flag: '🌍', title: 'African Union Citizens', detail: 'Most AU countries enjoy visa-on-arrival or visa-free entry.' },
+  { flag: '🇺🇸', title: 'USA / Canada / UK / EU', detail: 'Obtain Ghana e-Visa online before travel. Processing: 3-5 business days.' },
+  { flag: '✈️', title: 'Visa on Arrival', detail: 'Some nationalities qualify for 30-day visa on arrival at KIA. Fee: ~$150 USD.' },
+];
+
+export const getSafetyTips = () => [
+  { icon: '🏥', title: 'Nearest Hospital', detail: 'Millennium Medical Centre — 12 min from Milehigh5280.' },
+  { icon: '💊', title: 'Health Precautions', detail: 'Yellow fever vaccination required. Malaria prophylaxis recommended.' },
+  { icon: '💰', title: 'Currency & ATMs', detail: 'Ghana Cedi (GHS). USD widely accepted. ATMs at all major banks.' },
+];
+
+// ─── Homepage Content ────────────────────────────────────────────────────────
+
+export const getExperiences = () => [
+  { title: 'Private Chef Service', desc: 'Ghanaian cuisine prepared in your kitchen or garden', icon: 'ChefHat' },
+  { title: 'Cultural Immersion', desc: 'Kente weaving, drumming, and local market tours', icon: 'Music' },
+  { title: 'Wellness & Spa', desc: 'In-room massages, yoga sessions, meditation spaces', icon: 'Heart' },
+  { title: 'Adventure Tours', desc: 'Waterfall hikes, canopy walks, castle visits', icon: 'Compass' },
+  { title: 'Sunset Cruises', desc: 'Private boat trips on Lake Volta', icon: 'Ship' },
+  { title: 'Diaspora Heritage', desc: 'Return home ceremonies, family tracing', icon: 'Home' },
+];
+
+// ─── Site Settings ──────────────────────────────────────────────────────────
+
+export const getSiteContent = () => ({
+  siteName: 'Milehigh5280',
+  siteDescription: 'Luxury short-stay accommodation in Accra, Ghana',
+  heroTitle: 'Your Private Sanctuary in Ghana',
+  heroSubtitle: 'Luxury Stays · Authentic Experiences · Ghanaian Warmth',
+});
+
+// ─── Helper to get contact info as object ──────────────────────────────────
+
+export const getContactInfo = () => CONTACT_INFO;
