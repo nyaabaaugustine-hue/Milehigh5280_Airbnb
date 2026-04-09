@@ -7,9 +7,6 @@ import ClientShell from '@/components/layout/ClientShell';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { AuthProvider } from '@/lib/AuthContext';
 import SiteLoader from '@/components/ui/SiteLoader';
-import SocialSidebar from '@/components/ui/SocialSidebar';
-import GhanaTourAd from '@/components/ui/GhanaTourAd';
-import { CookieConsent, NewsletterSignup, SocialProofTicker } from '@/components/ui/SmartWidgets';
 import CustomCursor from '@/components/ui/CustomCursor';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -236,9 +233,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="grain-overlay" aria-hidden="true" />
         <CustomCursor />
         <SiteLoader />
-        <SocialSidebar />
-        <GhanaTourAd />
-        <SocialProofTicker />
         <LanguageProvider>
           <AuthProvider>
             <ClientShell>
@@ -247,8 +241,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </AuthProvider>
         </LanguageProvider>
         <Footer />
-        <CookieConsent />
-        <NewsletterSignup />
         <Analytics />
         <Toaster
           position="bottom-right"

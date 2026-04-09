@@ -260,12 +260,21 @@ h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 400; }
 /* ─── Section Labels ─────────────────────────────────────────────────────────── */
 .section-label {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--gold);
 }
+
+/* ─── Increased Base Text Sizes ──────────────────────────────────────────────── */
+body {
+  font-size: 17px;
+}
+
+.text-sm { font-size: 0.95rem !important; }
+.text-base { font-size: 1.0625rem !important; }
+.text-xs { font-size: 0.8125rem !important; }
 
 /* ─── Gold Divider ───────────────────────────────────────────────────────────── */
 .divider-gold {

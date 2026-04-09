@@ -2,7 +2,6 @@
 
 import { useState, createContext, useContext, useCallback } from 'react';
 import Navbar from '@/components/layout/Navbar';
-import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import BookingModal from '@/components/ui/BookingModal';
 import PropertyModal from '@/components/ui/PropertyModal';
@@ -42,7 +41,6 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     <BookingContext.Provider value={{ openBooking, closeBooking, viewProperty }}>
       <Navbar onBookNow={openBooking} />
       <main>{children}</main>
-      <WhatsAppButton onBookNow={openBooking} />
       <LanguageSwitcher />
       <BookingModal isOpen={bookingOpen} onClose={closeBooking} />
       <PropertyModal

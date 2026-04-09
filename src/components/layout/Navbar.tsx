@@ -4,19 +4,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Phone, Sun, Moon, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, User, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { LANGUAGES } from '@/lib/data';
 import { useLanguage, Language } from '@/lib/LanguageContext';
-
-const navLinks = [
-  { href: '/',            label: 'Home' },
-  { href: '/properties',  label: 'Properties' },
-  { href: '/ghana-guide', label: 'Ghana Guide' },
-  { href: '/about',       label: 'Our Story' },
-  { href: '/contact',     label: 'Concierge' },
-  { href: '/host',         label: 'Our Host'  },
-];
 
 interface NavbarProps {
   onBookNow?: () => void;
@@ -79,7 +70,7 @@ export default function Navbar({ onBookNow }: NavbarProps) {
 
           {/* ── Logo ── */}
           <Link href="/" className="flex items-center gap-3 group" aria-label="The Palm Home">
-            <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[var(--border-bright)] group-hover:border-[var(--gold)] transition-colors duration-300 shrink-0">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[var(--border-bright)] group-hover:border-[var(--gold)] transition-colors duration-300 shrink-0">
               <Image
                 src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg"
                 alt="The Palm Logo"
@@ -89,41 +80,19 @@ export default function Navbar({ onBookNow }: NavbarProps) {
               />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="font-serif text-[1.1rem] font-medium tracking-wide text-[var(--text-primary)] group-hover:text-[var(--gold)] transition-colors duration-300">
+              <span className="font-serif text-xl font-medium tracking-wide text-[var(--text-primary)] group-hover:text-[var(--gold)] transition-colors duration-300">
                 Milehigh5280 🌴
               </span>
-              <span className="text-[0.48rem] tracking-[0.2em] uppercase text-[var(--gold)] font-sans font-medium mt-0.5">
+              <span className="text-[0.55rem] tracking-[0.2em] uppercase text-[var(--gold)] font-sans font-medium mt-0.5">
                 Ayi Mensah · Milehigh Properties
               </span>
             </div>
           </Link>
 
-          {/* ── Desktop Nav ── */}
-          <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-10">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  'text-[0.7rem] tracking-[0.18em] uppercase font-sans font-medium transition-colors duration-300 relative group',
-                  pathname === href
-                    ? 'text-[var(--gold)]'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]',
-                )}
-              >
-                {label}
-                <span className={cn(
-                  'absolute -bottom-1 left-0 h-px bg-[var(--gold)] transition-all duration-300',
-                  pathname === href ? 'w-full' : 'w-0 group-hover:w-full',
-                )} />
-              </Link>
-            ))}
-          </nav>
-
           {/* ── Right Controls ── */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-4">
             {/* Ghana Flag */}
-            <div className="relative w-6 h-4 overflow-hidden rounded-sm border border-[var(--border)] opacity-80">
+            <div className="relative w-7 h-5 overflow-hidden rounded-sm border border-[var(--border)] opacity-80">
               <Image
                 src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775411320/images_1_kilffq.jpg"
                 alt="Ghana"
@@ -137,17 +106,17 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 border border-[var(--border)] hover:border-[var(--gold)] transition-colors duration-300 group"
+                className="flex items-center gap-1.5 px-3 py-2 border border-[var(--border)] hover:border-[var(--gold)] transition-colors duration-300 group"
               >
-                <span className="text-sm">{currentLang.flag}</span>
-                <span className="text-[0.65rem] uppercase tracking-widest font-medium text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
+                <span className="text-base">{currentLang.flag}</span>
+                <span className="text-xs uppercase tracking-widest font-medium text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
                   {currentLang.code}
                 </span>
-                <ChevronDown size={10} className={cn("text-[var(--text-subtle)] transition-transform duration-300", langOpen && "rotate-180")} />
+                <ChevronDown size={12} className={cn("text-[var(--text-subtle)] transition-transform duration-300", langOpen && "rotate-180")} />
               </button>
 
               {langOpen && (
-                <div className="absolute top-full right-0 mt-2 w-48 bg-[var(--surface)] border border-[var(--border)] shadow-2xl py-2 z-[60] animate-in fade-in slide-in-from-top-2 duration-300 max-h-[70vh] overflow-y-auto scrollbar-hide">
+                <div className="absolute top-full right-0 mt-2 w-52 bg-[var(--surface)] border border-[var(--border)] shadow-2xl py-2 z-[60] animate-in fade-in slide-in-from-top-2 duration-300 max-h-[70vh] overflow-y-auto scrollbar-hide">
                   {LANGUAGES.map((lang) => (
                     <button
                       key={lang.code}
@@ -158,13 +127,13 @@ export default function Navbar({ onBookNow }: NavbarProps) {
                         setLangOpen(false);
                       }}
                       className={cn(
-                        "w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[rgba(201,150,58,0.08)] transition-colors text-left",
+                        "w-full flex items-center gap-3 px-4 py-3 hover:bg-[rgba(201,150,58,0.08)] transition-colors text-left",
                         language === lang.code ? "bg-[rgba(201,150,58,0.05)]" : ""
                       )}
                     >
-                      <span className="text-base">{lang.flag}</span>
+                      <span className="text-lg">{lang.flag}</span>
                       <span className={cn(
-                        "text-[0.7rem] uppercase tracking-[0.1em] font-medium",
+                        "text-sm uppercase tracking-[0.1em] font-medium",
                         language === lang.code ? "text-[var(--gold)]" : "text-[var(--text-muted)]"
                       )}>
                         {lang.label}
@@ -178,14 +147,20 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="w-9 h-9 flex items-center justify-center border border-[var(--border)] text-[var(--gold)] hover:border-[var(--gold)] hover:bg-[rgba(201,150,58,0.08)] transition-colors duration-300"
+              className="w-10 h-10 flex items-center justify-center border border-[var(--border)] text-[var(--gold)] hover:border-[var(--gold)] hover:bg-[rgba(201,150,58,0.08)] transition-colors duration-300"
             >
-              {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-            <button onClick={onBookNow} className="btn-gold text-[0.7rem] py-2.5 px-5">
-              <Phone size={12} />
-              Book Now
-            </button>
+
+            {/* Login / Signup */}
+            <Link href="/login" className="flex items-center gap-2 px-4 py-2.5 border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text-muted)] hover:text-white transition-all duration-300">
+              <LogIn size={14} />
+              <span className="text-xs font-medium tracking-wider">Login</span>
+            </Link>
+            <Link href="/signup" className="flex items-center gap-2 px-5 py-2.5 bg-[var(--gold)] text-[#080808] hover:bg-[#E4B429] transition-colors duration-300">
+              <User size={14} />
+              <span className="text-xs font-bold uppercase tracking-wider">Sign Up</span>
+            </Link>
           </div>
 
           {/* ── Mobile Hamburger ── */}
@@ -195,7 +170,7 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             aria-expanded={menuOpen}
             className="lg:hidden text-[var(--text-primary)] hover:text-[var(--gold)] transition-colors"
           >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </header>
@@ -212,22 +187,12 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             : 'opacity-0 pointer-events-none bg-[var(--background)]/98',
         )}
       >
-        <div className="h-20" />
+        <div className="h-24" />
         <nav className="flex flex-col justify-center flex-1 px-10 gap-2">
-          {navLinks.map(({ href, label }, i) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                'font-serif text-5xl font-light py-3 border-b border-[var(--border)] transition-all duration-300',
-                menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4',
-                pathname === href ? 'text-[var(--gold)]' : 'text-[var(--text-primary)] hover:text-[var(--gold)]',
-              )}
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              {label}
-            </Link>
-          ))}
+          <Link href="/" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-white">Home</Link>
+          <Link href="/login" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Login</Link>
+          <Link href="/signup" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--gold)]">Sign Up</Link>
+          
           <div className={cn(
             'mt-8 flex flex-col gap-3 transition-all duration-500',
             menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
@@ -263,7 +228,6 @@ export default function Navbar({ onBookNow }: NavbarProps) {
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </button>
             <button onClick={() => { setMenuOpen(false); onBookNow?.(); }} className="btn-gold w-full justify-center py-4">
-              <Phone size={14} />
               Book Now
             </button>
           </div>
