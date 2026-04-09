@@ -179,7 +179,7 @@ $changes = git status --porcelain
 if ([string]::IsNullOrWhiteSpace($changes)) {
     Write-Host "Nothing to commit - already up to date" -ForegroundColor Yellow
 } else {
-    git commit -m "fix: metadata in client component, GhanaTourAd JSX, remove stray page files, add legal pages"
+    git commit -m "feat: add Vercel Analytics and update legal pages"
     git push
     Write-Host ""
     Write-Host "DONE - Pushed! Vercel will deploy automatically." -ForegroundColor Green
