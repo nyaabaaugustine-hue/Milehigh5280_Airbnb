@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import type { ContactFormData } from '@/types';
 
-// ─── Admin inbox — all emails land here ──────────────────────────────────────
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
+const WA_DISPLAY  = '+233 059 975 4270';
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
       other:     'General Enquiry',
     };
 
-    // 1️⃣ Admin notification
     await transporter.sendMail({
       from:    `"Milehigh5280 Website" <${process.env.GMAIL_USER}>`,
       to:      ADMIN_EMAIL,
@@ -56,7 +55,6 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    // 2️⃣ Auto-reply to guest
     await transporter.sendMail({
       from:    `"Milehigh5280 🌴" <${process.env.GMAIL_USER}>`,
       to:      body.email,
@@ -65,7 +63,7 @@ export async function POST(req: NextRequest) {
         <div style="font-family:Arial,sans-serif;max-width:600px;background:#111;color:#F5F0E8;padding:32px;">
           <h2 style="color:#C9963A;">Thank you, ${body.name.split(' ')[0]}!</h2>
           <p>We've received your inquiry and will get back to you within 2 hours.</p>
-          <p>For faster assistance, reach us on WhatsApp: +1 720 705 9849</p>
+          <p>For faster assistance, reach us on WhatsApp: <strong style="color:#C9963A;">${WA_DISPLAY}</strong></p>
         </div>
       `,
     });

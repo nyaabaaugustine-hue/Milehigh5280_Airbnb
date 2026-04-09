@@ -26,17 +26,13 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
-// ─── URLs — single source of truth ──────────────────────────────────────────
-const SITE_URL   = 'https://thepalmayimensah.com';
-// Logo used as the share image so it appears on WhatsApp / iMessage / Slack / X etc.
-const LOGO_URL   = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
-// Hero photo used as a secondary OG image (rich previews on desktop)
-const HERO_URL   = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg';
+const SITE_URL    = 'https://thepalmayimensah.com';
+const LOGO_URL    = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
+const HERO_URL    = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg';
 const FAVICON_URL = 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/logo_xcjkpn.jpg';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-
   title: {
     default: 'The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
     template: '%s | The Palm · Ayi Mensah',
@@ -50,8 +46,6 @@ export const metadata: Metadata = {
   ],
   authors:  [{ name: 'Milehigh Properties' }],
   creator:  'Milehigh Properties',
-
-  // ── Favicon / App Icon (used in browser tab) ────────────────────────────
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -60,9 +54,6 @@ export const metadata: Metadata = {
     shortcut: FAVICON_URL,
     apple: FAVICON_URL,
   },
-
-  // ── Open Graph — controls WhatsApp, iMessage, Telegram, Slack, LinkedIn
-  //    Put the LOGO first so it's the thumbnail shown in chat link previews ─
   openGraph: {
     type:        'website',
     locale:      'en_GB',
@@ -71,24 +62,10 @@ export const metadata: Metadata = {
     title:       'The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra',
     description: 'A beautifully furnished private apartment in the tranquil Ayi Mensah area of Accra, managed by Milehigh Properties.',
     images: [
-      // ① Square logo — renders as thumbnail in WhatsApp / iMessage / Telegram
-      {
-        url:    LOGO_URL,
-        width:  800,
-        height: 800,
-        alt:    'Milehigh5280 Logo',
-      },
-      // ② Wide hero — used by Facebook / LinkedIn desktop rich previews
-      {
-        url:    HERO_URL,
-        width:  1200,
-        height: 630,
-        alt:    'The Palm — Luxury apartment in Ayi Mensah, Accra',
-      },
+      { url: LOGO_URL,  width: 800,  height: 800,  alt: 'Milehigh5280 Logo' },
+      { url: HERO_URL,  width: 1200, height: 630,  alt: 'The Palm — Luxury apartment in Ayi Mensah, Accra' },
     ],
   },
-
-  // ── Twitter / X card ────────────────────────────────────────────────────
   twitter: {
     card:        'summary_large_image',
     site:        '@milehigh5280',
@@ -97,9 +74,8 @@ export const metadata: Metadata = {
     description: 'A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties.',
     images:      [LOGO_URL],
   },
-
-  robots:    { index: true, follow: true },
-  category:  'travel',
+  robots:   { index: true, follow: true },
+  category: 'travel',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -108,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     '@type':    'LodgingBusiness',
     name:        'Milehigh5280 by Milehigh Properties',
     url:          SITE_URL,
-    telephone:   '+17207059849',
+    telephone:   '+233599754270',
     email:       'herbertprempeh@gmail.com',
     image:        LOGO_URL,
     description: 'Luxury private apartment in Ayi Mensah, Accra, Ghana. Managed by Milehigh Properties.',
@@ -132,13 +108,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="dark" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
-        {/* ── Standard Favicons ── */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/jpeg" href={FAVICON_URL} />
         <link rel="shortcut icon" href={FAVICON_URL} />
         <link rel="apple-touch-icon" href={FAVICON_URL} />
 
-        {/* ── Open Graph / Facebook / WhatsApp ── */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="The Palm 🌴 — Luxury Private Apartment · Ayi Mensah, Accra" />
@@ -149,14 +123,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image:width" content="800" />
         <meta property="og:image:height" content="800" />
 
-        {/* ── Twitter / X ── */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={SITE_URL} />
         <meta name="twitter:title" content="The Palm 🌴 · Ayi Mensah" />
         <meta name="twitter:description" content="A luxury private apartment in Ayi Mensah, Accra — by Milehigh Properties." />
         <meta name="twitter:image" content={LOGO_URL} />
 
-        {/* ── Structured data ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}

@@ -21,8 +21,8 @@ export const LANGUAGES = [
 
 // ─── Contact Info — single source of truth ────────────────────────────────────
 export const CONTACT_INFO = {
-  phone:    '+17207059849',
-  whatsapp: '17207059849',
+  phone:    '+233 059 975 4270',
+  whatsapp: '233599754270',
   email:    'herbertprempeh@gmail.com',
   location: 'Ayi Mensah, Accra, Ghana',
 };
@@ -107,7 +107,6 @@ export const TRANSLATIONS = {
 };
 
 export const properties: Property[] = [
-  // ─── Milehigh5280 — The One & Only ────────────────────────────────────────
   {
     id: '1',
     slug: 'the-palm-ayi-mensah',
@@ -179,7 +178,7 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
         id: 'r1', author: 'Kwame A.',
         avatar:       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80',
         country:      'Ghana',
-        rating:       5, // Changed from 2025 to 2026
+        rating:       5,
         date:         'March 2026',
         stayDuration: '5 nights',
         comment:      'Milehigh5280 exceeded all my expectations. The apartment is immaculate, modern, and so peaceful. Ayi Mensah is such a beautiful area — I woke up to birds every morning. Highly recommend!',
@@ -188,7 +187,7 @@ The property is managed by Milehigh Properties, a trusted name in premium short-
         id: 'r2', author: 'Diana O.',
         avatar:       'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80',
         country:      'United Kingdom',
-        rating:       5, // Changed from 2025 to 2026
+        rating:       5,
         date:         'February 2026',
         stayDuration: '7 nights',
         comment:      'Coming back to Ghana to visit family and this was the perfect base. The neighbourhood is lush and green, the apartment feels like a proper home. The host was incredibly responsive and helpful.',
@@ -241,7 +240,7 @@ export const blogPosts: BlogPost[] = [
 ];
 
 // ─── Helper Functions ─────────────────────────────────────────────────────────
-export const posts = blogPosts; // Alias for generateStaticParams compatibility
+export const posts = blogPosts;
 
 export const getLiveProperties     = () => properties.filter(p => p.isLive !== false);
 export const getFeaturedProperties = () => properties.filter(p => p.featured);
