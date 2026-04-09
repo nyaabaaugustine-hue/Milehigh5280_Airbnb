@@ -4,10 +4,46 @@ import Link from 'next/link';
 import { Star, MapPin, Users, Bed, Bath, ArrowRight, Clock } from 'lucide-react';
 import { properties, formatCurrency } from '@/lib/data';
 
-export const metadata: Metadata = {
-  title: 'Properties — The Palm & Milehigh Properties',
-  description: 'Browse our curated collection of premium private apartments and villas across Accra, Ghana — by Milehigh Properties.',
-};
+const SITE_URL = 'https://thepalmayimensah.com';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const propertyJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Luxury Properties by Milehigh Properties',
+    url: `${SITE_URL}/properties`,
+    description: 'Premium private apartments and villas in Ayi Mensah and Greater Accra, Ghana',
+    numberOfItems: properties.length,
+    itemListElement: properties.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: `${SITE_URL}/properties/${p.slug}`,
+      image: p.images[0]?.url,
+      description: p.description,
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: p.rating,
+        reviewCount: p.reviewCount,
+      },
+    })),
+  };
+
+  return {
+    title: 'Luxury Properties in Accra — The Palm & More | Milehigh Properties',
+    description: 'Browse our curated collection of premium private apartments and villas in Ayi Mensah and Greater Accra, Ghana. All properties managed by Milehigh Properties with 5-star hospitality standards.',
+    keywords: ['luxury accommodation Accra', 'private villa Ghana', 'Ayi Mensah apartments', 'Milehigh Properties', 'short stay Accra', 'Ghana luxury rentals', 'premium apartments Accra'],
+    openGraph: {
+      title: 'Luxury Properties in Accra | Milehigh Properties',
+      description: 'Premium private apartments and villas across Accra, Ghana. Managed by Milehigh Properties.',
+      url: 'https://thepalmayimensah.com/properties',
+      images: [{ url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', width: 1200, height: 630 }],
+    },
+    other: {
+      'application/ld+json': JSON.stringify(propertyJsonLd),
+    },
+  };
+}
 
 const typeLabels: Record<string, string> = {
   villa:     'Private Villa',

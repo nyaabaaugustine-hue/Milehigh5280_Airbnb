@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 import ClientShell from '@/components/layout/ClientShell';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { AuthProvider } from '@/lib/AuthContext';
 import SiteLoader from '@/components/ui/SiteLoader';
 import SocialSidebar from '@/components/ui/SocialSidebar';
 import GhanaTourAd from '@/components/ui/GhanaTourAd';
@@ -142,6 +143,94 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Milehigh Properties",
+              url: SITE_URL,
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate: `${SITE_URL}/properties?search={search_term_string}`
+                },
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Milehigh Properties",
+              url: SITE_URL,
+              logo: LOGO_URL,
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+233-599-754-270",
+                contactType: "customer service",
+                availableLanguage: ["English", "French"],
+                areaServed: "GH"
+              },
+              sameAs: [
+                "https://www.instagram.com/milehigh5280",
+                "https://www.facebook.com/milehigh5280"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+                { "@type": "ListItem", position: 2, name: "Properties", item: `${SITE_URL}/properties` },
+                { "@type": "ListItem", position: 3, name: "Milehigh5280", item: `${SITE_URL}/properties/the-palm-ayi-mensah` }
+              ]
+            })
+          }}
+        />
+        {process.env.NEXT_PUBLIC_HOTJAR_ID && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(h,o,t,j,a,r){
+                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                  h._hjSettings={hjid:${process.env.NEXT_PUBLIC_HOTJAR_ID},hjsv:6};
+                  a=o.getElementsByTagName('head')[0];
+                  r=o.createElement('script');r.async=1;
+                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                  a.appendChild(r);
+                })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+              `
+            }}
+          />
+        )}
+        {process.env.NEXT_PUBLIC_CLARITY_ID && (
+          <>
+            <script
+              type="text/javascript"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                  })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_ID}");
+                `
+              }}
+            />
+          </>
+        )}
       </head>
       <body className="text-[var(--text-primary)] font-sans antialiased overflow-x-hidden" suppressHydrationWarning>
         <div className="grain-overlay" aria-hidden="true" />
@@ -151,9 +240,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GhanaTourAd />
         <SocialProofTicker />
         <LanguageProvider>
-          <ClientShell>
-            {children}
-          </ClientShell>
+          <AuthProvider>
+            <ClientShell>
+              {children}
+            </ClientShell>
+          </AuthProvider>
         </LanguageProvider>
         <Footer />
         <CookieConsent />
