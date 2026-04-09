@@ -3,13 +3,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-/*
-  Cloudinary transforms used:
-    c_pad   → fit entire symbol inside the square WITHOUT cropping (adds padding)
-    b_white → pad area is white — disappears via mix-blend-mode:multiply
-    w_400,h_400 → generous resolution so symbols are crisp
-    e_brightness:30 → boost so symbols stay vivid after blend darkening
-*/
 const symbols = [
   {
     name: 'Gye Nyame',
@@ -43,8 +36,7 @@ const symbols = [
   },
 ];
 
-/* Fixed card size — every symbol gets exactly the same box, no exceptions */
-const CARD_SIZE = 140; /* px */
+const CARD_SIZE = 140;
 
 export default function AdinkraSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -73,40 +65,62 @@ export default function AdinkraSection() {
           </p>
         </motion.div>
 
-        {/* Grid — 2 cols mobile → 3 cols sm → 6 cols md+ */}
+        {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 lg:gap-10 place-items-center">
           {symbols.map(({ name, meaning, url }, i) => (
             <motion.div
               key={name}
               className="flex flex-col items-center gap-4 group cursor-default"
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.08 }}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              whileHover={{ y: -4 }}
             >
-              {/* Fixed-size square — no shrink/grow, fully consistent */}
+              {/* Symbol container - light background so symbols appear clearly */}
               <div
-                className="relative shrink-0 overflow-hidden border border-[var(--gold)]/30 group-hover:border-[var(--gold)] transition-all duration-500 group-hover:scale-105"
-                style={{ width: CARD_SIZE, height: CARD_SIZE }}
+                className="relative shrink-0 overflow-hidden border border-[var(--gold)]/30 group-hover:border-[var(--gold)] transition-all duration-500"
+                style={{
+                  width: CARD_SIZE,
+                  height: CARD_SIZE,
+                  borderRadius: '6%',
+                  backgroundColor: '#F5F0E8',
+                }}
               >
-                {/* Gold shimmer on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[var(--gold)]/15 to-transparent z-10 pointer-events-none" />
+                {/* Glow effect on hover */}
+                <motion.div
+                  className="absolute inset-0 z-10 pointer-events-none"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    background: 'radial-gradient(circle at center, rgba(201,150,58,0.2) 0%, transparent 70%)',
+                  }}
+                />
 
-                {/* Symbol image — c_pad ensures no cropping; blend removes white bg */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {/* Symbol image */}
                 <img
                   src={url}
                   alt={name}
                   width={CARD_SIZE}
                   height={CARD_SIZE}
-                  className="absolute inset-0 w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-110"
-                  style={{
-                    mixBlendMode: 'multiply',
-                    filter: 'contrast(1.25) saturate(1.1)',
-                  }}
+                  className="absolute inset-0 w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-110"
+                  style={{ mixBlendMode: 'multiply' }}
                 />
 
-                {/* Bottom gold reveal line */}
-                <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[2px] bg-[var(--gold)] transition-all duration-500 z-20" />
+                {/* Animated gold border on hover */}
+                <motion.div
+                  className="absolute inset-0 border-2 border-transparent z-20 pointer-events-none"
+                  initial={{ borderColor: 'transparent' }}
+                  whileHover={{ borderColor: 'rgba(201,150,58,0.6)' }}
+                  transition={{ duration: 0.3 }}
+                  style={{ borderRadius: '6%' }}
+                />
+
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[var(--gold)]/0 group-hover:border-[var(--gold)] transition-all duration-500 z-20" style={{ borderRadius: '6% 0 0 0' }} />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[var(--gold)]/0 group-hover:border-[var(--gold)] transition-all duration-500 z-20" style={{ borderRadius: '0 6% 0 0' }} />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[var(--gold)]/0 group-hover:border-[var(--gold)] transition-all duration-500 z-20" style={{ borderRadius: '0 0 0 6%' }} />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[var(--gold)]/0 group-hover:border-[var(--gold)] transition-all duration-500 z-20" style={{ borderRadius: '0 0 6% 0' }} />
               </div>
 
               {/* Label */}
