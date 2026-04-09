@@ -93,7 +93,7 @@ export interface PriceBreakdown {
   currency: 'USD' | 'GHS';
 }
 
-export type Currency = 'USD' | 'GHS';
+export type Currency = 'USD' | 'GHS' | 'EUR' | 'GBP';
 
 // ─── Blog / News ─────────────────────────────────────────────────────────────
 export interface BlogPost {

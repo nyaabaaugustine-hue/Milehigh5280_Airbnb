@@ -30,7 +30,7 @@ export async function fetchAirtableRecords(
     offset?: string;
     fields?: string[];
   }
-): Promise<AirtableRecord[]> {
+): Promise<AirtableResponse> {
   if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
     throw new Error('Airtable not configured');
   }
@@ -66,7 +66,7 @@ export async function fetchAirtableRecords(
       Authorization: `Bearer ${AIRTABLE_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 300 }, // Cache for 5 minutes
+    next: { revalidate: 300 },
   });
 
   if (!response.ok) {

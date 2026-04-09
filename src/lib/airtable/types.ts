@@ -25,7 +25,7 @@ export interface Property {
     perMonth?: number;
     cleaningFee?: number;
     serviceFee?: number;
-    currency: 'USD' | 'GHS';
+    currency: 'USD' | 'GHS' | 'EUR' | 'GBP';
     minNights?: number;
   };
   capacity: {

@@ -9,11 +9,11 @@ export function transformProperty(record: AirtableRecord): Property {
 
   const images = {
     hero: {
-      url: (f['Hero Image'] as string[]) || (f['Images'] as string[])?.[0] || '',
+      url: (f['Hero Image'] as string) || (f['Images'] as string[])?.[0] || '',
       alt: (f['Name'] as string) || '',
     },
-    gallery: ((f['Gallery'] as string[]) || []).map((url, i) => ({
-      url,
+    gallery: ((f['Gallery'] as string[]) || (f['Images'] as string[]) || []).map((url, i) => ({
+      url: typeof url === 'string' ? url : url,
       alt: `${f['Name']} - Image ${i + 1}`,
       category: 'gallery',
     })),
@@ -27,6 +27,7 @@ export function transformProperty(record: AirtableRecord): Property {
     description: (f['Description'] as string) || '',
     type: (f['Type'] as Property['type']) || 'apartment',
     badge: f['Badge'] as Property['badge'],
+    featured: f['Featured'] as boolean ?? false,
     isLive: f['Is Live'] !== false,
     location: {
       city: (f['City'] as string) || 'Accra',
@@ -37,7 +38,7 @@ export function transformProperty(record: AirtableRecord): Property {
       perNight: (f['Price per Night'] as number) || 0,
       perWeek: f['Price per Week'] as number,
       perMonth: f['Price per Month'] as number,
-      currency: (f['Currency'] as 'USD' | 'GHS') || 'USD',
+      currency: (f['Currency'] as 'USD' | 'GHS' | 'EUR' | 'GBP') || 'USD',
     },
     capacity: {
       guests: (f['Max Guests'] as number) || 2,
@@ -45,8 +46,8 @@ export function transformProperty(record: AirtableRecord): Property {
       bathrooms: (f['Bathrooms'] as number) || 1,
       beds: (f['Beds'] as number) || 1,
     },
-    images,
     amenities: (f['Amenities'] as string[]) || [],
+    images,
     features: (f['Features'] as string[]) || [],
     houseRules: (f['House Rules'] as string[]) || [],
     checkInTime: (f['Check-in Time'] as string) || '14:00',
