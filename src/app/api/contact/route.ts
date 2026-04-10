@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import type { ContactFormData } from '@/types';
+import { execute } from '@/lib/neon/client';
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'herbertprempeh@gmail.com';
 const WA_DISPLAY  = '+233 059 975 4270';
@@ -21,6 +22,23 @@ export async function POST(req: NextRequest) {
 
     if (!body.name?.trim() || !body.email?.trim() || !body.message?.trim()) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
+    }
+
+    // ── Log to Neon DB (non-blocking) ────────────────────────
+    try {
+      await execute(
+        `INSERT INTO contact_submissions (name, email, phone, message, type, status)
+         VALUES ($1, $2, $3, $4, $5, 'unread')`,
+        [
+          body.name.trim(),
+          body.email.trim(),
+          (body.phone ?? '').trim() || null,
+          body.message.trim(),
+          body.type ?? 'other',
+        ]
+      );
+    } catch (dbErr) {
+      console.error('[DB] Failed to log contact submission:', dbErr);
     }
 
     if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
@@ -48,6 +66,7 @@ export async function POST(req: NextRequest) {
           <h2 style="color:#C9963A;margin-top:0;">🌴 New Contact Enquiry</h2>
           <p><strong>Name:</strong> ${body.name}</p>
           <p><strong>Email:</strong> ${body.email}</p>
+          <p><strong>Phone:</strong> ${body.phone || '—'}</p>
           <p><strong>Type:</strong> ${typeLabels[body.type] || body.type}</p>
           <hr style="border-color:rgba(201,150,58,0.2);"/>
           <p style="white-space:pre-wrap;">${body.message}</p>

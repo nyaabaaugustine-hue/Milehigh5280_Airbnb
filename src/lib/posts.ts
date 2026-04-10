@@ -133,7 +133,7 @@ When evaluating luxury accommodation in Accra, prioritise: 24-hour power backup,
     author: 'Milehigh Team',
     date: 'April 2025',
     readTime: '6 min read',
-    image: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800',
+    image: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775819520/Banner-1_bk1oka.jpg',
     tag: 'Destination Guide',
     content: `Ayi Mensah is what happens when you drive east out of Accra on the Adenta-Dodowa road and keep going until the city noise fades to birdsong. It is a peri-urban hill town perched above the Greater Accra plains — lush, unhurried, and increasingly home to some of the region's most thoughtful luxury stays.
 

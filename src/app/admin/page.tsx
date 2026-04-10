@@ -4,7 +4,7 @@ import {
   Building2, Star, FileText, MessageSquare, 
   Eye, Edit, TrendingUp, Users, Calendar
 } from 'lucide-react';
-import { getAllProperties, getAllReviews, getAllBlogPosts, getAllAmenities } from '@/lib/airtable/service';
+import { getAllPropertiesNeon, getAllReviewsNeon, getAllBlogPostsNeon, getAllAmenitiesNeon } from '@/lib/neon/service';
 import { getContactInfo, getSocialLinks } from '@/lib/data';
 
 export const metadata: Metadata = {
@@ -17,10 +17,10 @@ export const revalidate = 60;
 async function getStats() {
   try {
     const [properties, reviews, blogPosts, amenities] = await Promise.all([
-      getAllProperties().catch(() => []),
-      getAllReviews().catch(() => []),
-      getAllBlogPosts().catch(() => []),
-      getAllAmenities().catch(() => []),
+      getAllPropertiesNeon().catch(() => []),
+      getAllReviewsNeon().catch(() => []),
+      getAllBlogPostsNeon().catch(() => []),
+      getAllAmenitiesNeon().catch(() => []),
     ]);
 
     return {
@@ -165,18 +165,19 @@ export default async function AdminDashboard() {
       <div className="bg-[var(--gold)]/10 border border-[var(--gold)]/30 p-6">
         <h3 className="text-[var(--gold)] font-medium mb-2">Getting Started</h3>
         <p className="text-[var(--text-muted)] text-sm mb-4">
-          This dashboard connects to your Airtable CMS. Make sure to set up your Airtable base with the required tables.
+          This dashboard connects to Neon Postgres CMS. Make sure <code className="bg-[var(--surface-3)] px-1">NEON_DATABASE_URL</code> is configured in <code className="bg-[var(--surface-3)] px-1">.env.local</code>.
         </p>
         <div className="flex gap-4">
           <Link href="/admin/settings" className="btn-gold text-xs py-2">
-            Configure Airtable
+            Configure Neon
           </Link>
           <a 
-            href="/AIRTABLE-SETUP.md" 
+            href="/NEON-MIGRATION.md" 
             target="_blank"
+            rel="noreferrer"
             className="btn-ghost text-xs py-2"
           >
-            View Setup Guide
+            View Neon Setup Guide
           </a>
         </div>
       </div>

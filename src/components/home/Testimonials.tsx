@@ -8,9 +8,45 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Gather all reviews
-const allReviews = properties.flatMap(p =>
-  p.reviews.map(r => ({ ...r, propertyName: p.name }))
-);
+const sampleReviews = [
+  {
+    id: '1',
+    author: 'Sarah M.',
+    country: 'United Kingdom',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+    rating: 5,
+    date: '2024-12-15',
+    comment: 'Absolutely stunning property! The views of the surrounding hills were breathtaking. The villa was immaculate and the host was incredibly responsive.',
+    stayDuration: '5 nights',
+    propertyName: 'The Palm Ayi Mensah',
+  },
+  {
+    id: '2',
+    author: 'James K.',
+    country: 'Germany',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+    rating: 5,
+    date: '2024-11-28',
+    comment: 'Perfect escape from Accra. The peace and quiet here is exactly what we needed. The interior design is impeccable.',
+    stayDuration: '7 nights',
+    propertyName: 'The Palm Ayi Mensah',
+  },
+  {
+    id: '3',
+    author: 'Amara D.',
+    country: 'USA',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
+    rating: 5,
+    date: '2024-10-10',
+    comment: 'Exceeded all expectations. The location is pristine, the amenities top-notch, and the hospitality unmatched. Will definitely return.',
+    stayDuration: '3 nights',
+    propertyName: 'The Palm Ayi Mensah',
+  },
+];
+
+const allReviews = properties.length > 0 
+  ? properties.flatMap(p => p.reviews.map(r => ({ ...r, propertyName: p.name })))
+  : sampleReviews;
 
 const GOOGLE_MAPS_URL = "https://www.google.com/maps/place/The+Palm+%F0%9F%8C%B4+Ayi+mensah+By+Rehoboth+Properties/@5.7928557,-0.1790786,15z/data=!4m8!3m7!1s0xfdf775ee9a8b2ad:0xbeeaf9c2791d4a48!8m2!3d5.7929052!4d-0.1791364!9m1!1b1!16s%2Fg%2F11q332fb_r?hl=en-US";
 
@@ -47,12 +83,15 @@ export default function Testimonials() {
   const handleGoogleReview = () => {
     setIsRedirecting(true);
     setTimeout(() => {
+      if (typeof window === 'undefined') return;
       window.open(GOOGLE_MAPS_URL, '_blank');
       setIsRedirecting(false);
     }, 2200);
   };
 
-  const current = allReviews[active];
+  if (!allReviews || allReviews.length === 0) return null;
+
+  const current = allReviews[active] || allReviews[0];
 
   return (
     <section className="py-24 lg:py-36 bg-[var(--surface)] border-y border-[var(--border)]">

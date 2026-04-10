@@ -1,34 +1,68 @@
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
 
-const connectionString = process.env.DATABASE_URL;
+// Support both DATABASE_URL and NEON_DATABASE_URL
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.NEON_DATABASE_URL ||
+  null;
 
 if (!connectionString) {
-  console.warn('DATABASE_URL not set. Using demo mode.');
+  console.warn('[Neon] DATABASE_URL / NEON_DATABASE_URL not set. DB calls will be no-ops.');
 }
 
-export const sql = neon(connectionString || 'postgresql://demo:demo@localhost:5432/demo');
+// Enable connection pooling for serverless
+neonConfig.fetchConnectionCache = true;
 
-export async function query<T = unknown>(text: string, params?: unknown[]): Promise<T[]> {
+// Create the sql tagged-template function
+export const sql = connectionString ? neon(connectionString) : null;
+
+/**
+ * Execute a parameterised query and return all rows.
+ * Uses neon's low-level query() which accepts a plain SQL string + params array.
+ */
+export async function query<T = Record<string, unknown>>(
+  text: string,
+  params?: unknown[]
+): Promise<T[]> {
+  if (!sql) return [];
   try {
-    const result = await sql(text, params);
-    return result as T[];
+    const result = await sql.query(text, params ?? []) as unknown as { rows: T[] };
+    return result.rows ?? [];
   } catch (error) {
-    console.error('Database query error:', error);
-    throw error;
+    console.error('[Neon] Query error:', error);
+    console.error('[Neon] SQL:', text);
+    return [];
   }
 }
 
-export async function queryOne<T = unknown>(text: string, params?: unknown[]): Promise<T | null> {
-  const results = await query<T>(text, params);
-  return results[0] || null;
+/**
+ * Execute a parameterised query and return the first row, or null.
+ */
+export async function queryOne<T = Record<string, unknown>>(
+  text: string,
+  params?: unknown[]
+): Promise<T | null> {
+  const rows = await query<T>(text, params);
+  return rows[0] ?? null;
 }
 
-export async function execute(text: string, params?: unknown[]): Promise<{ count: number }> {
+/**
+ * Execute a statement that doesn't return rows (INSERT/UPDATE/DELETE).
+ * Returns true on success, false on error.
+ */
+export async function execute(text: string, params?: unknown[]): Promise<boolean> {
+  if (!sql) return false;
   try {
-    await sql(text, params);
-    return { count: 1 };
+    await sql.query(text, params ?? []);
+    return true;
   } catch (error) {
-    console.error('Database execute error:', error);
-    throw error;
+    console.error('[Neon] Execute error:', error);
+    console.error('[Neon] SQL:', text);
+    return false;
   }
+}
+
+/** Returns true when a real DB connection is available */
+export function isDbConnected(): boolean {
+  return sql !== null;
 }

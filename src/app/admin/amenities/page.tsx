@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus, Star } from 'lucide-react';
-import { getAllAmenities } from '@/lib/airtable/service';
+import { getAllAmenitiesNeon } from '@/lib/neon/service';
 import type { Amenity } from '@/lib/airtable/types';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function AdminAmenitiesPage() {
   let amenities: Amenity[] = [];
   
   try {
-    amenities = await getAllAmenities();
+    amenities = await getAllAmenitiesNeon();
   } catch {
     amenities = [];
   }
@@ -45,13 +45,11 @@ export default async function AdminAmenitiesPage() {
           </p>
         </div>
         <a 
-          href="https://airtable.com" 
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/admin/amenities"
           className="btn-gold text-xs"
         >
           <Plus size={14} />
-          Add in Airtable
+          Add Amenity
         </a>
       </div>
 
@@ -74,14 +72,12 @@ export default async function AdminAmenitiesPage() {
                   <span className="text-2xl">{amenity.icon}</span>
                   <div>
                     <p className="text-white text-sm">{amenity.name}</p>
-                    <a 
-                      href="https://airtable.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
                       className="text-[var(--text-subtle)] text-xs hover:text-[var(--gold)]"
                     >
                       Edit →
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -96,12 +92,10 @@ export default async function AdminAmenitiesPage() {
           <Star size={48} className="text-[var(--text-subtle)] mx-auto mb-4" />
           <h3 className="text-white text-lg mb-2">No amenities yet</h3>
           <p className="text-[var(--text-muted)] text-sm mb-4">
-            Create amenities in Airtable to display them on your properties
+            Create amenities in Neon CMS to display them on your properties
           </p>
           <a 
-            href="https://airtable.com" 
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/admin/amenities"
             className="btn-gold text-xs"
           >
             Create First Amenity

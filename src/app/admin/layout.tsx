@@ -2,10 +2,10 @@
 
 import { useState, useEffect, ReactNode } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Home, Building2, Star, FileText, Settings,
-  Globe, LayoutDashboard, Bot, Bell, Menu, MessageSquare,
+  Globe, LayoutDashboard, Bot, Bell, Menu, MessageSquare, LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import AIPortalManager from '@/components/admin/AIPortalManager';
@@ -24,11 +24,60 @@ const navItems = [
   { href: '/admin/settings',    label: 'Settings',       icon: Settings },
 ];
 
+interface AdminSession {
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  loginTime: string;
+}
+
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  const pathname    = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [session, setSession] = useState<AdminSession | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check admin session
+    const stored = localStorage.getItem('adminSession');
+    if (stored) {
+      try {
+        setSession(JSON.parse(stored));
+      } catch {
+        localStorage.removeItem('adminSession');
+      }
+    }
+    setLoading(false);
+  }, []);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminSession');
+    setSession(null);
+    router.push('/login');
+  };
+
+  // Show loading while checking session
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  // Redirect to login if no session
+  if (!session) {
+    if (typeof window !== 'undefined') {
+      router.push('/login');
+    }
+    return null;
+  }
+
+  const initials = session.firstName.charAt(0) + (session.lastName?.charAt(0) || '');
 
   return (
     <div className="min-h-screen bg-[var(--surface)] flex">
@@ -65,9 +114,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </Link>
           </div>
           <div className="flex items-center gap-4">
+            <button 
+              onClick={handleLogout}
+              className="text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors flex items-center gap-2 text-sm"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
             <Bell size={20} className="text-[var(--text-muted)] cursor-pointer hover:text-[var(--gold)] transition-colors" />
             <div className="w-10 h-10 bg-[var(--gold)] flex items-center justify-center text-[#080808] font-bold text-lg rounded-full">
-              A
+              {initials || 'A'}
             </div>
           </div>
         </header>

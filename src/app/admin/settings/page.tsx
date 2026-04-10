@@ -28,8 +28,7 @@ export default function AdminSettingsPage() {
       {/* Info Banner */}
       <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4">
         <p className="text-[var(--text-muted)] text-sm">
-          <strong className="text-[var(--gold)]">Note:</strong> Settings are managed in Airtable's <strong className="text-white">Settings</strong> table. 
-          For quick changes, you can edit the <code className="bg-[var(--surface-3)] px-1">src/lib/data.ts</code> file directly.
+          <strong className="text-[var(--gold)]">Note:</strong> Settings are managed by the Neon backend and optionally by <code className="bg-[var(--surface-3)] px-1">src/lib/data.ts</code> for local defaults.
         </p>
       </div>
 
@@ -71,14 +70,9 @@ export default function AdminSettingsPage() {
               </div>
             </div>
           </div>
-          <a 
-            href="https://airtable.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 text-[var(--gold)] text-xs hover:underline"
-          >
-            Edit in Airtable →
-          </a>
+          <div className="mt-4 text-[var(--text-muted)] text-xs">
+            Managed through Neon Postgres or local config.
+          </div>
         </div>
 
         {/* Concierge Hours */}
@@ -95,14 +89,9 @@ export default function AdminSettingsPage() {
               </div>
             ))}
           </div>
-          <a 
-            href="https://airtable.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 text-[var(--gold)] text-xs hover:underline"
-          >
-            Edit in Airtable →
-          </a>
+          <div className="mt-4 text-[var(--text-muted)] text-xs">
+            Managed through Neon Postgres or local config.
+          </div>
         </div>
 
         {/* Social Links */}
@@ -122,14 +111,9 @@ export default function AdminSettingsPage() {
               </div>
             ))}
           </div>
-          <a 
-            href="https://airtable.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 text-[var(--gold)] text-xs hover:underline"
-          >
-            Edit in Airtable →
-          </a>
+          <div className="mt-4 text-[var(--text-muted)] text-xs">
+            Managed through Neon Postgres or local config.
+          </div>
         </div>
 
         {/* Promo Codes */}
@@ -155,14 +139,9 @@ export default function AdminSettingsPage() {
           ) : (
             <p className="text-[var(--text-muted)] text-sm">No promo codes configured</p>
           )}
-          <a 
-            href="https://airtable.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 text-[var(--gold)] text-xs hover:underline"
-          >
-            Add in Airtable →
-          </a>
+          <div className="mt-4 text-[var(--text-muted)] text-xs">
+            Add promo codes through Neon Postgres or local config.
+          </div>
         </div>
       </div>
 
@@ -203,18 +182,19 @@ export default function AdminSettingsPage() {
         </div>
       </div>
 
-      {/* Airtable Setup */}
+      {/* Neon Setup */}
       <div className="bg-[var(--gold)]/10 border border-[var(--gold)]/30 p-6">
-        <h3 className="text-[var(--gold)] font-medium mb-2">Need to Set Up Settings Tables?</h3>
+        <h3 className="text-[var(--gold)] font-medium mb-2">Need to Set Up Neon CMS?</h3>
         <p className="text-[var(--text-muted)] text-sm mb-4">
-          Follow the Airtable setup guide to configure your Settings table.
+          Follow the Neon migration guide to connect your Postgres CMS and replace Airtable.
         </p>
         <a 
-          href="/AIRTABLE-SETUP.md"
+          href="/NEON-MIGRATION.md"
           target="_blank"
+          rel="noreferrer"
           className="btn-gold text-xs"
         >
-          View Airtable Setup Guide
+          View Neon Setup Guide
         </a>
       </div>
     </div>
@@ -222,8 +202,9 @@ export default function AdminSettingsPage() {
 }
 
 const envVars = [
-  { name: 'AIRTABLE_API_KEY', placeholder: 'patXXXXXXXXXXXXXX.XX...', required: true },
-  { name: 'AIRTABLE_BASE_ID', placeholder: 'appXXXXXXXXXXXXXX', required: true },
+  { name: 'NEON_DATABASE_URL', placeholder: 'postgres://user:pass@host:5432/dbname', required: true },
+  { name: 'NEON_DATABASE_URL_READ_REPLICA', placeholder: 'postgres://user:pass@host:5432/dbname', required: false },
+  { name: 'GROK_API_KEY', placeholder: 'sk-...', required: true },
   { name: 'GMAIL_USER', placeholder: 'your-email@gmail.com', required: true },
   { name: 'GMAIL_PASS', placeholder: '16-character-app-password', required: true },
   { name: 'ADMIN_EMAIL', placeholder: 'admin@example.com', required: true },

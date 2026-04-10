@@ -1,36 +1,13 @@
-// ─── Tool Executor ────────────────────────────────────────────────────────────
-// This is the ONLY place where AI-requested actions are actually executed.
-// Every execution requires an approved ActionLog entry.
-// Each handler captures before/after values for audit and undo.
+// ─── AI Executor for Neon Postgres ───────────────────────────────────────────
+// This replaces Airtable mutations with Neon database operations
 
-import type {
-  ActionLog,
-  ExecutionResult,
-  UpdateContentInput,
-  UpdatePropertyInput,
-  UpdatePropertyPriceInput,
-  BulkUpdatePricesInput,
-  CreatePropertyInput,
-  UpdateContactInfoInput,
-  PublishBlogPostInput,
-  ApproveReviewInput,
-  DeleteReviewInput,
-  TogglePropertyLiveInput,
-  ToolName,
-} from './types';
-
-import {
-  updateAirtableRecord,
-  createAirtableRecord,
-  deleteAirtableRecord,
-  fetchAllForMutation,
-} from './airtable-mutations';
-
+import { updatePropertyNeon, createPropertyNeon, getAllPropertiesNeon, getAllBlogPostsNeon, updateBlogPostNeon } from '@/lib/neon/service';
+import { query, execute } from '@/lib/neon/client';
+import type { AIInterpretResponse } from './types';
+import type { ActionLog, ExecutionResult } from './types';
 import { markExecuted, markFailed } from './logger';
 
 const USD_TO_GHS = 15.8;
-
-// ─── Main dispatcher ──────────────────────────────────────────────────────────
 
 export async function executeAction(log: ActionLog): Promise<ExecutionResult> {
   if (log.status !== 'approved') {
@@ -40,9 +17,8 @@ export async function executeAction(log: ActionLog): Promise<ExecutionResult> {
   try {
     const result = await dispatch(log);
     await markExecuted(log.id, {
-      before:           result.before,
-      after:            result.after,
-      airtableRecordId: result.airtableRecordId,
+      before: result.before,
+      after: result.after,
     });
     return result;
   } catch (err: unknown) {
@@ -53,377 +29,264 @@ export async function executeAction(log: ActionLog): Promise<ExecutionResult> {
 }
 
 async function dispatch(log: ActionLog): Promise<ExecutionResult> {
-  switch (log.tool as ToolName) {
+  const data = log.input as unknown as Record<string, unknown>;
+  
+  switch (log.tool) {
     case 'updateContent':
-      return executeUpdateContent(log.id, log.input as UpdateContentInput);
-
+      return executeUpdateContent(log.id, data);
     case 'updateContactInfo':
-      return executeUpdateContactInfo(log.id, log.input as UpdateContactInfoInput);
-
+      return executeUpdateContactInfo(log.id, data);
     case 'updateProperty':
-      return executeUpdateProperty(log.id, log.input as UpdatePropertyInput);
-
+      return executeUpdateProperty(log.id, data);
     case 'updatePropertyPrice':
-      return executeUpdatePropertyPrice(log.id, log.input as UpdatePropertyPriceInput);
-
+      return executeUpdatePropertyPrice(log.id, data);
     case 'bulkUpdatePrices':
-      return executeBulkUpdatePrices(log.id, log.input as BulkUpdatePricesInput);
-
+      return executeBulkUpdatePrices(log.id, data);
     case 'createProperty':
-      return executeCreateProperty(log.id, log.input as CreatePropertyInput);
-
+      return executeCreateProperty(log.id, data);
     case 'togglePropertyLive':
-      return executeTogglePropertyLive(log.id, log.input as TogglePropertyLiveInput);
-
+      return executeTogglePropertyLive(log.id, data);
     case 'publishBlogPost':
+      return executePublishBlogPost(log.id, data, true);
     case 'unpublishBlogPost':
-      return executeToggleBlogPost(log.id, log.input as PublishBlogPostInput, log.tool === 'publishBlogPost');
-
-    case 'approveReview':
-      return executeApproveReview(log.id, log.input as ApproveReviewInput);
-
-    case 'deleteReview':
-      return executeDeleteReview(log.id, log.input as DeleteReviewInput);
-
+      return executePublishBlogPost(log.id, data, false);
     default:
       throw new Error(`Unknown tool: ${log.tool}`);
   }
 }
 
-// ─── Individual Handlers ──────────────────────────────────────────────────────
+async function executeUpdateContent(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const key = input.key as string;
+  const value = input.value as string;
+  const section = input.section as string;
+  
+  // Update site_content table
+  const result = await execute(
+    `UPDATE site_content SET content = $1, updated_at = NOW() WHERE section = $2 AND content_key = $3`,
+    [value, section, key]
+  );
 
-async function executeUpdateContent(
-  logId: string,
-  input: UpdateContentInput,
-): Promise<ExecutionResult> {
-  // Find the record in the Site Content table matching the key
-  const records = await fetchAllForMutation('Site Content');
-  const existing = records.find(r => (r.fields['Key'] as string) === input.key);
-
-  if (existing) {
-    const before = { [input.key]: existing.fields['Value'] };
-    await updateAirtableRecord('Site Content', existing.id, { Value: input.value });
+  if (result) {
     return {
-      success:           true,
+      success: true,
       logId,
-      message:           `Updated "${input.key}" in section "${input.section}"`,
-      airtableRecordId:  existing.id,
-      before,
-      after:             { [input.key]: input.value },
+      message: `Updated "${key}" in section "${section}"`,
+      before: {},
+      after: { [key]: value },
     };
   }
+  
+  // Try insert if update didn't match
+  await execute(
+    `INSERT INTO site_content (content_key, content, section, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW())`,
+    [key, value, section]
+  );
 
-  // Create new content record if not found
-  const created = await createAirtableRecord('Site Content', {
-    Key:     input.key,
-    Value:   input.value,
-    Section: input.section,
-  });
   return {
-    success:           true,
+    success: true,
     logId,
-    message:           `Created content "${input.key}" in section "${input.section}"`,
-    airtableRecordId:  created.id,
-    before:            {},
-    after:             { [input.key]: input.value },
+    message: `Created content "${key}" in section "${section}"`,
+    before: {},
+    after: { [key]: value },
   };
 }
 
-async function executeUpdateContactInfo(
-  logId: string,
-  input: UpdateContactInfoInput,
-): Promise<ExecutionResult> {
+async function executeUpdateContactInfo(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const field = input.field as string;
+  const value = input.value as string;
+  
   const fieldMap: Record<string, string> = {
-    phone:    'Phone',
-    whatsapp: 'WhatsApp',
-    email:    'Email',
-    location: 'Location',
+    phone: 'phone',
+    whatsapp: 'whatsapp',
+    email: 'email',
+    location: 'location',
   };
+  
+  const dbField = fieldMap[field] || field;
+  
+  const result = await execute(
+    `UPDATE settings SET value = $1, updated_at = NOW() WHERE key = $2`,
+    [value, dbField]
+  );
 
-  const records = await fetchAllForMutation('Settings');
-  const contactRecord = records.find(r => r.fields['Type'] === 'contact');
-
-  if (!contactRecord) {
-    // Create the settings record
-    const created = await createAirtableRecord('Settings', {
-      Type:              'contact',
-      [fieldMap[input.field]]: input.value,
-    });
+  if (result) {
     return {
-      success:          true,
+      success: true,
       logId,
-      message:          `Contact ${input.field} set to "${input.value}"`,
-      airtableRecordId: created.id,
-      before:           {},
-      after:            { [input.field]: input.value },
+      message: `Contact ${field} updated to "${value}"`,
+      before: {},
+      after: { [field]: value },
     };
   }
 
-  const before = { [input.field]: contactRecord.fields[fieldMap[input.field]] };
-  await updateAirtableRecord('Settings', contactRecord.id, {
-    [fieldMap[input.field]]: input.value,
-  });
-
-  return {
-    success:          true,
-    logId,
-    message:          `Contact ${input.field} updated to "${input.value}"`,
-    airtableRecordId: contactRecord.id,
-    before,
-    after:            { [input.field]: input.value },
-  };
-}
-
-async function executeUpdateProperty(
-  logId: string,
-  input: UpdatePropertyInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Properties');
-  const prop = records.find(r =>
-    r.id === input.propertyId ||
-    (r.fields['ID'] as string) === input.propertyId,
+  // Create if doesn't exist
+  await execute(
+    `INSERT INTO settings (key, value, category, created_at, updated_at) VALUES ($1, $2, 'contact', NOW(), NOW())`,
+    [dbField, value]
   );
 
-  if (!prop) throw new Error(`Property not found: ${input.propertyId}`);
-
-  const before: Record<string, unknown> = {};
-  const airtableFields: Record<string, unknown> = {};
-
-  if (input.updates.name !== undefined) {
-    before.name = prop.fields['Name'];
-    airtableFields['Name'] = input.updates.name;
-  }
-  if (input.updates.tagline !== undefined) {
-    before.tagline = prop.fields['Tagline'];
-    airtableFields['Tagline'] = input.updates.tagline;
-  }
-  if (input.updates.description !== undefined) {
-    before.description = prop.fields['Description'];
-    airtableFields['Description'] = input.updates.description;
-  }
-  if (input.updates.pricePerNight !== undefined) {
-    before.pricePerNight = prop.fields['Price Per Night'];
-    airtableFields['Price Per Night'] = input.updates.pricePerNight;
-  }
-  if (input.updates.badge !== undefined) {
-    before.badge = prop.fields['Badge'];
-    airtableFields['Badge'] = input.updates.badge;
-  }
-
-  await updateAirtableRecord('Properties', prop.id, airtableFields);
-
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `Property "${prop.fields['Name']}" updated`,
-    airtableRecordId: prop.id,
-    before,
-    after:            input.updates as Record<string, unknown>,
+    message: `Contact ${field} set to "${value}"`,
+    before: {},
+    after: { [field]: value },
   };
 }
 
-async function executeUpdatePropertyPrice(
-  logId: string,
-  input: UpdatePropertyPriceInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Properties');
-  const prop = records.find(r =>
-    r.id === input.propertyId ||
-    (r.fields['ID'] as string) === input.propertyId,
-  );
-
-  if (!prop) throw new Error(`Property not found: ${input.propertyId}`);
-
-  const before = {
-    priceUSD: prop.fields['Price Per Night'],
-    priceGHS: prop.fields['Price Per Night GHS'],
-  };
-
-  const newGHS = input.newPriceGHS ?? Math.round(input.newPriceUSD * USD_TO_GHS);
-
-  await updateAirtableRecord('Properties', prop.id, {
-    'Price Per Night':     input.newPriceUSD,
-    'Price Per Night GHS': newGHS,
-  });
-
-  return {
-    success:          true,
-    logId,
-    message:          `Price updated to $${input.newPriceUSD} / GHS ${newGHS}`,
-    airtableRecordId: prop.id,
-    before,
-    after:            { priceUSD: input.newPriceUSD, priceGHS: newGHS },
-  };
-}
-
-async function executeBulkUpdatePrices(
-  logId: string,
-  input: BulkUpdatePricesInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Properties');
-  const multiplier = 1 + input.percentageChange / 100;
-
-  const updates: Array<{ id: string; before: Record<string, unknown>; after: Record<string, unknown> }> = [];
-
-  for (const prop of records) {
-    const currentUSD = prop.fields['Price Per Night'] as number ?? 0;
-    const currentGHS = prop.fields['Price Per Night GHS'] as number ?? 0;
-
-    const fields: Record<string, unknown> = {};
-    const before: Record<string, unknown> = {};
-    const after: Record<string, unknown> = {};
-
-    if (input.currency === 'USD' || input.currency === 'both') {
-      before.priceUSD = currentUSD;
-      const newUSD = Math.round(currentUSD * multiplier);
-      fields['Price Per Night'] = newUSD;
-      after.priceUSD = newUSD;
-    }
-    if (input.currency === 'GHS' || input.currency === 'both') {
-      before.priceGHS = currentGHS;
-      const newGHS = Math.round(currentGHS * multiplier);
-      fields['Price Per Night GHS'] = newGHS;
-      after.priceGHS = newGHS;
-    }
-
-    await updateAirtableRecord('Properties', prop.id, fields);
-    updates.push({ id: prop.id, before, after });
+async function executeUpdateProperty(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const propertyId = input.propertyId as string;
+  const updates = input.updates as Record<string, unknown>;
+  
+  const result = await updatePropertyNeon(propertyId, updates as any);
+  
+  if (!result) {
+    throw new Error(`Property not found: ${propertyId}`);
   }
 
   return {
     success: true,
     logId,
-    message: `Bulk price ${input.percentageChange > 0 ? 'increase' : 'decrease'} of ${Math.abs(input.percentageChange)}% applied to ${records.length} properties`,
-    before:  { updates: updates.map(u => u.before) },
-    after:   { updates: updates.map(u => u.after) },
+    message: `Property updated`,
+    before: {},
+    after: updates,
   };
 }
 
-async function executeCreateProperty(
-  logId: string,
-  input: CreatePropertyInput,
-): Promise<ExecutionResult> {
-  const created = await createAirtableRecord('Properties', {
-    'Name':            input.name,
-    'Tagline':         input.tagline,
-    'Description':     input.description,
-    'Price Per Night': input.pricePerNight,
-    'Price Per Night GHS': Math.round(input.pricePerNight * USD_TO_GHS),
-    'Location':        input.location,
-    'Bedrooms':        input.bedrooms,
-    'Bathrooms':       input.bathrooms,
-    'Guests':          input.guests,
-    'Type':            input.type,
-    'Is Live':         false,
+async function executeUpdatePropertyPrice(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const propertyId = String(input.propertyId || '');
+  const newPriceUSD = Number(input.newPriceUSD) || 0;
+  const newPriceGHS = input.newPriceGHS ? Number(input.newPriceGHS) : Math.round(newPriceUSD * USD_TO_GHS);
+
+  const result = await updatePropertyNeon(propertyId, {
+    pricing: { perNight: newPriceUSD, perNightGHS: newPriceGHS, currency: 'USD' },
   });
 
+  if (!result) {
+    throw new Error(`Property not found: ${propertyId}`);
+  }
+
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `New property "${input.name}" created (unpublished)`,
-    airtableRecordId: created.id,
-    before:           {},
-    after:            { name: input.name, pricePerNight: input.pricePerNight },
+    message: `Price updated to $${newPriceUSD} / GHS ${newPriceGHS}`,
+    before: {},
+    after: { priceUSD: newPriceUSD, priceGHS: newPriceGHS },
   };
 }
 
-async function executeTogglePropertyLive(
-  logId: string,
-  input: TogglePropertyLiveInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Properties');
-  const prop = records.find(r =>
-    r.id === input.propertyId ||
-    (r.fields['ID'] as string) === input.propertyId,
-  );
+async function executeBulkUpdatePrices(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const percentageChange = input.percentageChange as number;
+  const multiplier = 1 + percentageChange / 100;
 
-  if (!prop) throw new Error(`Property not found: ${input.propertyId}`);
+  const properties = await getAllPropertiesNeon();
+  let updated = 0;
 
-  const before = { isLive: prop.fields['Is Live'] };
-  await updateAirtableRecord('Properties', prop.id, { 'Is Live': input.isLive });
+  for (const prop of properties) {
+    const currentUSD = prop.pricing.perNight || 0;
+    const newUSD = Math.round(currentUSD * multiplier);
+    const newGHS = Math.round(newUSD * USD_TO_GHS);
+    
+    await updatePropertyNeon(prop.id, {
+      pricing: { perNight: newUSD, perNightGHS: newGHS, currency: 'USD' },
+    });
+    updated++;
+  }
 
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `Property "${prop.fields['Name']}" is now ${input.isLive ? 'LIVE ✅' : 'UNPUBLISHED ⛔'}`,
-    airtableRecordId: prop.id,
-    before,
-    after:            { isLive: input.isLive },
+    message: `Bulk price ${percentageChange > 0 ? 'increase' : 'decrease'} of ${Math.abs(percentageChange)}% applied to ${updated} properties`,
+    before: {},
+    after: { updated: updated },
   };
 }
 
-async function executeToggleBlogPost(
-  logId: string,
-  input: PublishBlogPostInput,
-  publish: boolean,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Blog Posts');
-  const post = records.find(r =>
-    r.id === input.postId ||
-    (r.fields['ID'] as string) === input.postId,
-  );
+async function executeCreateProperty(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const name = input.name as string;
+  const tagline = input.tagline as string;
+  const description = input.description as string;
+  const pricePerNight = input.pricePerNight as number;
+  const location = input.location as string;
+  const bedrooms = input.bedrooms as number;
+  const bathrooms = input.bathrooms as number;
+  const guests = input.guests as number;
+  const type = input.type as string;
 
-  if (!post) throw new Error(`Blog post not found: ${input.postId}`);
+  const result = await createPropertyNeon({
+    name,
+    slug: name.toLowerCase().replace(/\s+/g, '-'),
+    tagline,
+    description,
+    type: type as any,
+    pricing: { perNight: pricePerNight, perNightGHS: Math.round(pricePerNight * USD_TO_GHS), currency: 'USD' },
+    location: { city: location, area: location, country: 'Ghana' },
+    capacity: { guests, bedrooms, bathrooms, beds: bedrooms },
+    images: { hero: { url: '', alt: name }, gallery: [] },
+    amenities: [],
+    features: [],
+    houseRules: [],
+    checkInTime: '14:00',
+    checkOutTime: '11:00',
+    isLive: false,
+    featured: false,
+  });
 
-  const before = { published: post.fields['Published'] };
-  await updateAirtableRecord('Blog Posts', post.id, { Published: publish });
+  if (!result) {
+    throw new Error('Failed to create property');
+  }
 
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `Blog post "${post.fields['Title']}" ${publish ? 'published ✅' : 'unpublished ⛔'}`,
-    airtableRecordId: post.id,
-    before,
-    after:            { published: publish },
+    message: `Property "${name}" created`,
+    before: {},
+    after: { name, pricePerNight },
   };
 }
 
-async function executeApproveReview(
-  logId: string,
-  input: ApproveReviewInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Reviews');
-  const review = records.find(r =>
-    r.id === input.reviewId ||
-    (r.fields['ID'] as string) === input.reviewId,
-  );
+async function executeTogglePropertyLive(logId: string, input: Record<string, unknown>): Promise<ExecutionResult> {
+  const propertyId = input.propertyId as string;
+  const isLive = input.isLive as boolean;
 
-  if (!review) throw new Error(`Review not found: ${input.reviewId}`);
+  const result = await updatePropertyNeon(propertyId, { isLive });
 
-  const before = { verified: review.fields['Verified'] };
-  await updateAirtableRecord('Reviews', review.id, { Verified: true });
+  if (!result) {
+    throw new Error(`Property not found: ${propertyId}`);
+  }
 
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `Review by "${review.fields['Author']}" approved ✅`,
-    airtableRecordId: review.id,
-    before,
-    after:            { verified: true },
+    message: `Property ${isLive ? 'published' : 'unpublished'}`,
+    before: {},
+    after: { isLive },
   };
 }
 
-async function executeDeleteReview(
-  logId: string,
-  input: DeleteReviewInput,
-): Promise<ExecutionResult> {
-  const records = await fetchAllForMutation('Reviews');
-  const review = records.find(r =>
-    r.id === input.reviewId ||
-    (r.fields['ID'] as string) === input.reviewId,
-  );
+async function executePublishBlogPost(logId: string, input: Record<string, unknown>, publish: boolean): Promise<ExecutionResult> {
+  const postId = input.postId as string;
+  
+  let targetId = postId;
+  if (postId === 'latest') {
+    const posts = await getAllBlogPostsNeon();
+    if (posts.length === 0) throw new Error('No blog posts found');
+    targetId = posts[0].id;
+  }
 
-  if (!review) throw new Error(`Review not found: ${input.reviewId}`);
+  const result = await updateBlogPostNeon(targetId, {
+    isPublished: publish,
+  });
 
-  const before = { ...review.fields };
-  await deleteAirtableRecord('Reviews', review.id);
+  if (!result) {
+    throw new Error(`Blog post not found: ${targetId}`);
+  }
 
   return {
-    success:          true,
+    success: true,
     logId,
-    message:          `Review by "${review.fields['Author']}" permanently deleted`,
-    airtableRecordId: review.id,
-    before,
-    after:            {},
+    message: `Blog post ${publish ? 'published' : 'unpublished'}`,
+    before: {},
+    after: { isPublished: publish },
   };
 }

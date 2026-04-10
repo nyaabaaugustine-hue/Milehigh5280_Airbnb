@@ -1,7 +1,16 @@
 import type { Metadata } from 'next';
 import PropertiesGrid from '@/components/cms/PropertiesGrid';
+import { getProperties } from '@/lib/cms/db';
 
 const SITE_URL = 'https://thepalmayimensah.com';
+
+// ISR - Revalidate every 60 seconds, or on-demand via API
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  // Pre-generate static paths if needed
+  return [];
+}
 
 export const metadata: Metadata = {
   title: 'Luxury Properties in Accra — The Palm & More | Milehigh Properties',
@@ -15,7 +24,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PropertiesPage() {
+export default async function PropertiesPage() {
+  // Fetch from Neon DB (or fallback to static)
+  const properties = await getProperties();
+  
+  // Log for debugging - in production this helps verify ISR is working
+  if (properties.length > 0) {
+    console.log('[ISR] PropertiesPage: Loaded', properties.length, 'properties from Neon DB');
+  }
+
   return (
     <>
       {/* ── Page Hero ── */}
@@ -32,8 +49,8 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      {/* ── Properties Grid (from Airtable CMS) ── */}
-      <PropertiesGrid />
+      {/* ── Properties Grid (from Neon DB with ISR) ── */}
+      <PropertiesGrid dbProperties={properties} />
     </>
   );
 }

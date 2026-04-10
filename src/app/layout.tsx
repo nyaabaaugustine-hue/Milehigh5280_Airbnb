@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
-import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 import ClientShell from '@/components/layout/ClientShell';
 import { LanguageProvider } from '@/lib/LanguageContext';
@@ -240,7 +239,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </ClientShell>
           </AuthProvider>
         </LanguageProvider>
-        <Footer />
         <Analytics />
         <Toaster
           position="bottom-right"

@@ -233,8 +233,8 @@ function parseIntent(message: string): AIInterpretResponse {
   // Default: couldn't understand
   return {
     intent: 'Unrecognized command',
-    action: null as unknown as AIInterpretResponse['action'],
-    data: {} as AIInterpretResponse['data'],
+    action: 'updateContent' as AIInterpretResponse['action'],
+    data: { key: '', value: '', section: '' },
     risk_level: 'low',
     requires_confirmation: false,
     message_to_user: "I didn't understand that. Try: 'Change the price to $75', 'Update the hero headline', 'Publish the blog post', or 'Approve the review'",

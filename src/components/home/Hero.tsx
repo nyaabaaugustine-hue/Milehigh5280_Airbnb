@@ -8,14 +8,14 @@ import { ArrowDown } from 'lucide-react';
 import { CONTACT_INFO } from '@/lib/data';
 
 const slides = [
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380288/1_qwgwqd.png',   alt: 'The Palm - Premium Exterior' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_3_dcbuqu.jpg', alt: 'The Palm - Luxury Detail' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', alt: 'The Palm - Scenic View' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',   alt: 'The Palm - Stylish Living Room' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/1_ijqfai.jpg',   alt: 'The Palm - Bedroom Suite' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',   alt: 'The Palm - Dining Area' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/2_xvzt1y.jpg',   alt: 'The Palm - Second Bedroom' },
-  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',   alt: 'The Palm - Lounge Area' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380288/1_qwgwqd.png',   alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775302732/A_3_dcbuqu.jpg', alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',   alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/1_ijqfai.jpg',   alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/3_wgur1l.jpg',   alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/2_xvzt1y.jpg',   alt: 'The Palm' },
+  { src: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/6_ffo1ly.jpg',   alt: 'The Palm' },
 ];
 
 const WA_TEXT = encodeURIComponent(
@@ -71,17 +71,11 @@ export default function Hero({ onBookNow }: HeroProps) {
             />
           </div>
         ))}
+        {/* Dark overlay for text readability - no yellow tint */}
         <div
           className="absolute inset-0 z-10"
           style={{
-            background:
-              'linear-gradient(to bottom, rgba(8,8,8,0.25) 0%, rgba(8,8,8,0.5) 50%, rgba(8,8,8,0.95) 100%)',
-          }}
-        />
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            background: 'linear-gradient(to right, rgba(8,8,8,0.65) 0%, transparent 60%)',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.6) 100%)',
           }}
         />
       </div>
@@ -116,23 +110,8 @@ export default function Hero({ onBookNow }: HeroProps) {
       {/* Main Content */}
       <div className="relative z-20 max-w-[1440px] mx-auto px-6 lg:px-12 pb-24 lg:pb-32">
 
-        {/* Badge */}
-        <div
-          className={`inline-flex items-center gap-3 mb-8 transition-all duration-1000 ${
-            loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-          style={{ transitionDelay: '200ms' }}
-        >
-          <div className="flex gap-1">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] opacity-80" />
-            ))}
-          </div>
-          <span className="section-label">Premium Private Apartment &middot; Ayi Mensah, Accra</span>
-        </div>
-
         {/* Headline */}
-        <div className="overflow-hidden mb-6">
+        <div className="overflow-hidden mb-12">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={loaded ? { opacity: 1, y: 0 } : {}}
@@ -144,17 +123,6 @@ export default function Hero({ onBookNow }: HeroProps) {
             </h1>
           </motion.div>
         </div>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={loaded ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.7 }}
-          className="text-[var(--text-muted)] font-sans text-base md:text-lg max-w-md leading-relaxed mb-10"
-        >
-          A beautifully furnished private apartment nestled in the lush tranquility of
-          Ayi Mensah &mdash; where comfort, elegance, and nature converge.
-        </motion.p>
 
         {/* CTAs */}
         <motion.div
@@ -173,26 +141,6 @@ export default function Hero({ onBookNow }: HeroProps) {
             WhatsApp Us
           </a>
         </motion.div>
-
-        {/* Stats */}
-        <div
-          className={`flex flex-wrap gap-x-10 gap-y-4 mt-16 pt-10 border-t border-[var(--border)] transition-all duration-1000 ${
-            loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-          style={{ transitionDelay: '1100ms' }}
-        >
-          {[
-            { value: '4.9★', label: 'Guest Rating' },
-            { value: '1',    label: 'Private Apartment' },
-            { value: '24/7', label: 'Support' },
-            { value: '100%', label: 'Private & Secure' },
-          ].map(({ value, label }) => (
-            <div key={label} className="flex flex-col">
-              <span className="font-serif text-3xl font-light text-white">{value}</span>
-              <span className="text-[var(--text-subtle)] text-xs tracking-widest uppercase mt-0.5">{label}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Scroll indicator */}
@@ -201,7 +149,6 @@ export default function Hero({ onBookNow }: HeroProps) {
         aria-label="Scroll to properties"
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-[var(--text-subtle)] hover:text-[var(--gold)] transition-colors duration-300 group"
       >
-        <span className="section-label text-[0.55rem]">Discover</span>
         <div className="w-px h-8 bg-gradient-to-b from-[var(--gold)] to-transparent group-hover:h-12 transition-all duration-500" />
         <ArrowDown size={14} className="animate-bounce" />
       </button>

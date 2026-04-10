@@ -1,8 +1,8 @@
 // API Route: GET /api/cms/properties
-// Fetches all properties from Airtable
+// Fetches all properties from Neon Postgres
 
 import { NextResponse } from 'next/server';
-import { getAllProperties, getLiveProperties, getPropertyBySlug } from '@/lib/airtable/service';
+import { getAllPropertiesNeon, getLivePropertiesNeon, getPropertyBySlugNeon } from '@/lib/neon/service';
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
@@ -13,14 +13,14 @@ export async function GET(request: Request) {
     const liveOnly = searchParams.get('live') === 'true';
 
     if (slug) {
-      const property = await getPropertyBySlug(slug);
+      const property = await getPropertyBySlugNeon(slug);
       if (!property) {
         return NextResponse.json({ error: 'Property not found' }, { status: 404 });
       }
       return NextResponse.json({ data: property });
     }
 
-    const properties = liveOnly ? await getLiveProperties() : await getAllProperties();
+    const properties = liveOnly ? await getLivePropertiesNeon() : await getAllPropertiesNeon();
 
     return NextResponse.json({
       data: properties,

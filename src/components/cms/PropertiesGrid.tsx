@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Star, MapPin, Users, Bed, Bath, ArrowRight, Clock } from 'lucide-react';
 import { useProperties } from '@/hooks/useCmsData';
 import type { Property } from '@/lib/airtable/types';
+import type { Property as DbProperty } from '@/lib/cms/db';
 
 const typeLabels: Record<string, string> = {
   villa: 'Private Villa',
@@ -30,8 +31,40 @@ function formatCurrency(price: number, currency: string = 'USD'): string {
   return `$${price.toLocaleString()}`;
 }
 
-export default function PropertiesGrid() {
-  const { data: properties, loading, error } = useProperties(true);
+interface PropertiesGridProps {
+  dbProperties?: DbProperty[];
+}
+
+export default function PropertiesGrid({ dbProperties }: PropertiesGridProps) {
+  // If we have DB properties from ISR, use those; otherwise fallback to CMS
+  const { data: cmsProperties, loading, error } = useProperties(true);
+  
+  // Prefer DB properties if available (from ISR)
+  const properties = dbProperties && dbProperties.length > 0 
+    ? dbProperties.map(p => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        tagline: p.tagline || '',
+        description: p.description || '',
+        type: p.property_type as Property['type'],
+        badge: p.badge as Property['badge'],
+        isLive: p.is_live,
+        featured: false,
+        location: { city: p.city, area: p.area, country: p.country },
+        pricing: { perNight: p.price_per_night, perNightGHS: p.price_per_night_ghs || 0, currency: p.currency as 'USD' | 'GHS', minNights: 1 },
+        capacity: { guests: p.max_guests, bedrooms: p.bedrooms, bathrooms: p.bathrooms, beds: p.bedrooms },
+        images: { hero: { url: p.hero_image || '', alt: p.name }, gallery: [] },
+        amenities: [],
+        features: [],
+        houseRules: [],
+        checkInTime: '',
+        checkOutTime: '',
+        rating: 0,
+        reviewCount: 0,
+      }))
+    : cmsProperties;
+
   const [filter, setFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('default');
 

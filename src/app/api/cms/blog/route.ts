@@ -1,8 +1,8 @@
 // API Route: GET /api/cms/blog
-// Fetches all blog posts from Airtable
+// Fetches all blog posts from Neon Postgres
 
 import { NextResponse } from 'next/server';
-import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/airtable/service';
+import { getAllBlogPostsNeon, getBlogPostNeon } from '@/lib/neon/service';
 
 export const revalidate = 600; // Revalidate every 10 minutes
 
@@ -12,14 +12,14 @@ export async function GET(request: Request) {
     const slug = searchParams.get('slug');
 
     if (slug) {
-      const post = await getBlogPostBySlug(slug);
+      const post = await getBlogPostNeon(slug);
       if (!post) {
         return NextResponse.json({ error: 'Blog post not found' }, { status: 404 });
       }
       return NextResponse.json({ data: post });
     }
 
-    const posts = await getAllBlogPosts();
+    const posts = await getAllBlogPostsNeon();
 
     return NextResponse.json({
       data: posts,

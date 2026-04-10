@@ -1,14 +1,14 @@
 // API Route: GET /api/cms/amenities
-// Fetches all amenities from Airtable
+// Fetches all amenities from Neon Postgres
 
 import { NextResponse } from 'next/server';
-import { getAllAmenities } from '@/lib/airtable/service';
+import { getAllAmenitiesNeon } from '@/lib/neon/service';
 
 export const revalidate = 600; // Revalidate every 10 minutes
 
 export async function GET() {
   try {
-    const amenities = await getAllAmenities();
+    const amenities = await getAllAmenitiesNeon();
 
     return NextResponse.json({
       data: amenities,

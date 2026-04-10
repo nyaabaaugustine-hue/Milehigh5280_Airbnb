@@ -1,15 +1,29 @@
 // API Route: GET /api/cms/health
-// Health check for Airtable connection
+// Health check for Neon Postgres connection
 
 import { NextResponse } from 'next/server';
-import { checkAirtableHealth } from '@/lib/airtable/service';
+import { queryOne } from '@/lib/neon/client';
 
 export async function GET() {
-  const health = await checkAirtableHealth();
-
-  return NextResponse.json({
-    status: health.ok ? 'healthy' : 'unhealthy',
-    message: health.message,
-    timestamp: new Date().toISOString(),
-  }, { status: health.ok ? 200 : 503 });
+  try {
+    await queryOne('SELECT 1 AS ok');
+    return NextResponse.json(
+      {
+        status: 'healthy',
+        message: 'Neon connection successful',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('[CMS Health] Neon health check failed:', error);
+    return NextResponse.json(
+      {
+        status: 'unhealthy',
+        message: error instanceof Error ? error.message : 'Connection failed',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 503 }
+    );
+  }
 }

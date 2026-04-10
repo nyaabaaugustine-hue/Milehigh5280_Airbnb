@@ -40,7 +40,7 @@ export default function ViewerCounter() {
           animate={{ opacity: 1, y: 0,  x: 0  }}
           exit={{    opacity: 0, y: 20          }}
           transition={{ duration: 0.4 }}
-          className="fixed bottom-24 left-5 z-40 flex items-center gap-2.5 px-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] shadow-xl backdrop-blur-sm"
+          className="fixed bottom-6 left-4 md:left-8 z-40 flex items-center gap-2.5 px-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] shadow-xl backdrop-blur-sm"
           aria-live="polite"
           aria-label="Property viewers"
         >

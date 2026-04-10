@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, createContext, useContext, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import BookingModal from '@/components/ui/BookingModal';
 import PropertyModal from '@/components/ui/PropertyModal';
+import Footer from '@/components/layout/Footer';
 import { Property } from '@/types';
 
 interface BookingContextType {
@@ -37,11 +39,15 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     setBookingOpen(true);
   }, []);
 
+  const pathname = usePathname();
+  const showFooter = !pathname?.startsWith('/admin') && !pathname?.startsWith('/login') && !pathname?.startsWith('/signup');
+
   return (
     <BookingContext.Provider value={{ openBooking, closeBooking, viewProperty }}>
       <Navbar onBookNow={openBooking} />
       <main>{children}</main>
       <LanguageSwitcher />
+      {showFooter && <Footer />}
       <BookingModal isOpen={bookingOpen} onClose={closeBooking} />
       <PropertyModal
         property={selectedProperty}

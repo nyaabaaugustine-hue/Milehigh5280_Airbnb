@@ -1,8 +1,8 @@
 // API Route: GET /api/cms/reviews
-// Fetches all reviews from Airtable
+// Fetches all reviews from Neon Postgres
 
 import { NextResponse } from 'next/server';
-import { getAllReviews, getReviewsByPropertyId } from '@/lib/airtable/service';
+import { getAllReviewsNeon, getReviewsByPropertyIdNeon } from '@/lib/neon/service';
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     const propertyId = searchParams.get('propertyId');
 
     if (propertyId) {
-      const reviews = await getReviewsByPropertyId(propertyId);
+      const reviews = await getReviewsByPropertyIdNeon(propertyId);
       return NextResponse.json({
         data: reviews,
         meta: {
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       });
     }
 
-    const reviews = await getAllReviews();
+    const reviews = await getAllReviewsNeon();
 
     return NextResponse.json({
       data: reviews,
