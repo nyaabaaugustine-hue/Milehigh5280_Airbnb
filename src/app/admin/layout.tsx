@@ -72,9 +72,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   // Redirect to login if no session
   if (!session) {
     if (typeof window !== 'undefined') {
-      router.push('/login');
+      window.location.href = '/login';
     }
-    return null;
+    return (
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center">
+        <div className="text-white">Redirecting to login...</div>
+      </div>
+    );
   }
 
   const initials = session.firstName.charAt(0) + (session.lastName?.charAt(0) || '');

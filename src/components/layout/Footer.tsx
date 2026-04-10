@@ -171,8 +171,8 @@ export default function Footer() {
                 <span className="font-serif text-xl font-light text-white group-hover:text-[var(--gold)] transition-colors">
                   Milehigh5280 🌴
                 </span>
-                <span className="text-[0.48rem] tracking-[0.22em] uppercase text-[var(--gold)] font-sans mt-0.5">
-                  Ayi Mensah &middot; Milehigh Properties
+                <span suppressHydrationWarning className="text-[0.48rem] tracking-[0.22em] uppercase text-[var(--gold)] font-sans mt-0.5">
+                  Ayi Mensah · Milehigh Properties
                 </span>
               </div>
             </Link>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -20,6 +20,14 @@ export default function LoginForm() {
     password: '',
     remember: false,
   });
+
+  // Check if already logged in as admin
+  useEffect(() => {
+    const session = localStorage.getItem('adminSession');
+    if (session) {
+      router.push('/admin');
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
