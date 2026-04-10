@@ -1,7 +1,7 @@
 // POST /api/ai/interpret
 // Input:  { message: string, conversationHistory?: Array<{role, content}> }
 // Output: AIInterpretResponse
-// Uses Puter.js AI - free, no API key required
+// Uses Grok API (xAI) for reliable LLM inference
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { AIInterpretResponse } from '@/lib/ai/types';
@@ -59,15 +59,22 @@ export async function POST(req: NextRequest) {
       content: m.content,
     }));
 
-    // Use Puter.js AI - free and open source
-    const puterResponse = await fetch('https://api.puter.com/v1/chat/completions', {
+    // Check for Grok API key
+    if (!process.env.GROK_API_KEY) {
+      console.warn('[AI Interpret] GROK_API_KEY not set, falling back to rule-based parser');
+      const response = parseIntent(message);
+      return NextResponse.json(response);
+    }
+
+    // Use Grok API (xAI) - reliable and fast
+    const grokResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.PUTER_API_KEY || 'free'}`,
+        'Authorization': `Bearer ${process.env.GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'mixtral-8x7b-32768',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...history,
@@ -76,10 +83,13 @@ export async function POST(req: NextRequest) {
         max_tokens: 500,
         temperature: 0.3,
       }),
-    }).catch(() => null);
+    }).catch((err) => {
+      console.error('[AI Interpret] Grok API error:', err);
+      return null;
+    });
 
-    if (puterResponse?.ok) {
-      const data = await puterResponse.json();
+    if (grokResponse?.ok) {
+      const data = await grokResponse.json();
       const rawText = data.choices?.[0]?.message?.content ?? '';
 
       const clean = rawText.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim();
@@ -87,7 +97,8 @@ export async function POST(req: NextRequest) {
       try {
         const parsed = JSON.parse(clean);
         return NextResponse.json(parsed);
-      } catch {
+      } catch (err) {
+        console.error('[AI Interpret] JSON parse error:', err, 'Raw text:', rawText);
         // Fall through to rule-based parser
       }
     }
