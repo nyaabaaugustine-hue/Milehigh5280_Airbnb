@@ -12,10 +12,13 @@
     "node": "20.x"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@vercel/analytics": "^2.0.1",
+    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.8",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.411.0",
     "next": "14.2.5",
     "nodemailer": "^6.9.14",

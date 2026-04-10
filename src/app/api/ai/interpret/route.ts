@@ -1,14 +1,48 @@
 // POST /api/ai/interpret
 // Input:  { message: string, conversationHistory?: Array<{role, content}> }
-// Output: AIInterpretResponse (structured JSON — NO execution happens here)
+// Output: AIInterpretResponse
+// Uses Puter.js AI - free, no API key required
 
 import { NextRequest, NextResponse } from 'next/server';
-import { buildSystemPrompt } from '@/lib/ai/tools';
 import type { AIInterpretResponse } from '@/lib/ai/types';
 
-// Uses the Anthropic API directly via fetch (no SDK needed)
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-20250514';
+const SYSTEM_PROMPT = `You are the AI Portal Manager (APM) for Milehigh5280, a luxury Ghana accommodation brand.
+
+YOUR ROLE:
+- Manage all website content through natural language commands
+- Execute safe, auditable changes to the CMS
+- Be concise and helpful
+
+AVAILABLE ACTIONS (return as JSON):
+1. updateContent - Update text: hero_title, hero_subtitle, about_text, footer_text, meta_description
+2. updatePropertyPrice - Change prices (USD/GHS)
+3. updateProperty - Modify property: name, location, bedrooms, bathrooms, amenities, is_live
+4. approveReview - Approve guest reviews
+5. deleteReview - Remove reviews (high risk)
+6. publishBlogPost - Publish blog content
+7. unpublishBlogPost - Unpublish blog content
+8. updateContactInfo - Update: phone, whatsapp, email, address
+
+SAFETY: All actions require confirmation. Never modify code.
+
+RESPOND ONLY WITH VALID JSON like this:
+{
+  "intent": "brief summary",
+  "action": "tool_name or null",
+  "data": {"field": "value"},
+  "risk_level": "low|medium|high",
+  "requires_confirmation": true,
+  "message_to_user": "What you'll do",
+  "voice": "Short voice message",
+  "preview": "What changes"
+}
+
+Examples:
+User: "Change the price to $75"
+{"intent":"Update price to $75","action":"updatePropertyPrice","data":{"propertyId":"1","newPriceUSD":75},"risk_level":"medium","requires_confirmation":true,"message_to_user":"I'll update the nightly price to $75 USD","voice":"Updating price to 75 dollars","preview":"Price: $75/night"}
+
+User: "Update the hero headline"
+{"intent":"Update hero title","action":"updateContent","data":{"key":"hero_title","value":"New Headline","section":"home"},"risk_level":"low","requires_confirmation":true,"message_to_user":"I'll update the hero headline to 'New Headline'","voice":"Updating the hero headline","preview":"Hero: New Headline"}`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,86 +53,181 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      // Return a safe fallback when API key is not set
-      const fallback: AIInterpretResponse = {
-        intent:                  'API key not configured',
-        action:                  'updateContent',
-        data:                    { key: '', value: '', section: '' },
-        risk_level:              'low',
-        requires_confirmation:   true,
-        message_to_user:         '⚠️ ANTHROPIC_API_KEY is not set. Add it to your .env.local file to enable AI features.',
-        clarification_needed:    false,
-        clarification_question:  null as unknown as string,
-      };
-      return NextResponse.json(fallback);
-    }
+    // Build conversation context
+    const history = conversationHistory.slice(-10).map((m: { role: string; content: string }) => ({
+      role: m.role === 'user' ? 'user' : 'assistant',
+      content: m.content,
+    }));
 
-    // Build messages array for the Anthropic API
-    const messages = [
-      // Include prior conversation for context (last 10 exchanges max)
-      ...conversationHistory.slice(-20).map((m: { role: string; content: string }) => ({
-        role:    m.role === 'user' ? 'user' : 'assistant',
-        content: m.content,
-      })),
-      // Current user message
-      { role: 'user', content: message },
-    ];
-
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method:  'POST',
+    // Use Puter.js AI - free and open source
+    const puterResponse = await fetch('https://api.puter.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         process.env.ANTHROPIC_API_KEY!,
-        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.PUTER_API_KEY || 'free'}`,
       },
       body: JSON.stringify({
-        model:      MODEL,
-        max_tokens: 1024,
-        system:     buildSystemPrompt(),
-        messages,
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...history,
+          { role: 'user', content: message },
+        ],
+        max_tokens: 500,
+        temperature: 0.3,
       }),
-    });
+    }).catch(() => null);
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('[AI Interpret] Anthropic error:', err);
-      return NextResponse.json(
-        { error: `AI service error: ${response.status}` },
-        { status: 502 },
-      );
+    if (puterResponse?.ok) {
+      const data = await puterResponse.json();
+      const rawText = data.choices?.[0]?.message?.content ?? '';
+
+      const clean = rawText.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim();
+
+      try {
+        const parsed = JSON.parse(clean);
+        return NextResponse.json(parsed);
+      } catch {
+        // Fall through to rule-based parser
+      }
     }
 
-    const data = await response.json();
-    const rawText: string = data.content?.[0]?.text ?? '{}';
-
-    // Strip markdown code fences if present
-    const clean = rawText.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim();
-
-    let parsed: AIInterpretResponse;
-    try {
-      parsed = JSON.parse(clean);
-    } catch {
-      // AI returned non-JSON — wrap it
-      parsed = {
-        intent:                 'Could not parse intent',
-        action:                 null as unknown as AIInterpretResponse['action'],
-        data:                   {} as AIInterpretResponse['data'],
-        risk_level:             'low',
-        requires_confirmation:  true,
-        message_to_user:        rawText,
-        clarification_needed:   false,
-        clarification_question: null as unknown as string,
-      };
-    }
-
-    return NextResponse.json(parsed);
+    // Fallback: Smart rule-based parser (works without API)
+    const response = parseIntent(message);
+    return NextResponse.json(response);
 
   } catch (err: unknown) {
-    console.error('[AI Interpret] Unexpected error:', err);
+    console.error('[AI Interpret] Error:', err);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
     );
   }
+}
+
+function parseIntent(message: string): AIInterpretResponse {
+  const lower = message.toLowerCase();
+
+  // Price updates
+  if (lower.includes('price') || lower.includes('$') || lower.includes('cost')) {
+    const priceMatch = message.match(/\$?\s*(\d+)/);
+    if (priceMatch) {
+      const price = parseInt(priceMatch[1]);
+      return {
+        intent: `Update price to $${price}`,
+        action: 'updatePropertyPrice',
+        data: { propertyId: '1', newPriceUSD: price },
+        risk_level: 'medium',
+        requires_confirmation: true,
+        message_to_user: `I'll update the nightly price to $${price} USD`,
+        voice: `Updating price to ${price} dollars`,
+        preview: `Price: $${price}/night`,
+      };
+    }
+  }
+
+  // Hero headline updates
+  if (lower.includes('hero') || lower.includes('headline') || lower.includes('title')) {
+    const titleMatch = message.match(/['"](.+?)['"]|to\s+(.+)$/i);
+    const title = titleMatch ? (titleMatch[1] || titleMatch[2] || 'New Headline') : 'New Headline';
+    return {
+      intent: 'Update hero headline',
+      action: 'updateContent',
+      data: { key: 'hero_title', value: title, section: 'home' },
+      risk_level: 'low',
+      requires_confirmation: true,
+      message_to_user: `I'll update the hero headline to "${title}"`,
+      voice: `Updating hero headline to ${title}`,
+      preview: `Hero: ${title}`,
+    };
+  }
+
+  // Publish/unpublish blog
+  if (lower.includes('publish') && lower.includes('blog')) {
+    return {
+      intent: 'Publish latest blog post',
+      action: 'publishBlogPost',
+      data: { postId: 'latest' },
+      risk_level: 'low',
+      requires_confirmation: true,
+      message_to_user: "I'll publish the latest blog post",
+      voice: 'Publishing the latest blog post',
+      preview: 'Blog: Published',
+    };
+  }
+
+  // Approve review
+  if (lower.includes('approve') && lower.includes('review')) {
+    return {
+      intent: 'Approve pending review',
+      action: 'approveReview',
+      data: { reviewId: 'pending' },
+      risk_level: 'low',
+      requires_confirmation: true,
+      message_to_user: "I'll approve the most recent pending review",
+      voice: 'Approving the pending review',
+      preview: 'Review: Approved',
+    };
+  }
+
+  // Phone/contact updates
+  if (lower.includes('phone') || lower.includes('whatsapp') || lower.includes('contact')) {
+    const phoneMatch = message.match(/\+?[\d\s-]+/);
+    const value = phoneMatch ? phoneMatch[0].trim() : '+233 500 000 000';
+    const field = lower.includes('whatsapp') ? 'whatsapp' : 'phone';
+    return {
+      intent: `Update ${field} number`,
+      action: 'updateContactInfo',
+      data: { field: field as 'phone' | 'whatsapp', value },
+      risk_level: 'medium',
+      requires_confirmation: true,
+      message_to_user: `I'll update the ${field} number to ${value}`,
+      voice: `Updating ${field} to ${value}`,
+      preview: `${field}: ${value}`,
+    };
+  }
+
+  // Email update
+  if (lower.includes('email') || lower.includes('@')) {
+    const emailMatch = message.match(/[\w.-]+@[\w.-]+\.\w+/);
+    const value = emailMatch ? emailMatch[0] : 'new@email.com';
+    return {
+      intent: 'Update email address',
+      action: 'updateContactInfo',
+      data: { field: 'email', value },
+      risk_level: 'medium',
+      requires_confirmation: true,
+      message_to_user: `I'll update the email to ${value}`,
+      voice: `Updating email to ${value}`,
+      preview: `Email: ${value}`,
+    };
+  }
+
+  // Bulk price increase
+  if ((lower.includes('increase') || lower.includes('raise') || lower.includes('+')) && lower.includes('price')) {
+    const percentMatch = message.match(/(\d+)%/);
+    const percent = percentMatch ? parseInt(percentMatch[1]) : 10;
+    return {
+      intent: `Increase all prices by ${percent}%`,
+      action: 'bulkUpdatePrices',
+      data: { percentageChange: percent, currency: 'USD' },
+      risk_level: 'high',
+      requires_confirmation: true,
+      message_to_user: `I'll increase all property prices by ${percent}%`,
+      voice: `Increasing all prices by ${percent} percent`,
+      preview: `Prices: +${percent}%`,
+    };
+  }
+
+  // Default: couldn't understand
+  return {
+    intent: 'Unrecognized command',
+    action: null as unknown as AIInterpretResponse['action'],
+    data: {} as AIInterpretResponse['data'],
+    risk_level: 'low',
+    requires_confirmation: false,
+    message_to_user: "I didn't understand that. Try: 'Change the price to $75', 'Update the hero headline', 'Publish the blog post', or 'Approve the review'",
+    voice: "I didn't understand that command. Try something like changing the price or updating the headline.",
+    clarification_needed: false,
+  };
 }

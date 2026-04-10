@@ -115,6 +115,7 @@ export interface AIInterpretResponse {
   preview?: string;            // Optional preview of what will change
   clarification_needed?: boolean;
   clarification_question?: string;
+  voice?: string;              // Voice feedback message
 }
 
 // ─── Action Log ──────────────────────────────────────────────────────────────
