@@ -164,7 +164,7 @@ export default function Testimonials() {
 
         {/* ── Dots Navigation ── */}
         <div className="flex justify-center gap-2">
-          {allReviews.map((_, i) => (
+          {reviews.map((_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
