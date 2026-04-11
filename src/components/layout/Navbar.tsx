@@ -97,6 +97,16 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             </div>
           </Link>
 
+          {/* ── Desktop Menu ── */}
+          <nav className="hidden lg:flex items-center gap-6">
+            <Link href="/properties" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Properties</Link>
+            <Link href="/amenities" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Amenities</Link>
+            <Link href="/blog" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Blog</Link>
+            <Link href="/gallery" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Gallery</Link>
+            <Link href="/about" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">About</Link>
+            <Link href="/contact" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Contact</Link>
+          </nav>
+
           {/* ── Right Controls ── */}
           <div className="hidden lg:flex items-center gap-4">
             {/* Ghana Flag */}
