@@ -82,8 +82,8 @@ async function seedProperties() {
       1,
       1,
       4,
-      'Accra',
       'Ayi Mensah',
+      'Accra',
       'Ghana',
     ]
   );
