@@ -105,7 +105,7 @@ export default function AmenitiesMarquee() {
           style={{ background: 'linear-gradient(to left, var(--background), transparent)' }} />
 
         <div className="overflow-hidden">
-          <div className="marquee-track" style={{ animationDuration: '120s' }}> {/* Ensure duration is applied */}
+          <div className="marquee-track" style={{ animationDuration: '172s' }}> {/* Ensure duration is applied */}
             {doubled.map((a, i) => (
               <AmenityCard
                 key={`r1-${i}`}
@@ -133,7 +133,7 @@ export default function AmenitiesMarquee() {
           style={{ background: 'linear-gradient(to left, var(--background), transparent)' }} />
 
         <div className="overflow-hidden">
-          <div className="marquee-track" style={{ animationDirection: 'reverse', animationDuration: '120s' }}>
+          <div className="marquee-track" style={{ animationDirection: 'reverse', animationDuration: '172s' }}>
             {[...doubled].reverse().map((a, i) => (
               <AmenityCard
                 key={`r2-${i}`}
