@@ -17,7 +17,12 @@ interface PropertyModalProps {
 export default function PropertyModal({ property, isOpen, onClose, onBook }: PropertyModalProps) {
   if (!property) return null;
 
-  const imgs = property.images;
+  const heroImage = property.images?.hero?.url || property.hero_image || 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg';
+  const galleryImages = property.images?.gallery || property.gallery || [];
+  const imgs = [
+    { url: heroImage, alt: property.name },
+    ...galleryImages.slice(0, 5),
+  ];
 
   return (
     <AnimatePresence>
@@ -50,8 +55,8 @@ export default function PropertyModal({ property, isOpen, onClose, onBook }: Pro
             <div className="grid grid-cols-1 md:grid-cols-4 gap-1 h-[240px] md:h-[360px] bg-[var(--surface-2)]">
               <div className="md:col-span-2 relative overflow-hidden group">
                 <SafeImage 
-                  src={imgs[0].url} 
-                  alt={imgs[0].alt} 
+                  src={imgs[0]?.url || heroImage} 
+                  alt={property.name} 
                   fill 
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105" 
@@ -65,8 +70,8 @@ export default function PropertyModal({ property, isOpen, onClose, onBook }: Pro
                     return (
                       <div key={sub} className="relative overflow-hidden group">
                         <SafeImage 
-                          src={img.url} 
-                          alt={img.alt} 
+                          src={img?.url || heroImage} 
+                          alt={property.name} 
                           fill 
                           sizes="25vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-105" 
