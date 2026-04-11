@@ -39,16 +39,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [session, setSession] = useState<AdminSession | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Clear any existing session on mount - require login every time
   useEffect(() => {
-    // Check admin session
-    const stored = localStorage.getItem('adminSession');
-    if (stored) {
-      try {
-        setSession(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem('adminSession');
-      }
-    }
+    localStorage.removeItem('adminSession');
     setLoading(false);
   }, []);
 
@@ -69,7 +62,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     );
   }
 
-  // Redirect to login if no session
+  // No session = redirect to login
   if (!session) {
     if (typeof window !== 'undefined') {
       window.location.href = '/login';

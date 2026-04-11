@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Sun, Moon, ChevronDown, User, LogIn, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, User, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { LANGUAGES } from '@/lib/data';
 import { useLanguage, Language } from '@/lib/LanguageContext';
@@ -54,14 +54,6 @@ export default function Navbar({ onBookNow }: NavbarProps) {
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
 
   const currentLang = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
-
-  // Check for admin session - use state to avoid hydration mismatch
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const session = localStorage.getItem('adminSession');
-    setIsAdmin(!!session);
-  }, []);
 
   return (
     <>
@@ -169,18 +161,11 @@ export default function Navbar({ onBookNow }: NavbarProps) {
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* Login / Dashboard for admins */}
-            {isAdmin ? (
-              <Link href="/admin" className="flex items-center gap-2 px-4 py-2.5 border border-[var(--gold)] bg-[var(--gold)] text-[#080808] hover:bg-[#E4B429] transition-all duration-300">
-                <LayoutDashboard size={14} />
-                <span className="text-xs font-bold uppercase tracking-wider">Dashboard</span>
-              </Link>
-            ) : (
-              <Link href="/login" className="flex items-center gap-2 px-4 py-2.5 border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text-muted)] hover:text-white transition-all duration-300">
-                <LogIn size={14} />
-                <span className="text-xs font-medium tracking-wider">Login</span>
-              </Link>
-            )}
+            {/* Login - always show since sessions are cleared on reload */}
+            <Link href="/login" className="flex items-center gap-2 px-4 py-2.5 border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text-muted)] hover:text-white transition-all duration-300">
+              <LogIn size={14} />
+              <span className="text-xs font-medium tracking-wider">Login</span>
+            </Link>
           </div>
 
           {/* ── Mobile Hamburger ── */}
