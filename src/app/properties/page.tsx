@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import PropertiesGrid from '@/components/cms/PropertiesGrid';
-import { getProperties } from '@/lib/cms/db';
+import { getLivePropertiesNeon } from '@/lib/neon/service';
 
 const SITE_URL = 'https://thepalmayimensah.com';
 
-// ISR - Revalidate every 60 seconds, or on-demand via API
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  // Pre-generate static paths if needed
   return [];
 }
 
@@ -25,17 +23,12 @@ export const metadata: Metadata = {
 };
 
 export default async function PropertiesPage() {
-  // Fetch from Neon DB (or fallback to static)
-  const properties = await getProperties();
+  const properties = await getLivePropertiesNeon().catch(() => []);
   
-  // Log for debugging - in production this helps verify ISR is working
-  if (properties.length > 0) {
-    console.log('[ISR] PropertiesPage: Loaded', properties.length, 'properties from Neon DB');
-  }
-
+  console.log('[Properties] Loaded', properties.length, 'properties');
+  
   return (
     <>
-      {/* ── Page Hero ── */}
       <section className="relative pt-40 pb-20 px-6 lg:px-12 border-b border-[var(--border)]">
         <div className="max-w-[1440px] mx-auto">
           <p className="section-label mb-4">Our Portfolio</p>
@@ -49,8 +42,7 @@ export default async function PropertiesPage() {
         </div>
       </section>
 
-      {/* ── Properties Grid (from Neon DB with ISR) ── */}
-      <PropertiesGrid dbProperties={properties} />
+      <PropertiesGrid dbProperties={properties as any} />
     </>
   );
 }
