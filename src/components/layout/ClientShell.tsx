@@ -42,6 +42,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
 
   const pathname = usePathname();
   const showFooter = !pathname?.startsWith('/admin') && !pathname?.startsWith('/login') && !pathname?.startsWith('/signup');
+  const showWhatsApp = !pathname?.startsWith('/admin') && !pathname?.startsWith('/login') && !pathname?.startsWith('/signup');
 
   return (
     <BookingContext.Provider value={{ openBooking, closeBooking, viewProperty }}>
@@ -56,7 +57,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
         onClose={() => setSelectedProperty(null)}
         onBook={handleBookFromModal}
       />
-      <WhatsAppButton onBookNow={openBooking} />
+      {showWhatsApp && <WhatsAppButton onBookNow={openBooking} />}
     </BookingContext.Provider>
   );
 }
