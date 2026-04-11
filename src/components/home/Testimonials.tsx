@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import SafeImage from '@/components/ui/SafeImage';
 import { Star, Quote, ExternalLink } from 'lucide-react';
-import { properties } from '@/lib/data';
+import { getAllReviewsNeon } from '@/lib/neon/service';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { Review } from '@/lib/airtable/types';
 
-// Gather all reviews
 const sampleReviews = [
   {
     id: '1',
@@ -44,10 +44,6 @@ const sampleReviews = [
   },
 ];
 
-const allReviews = properties.length > 0 
-  ? properties.flatMap(p => p.reviews.map(r => ({ ...r, propertyName: p.name })))
-  : sampleReviews;
-
 const GOOGLE_MAPS_URL = "https://www.google.com/maps/place/The+Palm+%F0%9F%8C%B4+Ayi+mensah+By+Rehoboth+Properties/@5.7928557,-0.1790786,15z/data=!4m8!3m7!1s0xfdf775ee9a8b2ad:0xbeeaf9c2791d4a48!8m2!3d5.7929052!4d-0.1791364!9m1!1b1!16s%2Fg%2F11q332fb_r?hl=en-US";
 
 const GoogleIcon = () => (
@@ -64,6 +60,17 @@ export default function Testimonials() {
   const [vis, setVis] = useState(false);
   const [active, setActive] = useState(0);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAllReviewsNeon()
+      .then(data => {
+        setReviews(data.length > 0 ? data : sampleReviews as unknown as Review[]);
+      })
+      .catch(() => setReviews(sampleReviews as unknown as Review[]))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,9 +83,10 @@ export default function Testimonials() {
 
   // Auto-rotate
   useEffect(() => {
-    const t = setInterval(() => setActive(a => (a + 1) % allReviews.length), 5500);
+    if (reviews.length === 0) return;
+    const t = setInterval(() => setActive(a => (a + 1) % reviews.length), 5500);
     return () => clearInterval(t);
-  }, []);
+  }, [reviews.length]);
 
   const handleGoogleReview = () => {
     setIsRedirecting(true);
@@ -89,9 +97,9 @@ export default function Testimonials() {
     }, 2200);
   };
 
-  if (!allReviews || allReviews.length === 0) return null;
+  if (loading || reviews.length === 0) return null;
 
-  const current = allReviews[active] || allReviews[0];
+  const current = reviews[active];
 
   return (
     <section className="py-24 lg:py-36 bg-[var(--surface)] border-y border-[var(--border)]">

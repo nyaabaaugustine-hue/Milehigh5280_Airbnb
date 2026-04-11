@@ -4,12 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Clock, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-import { posts } from '@/lib/posts';
+import { getAllBlogPostsNeon } from '@/lib/neon/service';
+import type { BlogPost } from '@/lib/airtable/types';
 
 export default function BlogSection() {
   const ref = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAllBlogPostsNeon()
+      .then(data => setPosts(data.slice(0, 3)))
+      .catch(() => console.error('Failed to load blog posts'))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +30,10 @@ export default function BlogSection() {
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  if (loading || posts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-24 lg:py-36 px-6 lg:px-12 max-w-[1440px] mx-auto" aria-label="Blog News and Stories">

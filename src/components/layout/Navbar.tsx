@@ -199,10 +199,16 @@ export default function Navbar({ onBookNow }: NavbarProps) {
         )}
       >
         <div className="h-24" />
-        <nav className="flex flex-col justify-center flex-1 px-10 gap-2">
-          <Link href="/" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-white">Home</Link>
-          <Link href="/login" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Login</Link>
-          <Link href="/signup" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--gold)]">Sign Up</Link>
+          <nav className="flex flex-col justify-center flex-1 px-10 gap-2">
+            <Link href="/" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-white">Home</Link>
+            <Link href="/properties" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Properties</Link>
+            <Link href="/amenities" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Amenities</Link>
+            <Link href="/blog" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Blog</Link>
+            <Link href="/gallery" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Gallery</Link>
+            <Link href="/about" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">About</Link>
+            <Link href="/contact" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Contact</Link>
+            <Link href="/login" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Login</Link>
+            <Link href="/signup" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--gold)]">Sign Up</Link>
           
           <div className={cn(
             'mt-8 flex flex-col gap-3 transition-all duration-500',
