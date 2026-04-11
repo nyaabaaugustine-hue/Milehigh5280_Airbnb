@@ -13,9 +13,16 @@ export type ToolName =
   | 'updateContactInfo'
   | 'publishBlogPost'
   | 'unpublishBlogPost'
+  | 'createBlogPost'
+  | 'updateBlogPost'
   | 'approveReview'
   | 'deleteReview'
-  | 'togglePropertyLive';
+  | 'togglePropertyLive'
+  | 'createAmenity'
+  | 'updateAmenity'
+  | 'deleteAmenity'
+  | 'updateSiteSettings'
+  | 'createReview';
 
 // ─── Tool Input Schemas ──────────────────────────────────────────────────────
 
@@ -84,6 +91,59 @@ export interface TogglePropertyLiveInput {
   isLive: boolean;
 }
 
+export interface CreateBlogPostInput {
+  title: string;
+  excerpt?: string;
+  content?: string;
+  category?: string;
+  tag?: string;
+  image?: string;
+  author?: string;
+}
+
+export interface UpdateBlogPostInput {
+  postId: string;
+  title?: string;
+  excerpt?: string;
+  content?: string;
+  category?: string;
+  tag?: string;
+  image?: string;
+}
+
+export interface CreateAmenityInput {
+  name: string;
+  icon?: string;
+  category?: string;
+}
+
+export interface UpdateAmenityInput {
+  amenityId: string;
+  name?: string;
+  icon?: string;
+  category?: string;
+}
+
+export interface DeleteAmenityInput {
+  amenityId: string;
+}
+
+export interface UpdateSiteSettingsInput {
+  currency?: string;
+  timezone?: string;
+  minNights?: number;
+  checkinTime?: string;
+  checkoutTime?: string;
+}
+
+export interface CreateReviewInput {
+  author: string;
+  rating: number;
+  comment: string;
+  propertyId?: string;
+  country?: string;
+}
+
 // ─── Tool Call (what AI produces) ────────────────────────────────────────────
 
 export type ToolInput =
@@ -94,9 +154,16 @@ export type ToolInput =
   | BulkUpdatePricesInput
   | UpdateContactInfoInput
   | PublishBlogPostInput
+  | CreateBlogPostInput
+  | UpdateBlogPostInput
   | ApproveReviewInput
   | DeleteReviewInput
-  | TogglePropertyLiveInput;
+  | TogglePropertyLiveInput
+  | CreateAmenityInput
+  | UpdateAmenityInput
+  | DeleteAmenityInput
+  | UpdateSiteSettingsInput
+  | CreateReviewInput;
 
 export interface AIToolCall {
   tool: ToolName;
