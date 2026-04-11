@@ -1,6 +1,9 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import type { Metadata } from 'next';
-import { Settings, Phone, Mail, MapPin, Globe, CreditCard, Link as LinkIcon, Clock } from 'lucide-react';
-import { getContactInfo, getSocialLinks, getConciergeHours, getPromoCodes } from '@/lib/data';
+import { Settings, Phone, Mail, MapPin, Globe, CreditCard, Link as LinkIcon, Clock, Save } from 'lucide-react';
+import type { BlogPost } from '@/lib/airtable/types';
 
 export const metadata: Metadata = {
   title: 'Settings | Admin Dashboard',
@@ -8,10 +11,68 @@ export const metadata: Metadata = {
 };
 
 export default function AdminSettingsPage() {
-  const contactInfo = getContactInfo();
-  const socialLinks = getSocialLinks();
-  const conciergeHours = getConciergeHours();
-  const promoCodes = getPromoCodes();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [settings, setSettings] = useState({
+    phone: '',
+    whatsapp: '',
+    email: '',
+    address: '',
+    facebook: '',
+    instagram: '',
+    twitter: '',
+    youtube: '',
+  });
+
+  useEffect(() => {
+    fetch('/api/admin/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          setSettings({
+            phone: data.phone || '',
+            whatsapp: data.whatsapp || '',
+            email: data.email || '',
+            address: data.address || '',
+            facebook: data.socialLinks?.facebook || '',
+            instagram: data.socialLinks?.instagram || '',
+            twitter: data.socialLinks?.twitter || '',
+            youtube: data.socialLinks?.youtube || '',
+          });
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: settings.phone,
+          whatsapp: settings.whatsapp,
+          email: settings.email,
+          address: settings.address,
+          socialLinks: {
+            facebook: settings.facebook,
+            instagram: settings.instagram,
+            twitter: settings.twitter,
+            youtube: settings.youtube,
+          },
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to save');
+      alert('Settings saved successfully!');
+    } catch (err) {
+      console.error('Save settings error:', err);
+      alert('Failed to save settings');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -23,13 +84,10 @@ export default function AdminSettingsPage() {
             Manage site settings, contact info, and integrations
           </p>
         </div>
-      </div>
-
-      {/* Info Banner */}
-      <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4">
-        <p className="text-[var(--text-muted)] text-sm">
-          <strong className="text-[var(--gold)]">Note:</strong> Settings are managed by the Neon backend and optionally by <code className="bg-[var(--surface-3)] px-1">src/lib/data.ts</code> for local defaults.
-        </p>
+        <button onClick={handleSave} disabled={saving} className="btn-gold text-xs">
+          <Save size={14} />
+          {saving ? 'Saving...' : 'Save Changes'}
+        </button>
       </div>
 
       {/* Settings Grid */}
@@ -41,175 +99,106 @@ export default function AdminSettingsPage() {
             Contact Information
           </h2>
           <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Phone size={16} className="text-[var(--text-subtle)] mt-0.5" />
-              <div>
-                <p className="text-[var(--text-subtle)] text-xs uppercase tracking-wider">Phone</p>
-                <p className="text-white">{contactInfo.phone}</p>
-              </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Phone</label>
+              <input
+                type="text"
+                value={settings.phone}
+                onChange={e => setSettings({ ...settings, phone: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="+233 XX XXX XXXX"
+              />
             </div>
-            <div className="flex items-start gap-3">
-              <Phone size={16} className="text-[var(--text-subtle)] mt-0.5" />
-              <div>
-                <p className="text-[var(--text-subtle)] text-xs uppercase tracking-wider">WhatsApp</p>
-                <p className="text-white">{contactInfo.whatsapp}</p>
-              </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">WhatsApp</label>
+              <input
+                type="text"
+                value={settings.whatsapp}
+                onChange={e => setSettings({ ...settings, whatsapp: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="+233 XX XXX XXXX"
+              />
             </div>
-            <div className="flex items-start gap-3">
-              <Mail size={16} className="text-[var(--text-subtle)] mt-0.5" />
-              <div>
-                <p className="text-[var(--text-subtle)] text-xs uppercase tracking-wider">Email</p>
-                <p className="text-white">{contactInfo.email}</p>
-              </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Email</label>
+              <input
+                type="email"
+                value={settings.email}
+                onChange={e => setSettings({ ...settings, email: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="info@milehigh5280.com"
+              />
             </div>
-            <div className="flex items-start gap-3">
-              <MapPin size={16} className="text-[var(--text-subtle)] mt-0.5" />
-              <div>
-                <p className="text-[var(--text-subtle)] text-xs uppercase tracking-wider">Address</p>
-                <p className="text-white">{contactInfo.location}</p>
-              </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Address</label>
+              <textarea
+                value={settings.address}
+                onChange={e => setSettings({ ...settings, address: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                rows={2}
+                placeholder="Ayi Mensah, Accra, Ghana"
+              />
             </div>
-          </div>
-          <div className="mt-4 text-[var(--text-muted)] text-xs">
-            Managed through Neon Postgres or local config.
-          </div>
-        </div>
-
-        {/* Concierge Hours */}
-        <div className="bg-[var(--surface-2)] border border-[var(--border)] p-6">
-          <h2 className="font-serif text-xl text-white mb-4 flex items-center gap-2">
-            <Clock size={18} className="text-[var(--gold)]" />
-            Concierge Hours
-          </h2>
-          <div className="space-y-2">
-            {conciergeHours.map((item, i) => (
-              <div key={i} className="flex justify-between py-2 border-b border-[var(--border)] last:border-0">
-                <span className="text-[var(--text-muted)] text-sm">{item.day}</span>
-                <span className="text-white text-sm">{item.hours}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 text-[var(--text-muted)] text-xs">
-            Managed through Neon Postgres or local config.
           </div>
         </div>
 
-        {/* Social Links */}
+        {/* Social Media */}
         <div className="bg-[var(--surface-2)] border border-[var(--border)] p-6">
           <h2 className="font-serif text-xl text-white mb-4 flex items-center gap-2">
             <Globe size={18} className="text-[var(--gold)]" />
             Social Media
           </h2>
-          <div className="space-y-3">
-            {socialLinks.map((social) => (
-              <div key={social.platform} className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-                <div className="flex items-center gap-2">
-                  <Globe size={14} className="text-[var(--text-subtle)]" />
-                  <span className="text-white text-sm capitalize">{social.platform}</span>
-                </div>
-                <span className="text-[var(--text-muted)] text-xs truncate max-w-[200px]">{social.url}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 text-[var(--text-muted)] text-xs">
-            Managed through Neon Postgres or local config.
-          </div>
-        </div>
-
-        {/* Promo Codes */}
-        <div className="bg-[var(--surface-2)] border border-[var(--border)] p-6">
-          <h2 className="font-serif text-xl text-white mb-4 flex items-center gap-2">
-            <CreditCard size={18} className="text-[var(--gold)]" />
-            Promo Codes
-          </h2>
-          {Object.keys(promoCodes).length > 0 ? (
-            <div className="space-y-3">
-              {Object.entries(promoCodes).map(([code, details]) => (
-                <div key={code} className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-                  <div>
-                    <p className="text-white text-sm font-mono">{code}</p>
-                    <p className="text-[var(--text-subtle)] text-xs">{details.description}</p>
-                  </div>
-                  <span className="text-[var(--gold)] font-medium">
-                    {details.discount}% OFF
-                  </span>
-                </div>
-              ))}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Facebook</label>
+              <input
+                type="text"
+                value={settings.facebook}
+                onChange={e => setSettings({ ...settings, facebook: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="https://facebook.com/..."
+              />
             </div>
-          ) : (
-            <p className="text-[var(--text-muted)] text-sm">No promo codes configured</p>
-          )}
-          <div className="mt-4 text-[var(--text-muted)] text-xs">
-            Add promo codes through Neon Postgres or local config.
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Instagram</label>
+              <input
+                type="text"
+                value={settings.instagram}
+                onChange={e => setSettings({ ...settings, instagram: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="https://instagram.com/..."
+              />
+            </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">Twitter/X</label>
+              <input
+                type="text"
+                value={settings.twitter}
+                onChange={e => setSettings({ ...settings, twitter: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="https://twitter.com/..."
+              />
+            </div>
+            <div>
+              <label className="block text-[var(--text-subtle)] text-xs uppercase mb-1">YouTube</label>
+              <input
+                type="text"
+                value={settings.youtube}
+                onChange={e => setSettings({ ...settings, youtube: e.target.value })}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-white"
+                placeholder="https://youtube.com/..."
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Environment Variables */}
-      <div className="bg-[var(--surface-2)] border border-[var(--border)] p-6">
-        <h2 className="font-serif text-xl text-white mb-4 flex items-center gap-2">
-          <Settings size={18} className="text-[var(--gold)]" />
-          Environment Variables
-        </h2>
-        <p className="text-[var(--text-muted)] text-sm mb-4">
-          Required environment variables for the application. Add these to your <code className="bg-[var(--surface-3)] px-1">.env.local</code> file or Vercel dashboard.
+      {/* Info Banner */}
+      <div className="bg-[var(--surface-2)] border border-[var(--border)] p-4">
+        <p className="text-[var(--text-muted)] text-sm">
+          <strong className="text-[var(--gold)]">Note:</strong> Settings are stored in the Neon Postgres database and synced to the live site.
         </p>
-        <div className="bg-[var(--obsidian)] border border-[var(--border)] p-4 overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-[var(--border)]">
-                <th className="text-left py-2 text-[var(--text-subtle)] uppercase tracking-wider">Variable</th>
-                <th className="text-left py-2 text-[var(--text-subtle)] uppercase tracking-wider">Value</th>
-                <th className="text-left py-2 text-[var(--text-subtle)] uppercase tracking-wider">Required</th>
-              </tr>
-            </thead>
-            <tbody className="font-mono">
-              {envVars.map((envVar) => (
-                <tr key={envVar.name} className="border-b border-[var(--border)] last:border-0">
-                  <td className="py-2 text-green-400">{envVar.name}</td>
-                  <td className="py-2 text-[var(--text-muted)]">{envVar.placeholder}</td>
-                  <td className="py-2">
-                    {envVar.required ? (
-                      <span className="text-red-400">Yes</span>
-                    ) : (
-                      <span className="text-yellow-400">Optional</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Neon Setup */}
-      <div className="bg-[var(--gold)]/10 border border-[var(--gold)]/30 p-6">
-        <h3 className="text-[var(--gold)] font-medium mb-2">Need to Set Up Neon CMS?</h3>
-        <p className="text-[var(--text-muted)] text-sm mb-4">
-          Follow the Neon migration guide to connect your Postgres CMS and replace Airtable.
-        </p>
-        <a 
-          href="/NEON-MIGRATION.md"
-          target="_blank"
-          rel="noreferrer"
-          className="btn-gold text-xs"
-        >
-          View Neon Setup Guide
-        </a>
       </div>
     </div>
   );
 }
-
-const envVars = [
-  { name: 'NEON_DATABASE_URL', placeholder: 'postgres://user:pass@host:5432/dbname', required: true },
-  { name: 'NEON_DATABASE_URL_READ_REPLICA', placeholder: 'postgres://user:pass@host:5432/dbname', required: false },
-  { name: 'GROK_API_KEY', placeholder: 'sk-...', required: true },
-  { name: 'GMAIL_USER', placeholder: 'your-email@gmail.com', required: true },
-  { name: 'GMAIL_PASS', placeholder: '16-character-app-password', required: true },
-  { name: 'ADMIN_EMAIL', placeholder: 'admin@example.com', required: true },
-  { name: 'NEXT_PUBLIC_SITE_URL', placeholder: 'https://yoursite.com', required: true },
-  { name: 'NEXT_PUBLIC_WHATSAPP_NUMBER', placeholder: '233XXXXXXXXX', required: true },
-  { name: 'NEXT_PUBLIC_HOTJAR_ID', placeholder: 'XXXXXXXX', required: false },
-  { name: 'NEXT_PUBLIC_CLARITY_ID', placeholder: 'XXXXXXXXXX', required: false },
-];

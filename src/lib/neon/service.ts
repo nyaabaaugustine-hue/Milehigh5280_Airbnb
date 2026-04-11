@@ -539,6 +539,75 @@ export async function getAllAmenitiesNeon(): Promise<Amenity[]> {
   }
 }
 
+export async function createAmenityNeon(data: Partial<Amenity>): Promise<Amenity | null> {
+  try {
+    const result = await queryOne(
+      `INSERT INTO amenities (name, icon, category, is_active)
+       VALUES ($1, $2, $3, true)
+       RETURNING id, name, icon, category, is_active as "isActive", created_at as "createdAt"`,
+      [data.name || 'New Amenity', data.icon || '✨', data.category || 'essential']
+    );
+    return result as unknown as Amenity;
+  } catch (err) {
+    console.error('[Neon] Failed to create amenity:', err);
+    return null;
+  }
+}
+
+export async function updateAmenityNeon(id: string, data: Partial<Amenity>): Promise<Amenity | null> {
+  try {
+    const updates: string[] = [];
+    const values: unknown[] = [];
+    let paramCount = 1;
+
+    if (data.name !== undefined) {
+      updates.push(`name = $${paramCount++}`);
+      values.push(data.name);
+    }
+    if (data.icon !== undefined) {
+      updates.push(`icon = $${paramCount++}`);
+      values.push(data.icon);
+    }
+    if (data.category !== undefined) {
+      updates.push(`category = $${paramCount++}`);
+      values.push(data.category);
+    }
+    if (data.description !== undefined) {
+      updates.push(`description = $${paramCount++}`);
+      values.push(data.description);
+    }
+    if (data.isActive !== undefined) {
+      updates.push(`is_active = $${paramCount++}`);
+      values.push(data.isActive);
+    }
+
+    if (updates.length === 0) {
+      return null;
+    }
+
+    values.push(id);
+    const result = await queryOne(
+      `UPDATE amenities SET ${updates.join(', ')} WHERE id = $${paramCount}
+       RETURNING id, name, icon, category, is_active as "isActive", created_at as "createdAt"`,
+      ...values
+    );
+    return result as unknown as Amenity;
+  } catch (err) {
+    console.error('[Neon] Failed to update amenity:', err);
+    return null;
+  }
+}
+
+export async function deleteAmenityNeon(id: string): Promise<boolean> {
+  try {
+    await execute(`DELETE FROM amenities WHERE id = $1`, [id]);
+    return true;
+  } catch (err) {
+    console.error('[Neon] Failed to delete amenity:', err);
+    return false;
+  }
+}
+
 // ─── REVIEWS ────────────────────────────────────────────────────────────────
 
 export async function getAllReviewsNeon(): Promise<Review[]> {
@@ -626,6 +695,31 @@ export async function getAllBlogPostsNeon(): Promise<BlogPost[]> {
   } catch (err) {
     console.error('[Neon] Failed to fetch blog posts:', err);
     return [];
+  }
+}
+
+export async function createBlogPostNeon(data: Partial<BlogPost>): Promise<BlogPost | null> {
+  try {
+    const result = await queryOne(
+      `INSERT INTO blog_posts (title, slug, excerpt, content, author, category, image, is_published, featured)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING *`,
+      [
+        data.title || 'New Blog Post',
+        data.slug || `blog-${Date.now()}`,
+        data.excerpt || '',
+        data.content || '',
+        data.author || 'Admin',
+        data.category || 'General',
+        data.image || '',
+        data.isPublished ?? false,
+        data.featured ?? false,
+      ]
+    );
+    return result ? normalizeBlogPost(result) : null;
+  } catch (err) {
+    console.error('[Neon] Failed to create blog post:', err);
+    return null;
   }
 }
 
@@ -717,6 +811,16 @@ export async function updateBlogPostNeon(id: string, data: Partial<BlogPost>): P
   }
 }
 
+export async function deleteBlogPostNeon(id: string): Promise<boolean> {
+  try {
+    await execute(`DELETE FROM blog_posts WHERE id = $1`, [id]);
+    return true;
+  } catch (err) {
+    console.error('[Neon] Failed to delete blog post:', err);
+    return false;
+  }
+}
+
 // ─── SITE CONTENT ───────────────────────────────────────────────────────────
 
 export async function getSiteContentNeon(key: string): Promise<string | null> {
@@ -760,6 +864,77 @@ export async function updateSiteContentNeon(key: string, value: string): Promise
   } catch (err) {
     console.error('[Neon] Failed to update site content:', err);
     return false;
+  }
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────
+
+export async function getSettingsNeon(): Promise<Record<string, unknown> | null> {
+  try {
+    const result = await queryOne(
+      `SELECT * FROM settings WHERE type = 'site' LIMIT 1`
+    );
+    if (!result) return null;
+    return {
+      id: result.id,
+      phone: result.phone,
+      whatsapp: result.whatsapp,
+      email: result.email,
+      address: result.address,
+      socialLinks: result.social_links,
+    };
+  } catch (err) {
+    console.error('[Neon] Failed to fetch settings:', err);
+    return null;
+  }
+}
+
+export async function updateSettingsNeon(data: {
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  address?: string;
+  socialLinks?: Record<string, string>;
+}): Promise<Record<string, unknown> | null> {
+  try {
+    const updates: string[] = [];
+    const values: unknown[] = [];
+    let paramCount = 1;
+
+    if (data.phone !== undefined) {
+      updates.push(`phone = $${paramCount++}`);
+      values.push(data.phone);
+    }
+    if (data.whatsapp !== undefined) {
+      updates.push(`whatsapp = $${paramCount++}`);
+      values.push(data.whatsapp);
+    }
+    if (data.email !== undefined) {
+      updates.push(`email = $${paramCount++}`);
+      values.push(data.email);
+    }
+    if (data.address !== undefined) {
+      updates.push(`address = $${paramCount++}`);
+      values.push(data.address);
+    }
+    if (data.socialLinks !== undefined) {
+      updates.push(`social_links = $${paramCount++}`);
+      values.push(JSON.stringify(data.socialLinks));
+    }
+
+    if (updates.length === 0) return null;
+
+    updates.push(`updated_at = NOW()`);
+
+    const result = await queryOne(
+      `UPDATE settings SET ${updates.join(', ')} WHERE type = 'site'
+       RETURNING *`,
+      ...values
+    );
+    return result;
+  } catch (err) {
+    console.error('[Neon] Failed to update settings:', err);
+    return null;
   }
 }
 
