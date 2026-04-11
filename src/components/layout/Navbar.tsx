@@ -101,10 +101,9 @@ export default function Navbar({ onBookNow }: NavbarProps) {
           <nav className="hidden lg:flex items-center gap-6">
             <Link href="/properties" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Properties</Link>
             <Link href="/amenities" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Amenities</Link>
-            <Link href="/blog" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Blog</Link>
-            <Link href="/gallery" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Gallery</Link>
-            <Link href="/about" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Contact</Link>
+            <Link href="/guide" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Travel Guide</Link>
+            <Link href="/concierge" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Concierge</Link>
+            <Link href="/about" className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">Our Story</Link>
           </nav>
 
           {/* ── Right Controls ── */}
@@ -213,10 +212,9 @@ export default function Navbar({ onBookNow }: NavbarProps) {
             <Link href="/" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-white">Home</Link>
             <Link href="/properties" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Properties</Link>
             <Link href="/amenities" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Amenities</Link>
-            <Link href="/blog" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Blog</Link>
-            <Link href="/gallery" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Gallery</Link>
-            <Link href="/about" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">About</Link>
-            <Link href="/contact" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Contact</Link>
+            <Link href="/guide" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Travel Guide</Link>
+            <Link href="/concierge" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Concierge</Link>
+            <Link href="/about" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Our Story</Link>
             <Link href="/login" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--text-muted)]">Login</Link>
             <Link href="/signup" className="font-serif text-4xl font-light py-4 border-b border-[var(--border)] text-[var(--gold)]">Sign Up</Link>
           
