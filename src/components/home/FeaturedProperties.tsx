@@ -17,6 +17,31 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Wifi, Wind, Shield, Zap, TreePalm, UtensilsCrossed, Car,
 };
 
+const staticProperty = {
+  id: '1',
+  name: 'The Palm',
+  slug: 'the-palm',
+  tagline: 'Your Private Sanctuary in Ghana',
+  description: 'A beautifully furnished private apartment in the serene Ayi Mensah area of Accra.',
+  type: 'apartment' as const,
+  badge: 'Featured' as const,
+  isLive: true,
+  featured: true,
+  location: { city: 'Ayi Mensah', area: 'Accra', country: 'Ghana' },
+  pricing: { perNight: 150, perNightGHS: 2370, currency: 'USD' as const },
+  capacity: { guests: 4, bedrooms: 2, bathrooms: 1, beds: 2 },
+  images: {
+    hero: { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg', alt: 'The Palm' },
+    gallery: [
+      { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg', alt: 'Living room' },
+      { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775411320/images_1_kilffq.jpg', alt: 'Bedroom' },
+    ]
+  },
+  amenities: ['wifi', 'air-conditioning', 'kitchen', 'parking', 'washer', 'tv'],
+  rating: 4.9,
+  reviewCount: 28,
+};
+
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
@@ -50,8 +75,8 @@ interface Props {
 }
 
 export default function FeaturedProperties({ onBookNow, onViewProperty }: Props) {
-  const [property, setProperty] = useState<Property | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [property, setProperty] = useState<typeof staticProperty | null>(staticProperty);
+  const [loading, setLoading] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const [vis, setVis] = useState(false);
   const [activeImg, setActiveImg] = useState(0);
@@ -72,13 +97,13 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
   useEffect(() => {
     getLivePropertiesNeon()
       .then(data => {
-        if (data.length > 0) setProperty(data[0]);
+        if (data.length > 0) setProperty(data[0] as any);
       })
       .catch(() => console.error('Failed to load properties'))
       .finally(() => setLoading(false));
   }, []);
 
-  const formatCurrency = (value: number, curr: string) => {
+  const formatCurrencyFn = (value: number, curr: string) => {
     const formatter = new Intl.NumberFormat(curr === 'GHS' ? 'en-GH' : 'en-US', {
       style: 'currency',
       currency: curr,
@@ -87,8 +112,8 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
     return formatter.format(value);
   };
 
-  const images = property?.images?.gallery || property?.images || [];
-  const price = currency === 'GHS' ? (property?.pricing?.perNightGhs || property?.pricePerNightGhs) : (property?.pricing?.perNight || property?.pricePerNight);
+  const images = property?.images?.gallery || [];
+  const price = currency === 'GHS' ? (property?.pricing?.perNightGHS || property?.pricing?.perNight || 0) : (property?.pricing?.perNight || 0);
   
   const scrollLeft = useCallback(() => {
     if (isAnimating) return;
@@ -103,26 +128,6 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
     setActiveImg(i => (i === images.length - 1 ? 0 : i + 1));
     setTimeout(() => setIsAnimating(false), 300);
   }, [isAnimating, images.length]);
-
-  if (loading) {
-    return (
-      <section ref={sectionRef} className="py-24 lg:py-32 bg-[var(--surface)]">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-          <div className="animate-pulse">
-            <div className="h-16 w-96 bg-[var(--surface-2)] rounded mb-8" />
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
-              <div className="aspect-[4/3] bg-[var(--surface-2)] rounded" />
-              <div className="space-y-4">
-                <div className="h-8 w-3/4 bg-[var(--surface-2)] rounded" />
-                <div className="h-4 w-full bg-[var(--surface-2)] rounded" />
-                <div className="h-4 w-2/3 bg-[var(--surface-2)] rounded" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (!property) return null;
 
@@ -295,7 +300,7 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
                 </div>
                 <div className="flex items-baseline gap-1">
                   <span className="font-serif text-3xl text-[var(--text-primary)]">
-                    {formatCurrency(price || 0, currency)}
+                    {formatCurrencyFn(price || 0, currency)}
                   </span>
                   <span className="text-[var(--text-muted)]">/ night</span>
                 </div>
