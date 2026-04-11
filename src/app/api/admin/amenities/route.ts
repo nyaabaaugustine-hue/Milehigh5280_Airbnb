@@ -1,6 +1,3 @@
-// GET /api/admin/amenities - List all amenities
-// POST /api/admin/amenities - Create amenity
-
 import { NextRequest, NextResponse } from 'next/server';
 import { createAmenityNeon, getAllAmenitiesNeon, logFormSubmissionNeon } from '@/lib/neon/service';
 
@@ -13,11 +10,6 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch amenities' }, { status: 500 });
   }
 }
-// PATCH /api/admin/amenities/[id] - Update amenity
-// DELETE /api/admin/amenities/[id] - Delete amenity
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createAmenityNeon, deleteAmenityNeon, updateAmenityNeon, logFormSubmissionNeon } from '@/lib/neon/service';
 
 export async function POST(req: NextRequest) {
   try {
