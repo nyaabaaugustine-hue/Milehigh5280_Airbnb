@@ -1,16 +1,10 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Plus, FileText, Eye, Edit, Calendar, Clock, Trash2 } from 'lucide-react';
 import type { BlogPost } from '@/lib/airtable/types';
-
-export const metadata: Metadata = {
-  title: 'Blog Posts | Admin Dashboard',
-  robots: 'noindex, nofollow',
-};
 
 const categoryColors: Record<string, string> = {
   'Travel Tips': 'bg-emerald-400/10 text-emerald-400',

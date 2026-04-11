@@ -1,15 +1,9 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 import { Plus, Star, Edit, Trash2 } from 'lucide-react';
 import { getAllAmenitiesNeon } from '@/lib/neon/service';
 import type { Amenity } from '@/lib/airtable/types';
-
-export const metadata: Metadata = {
-  title: 'Amenities | Admin Dashboard',
-  robots: 'noindex, nofollow',
-};
 
 const categoryColors: Record<string, string> = {
   essential: 'bg-blue-400/10 text-blue-400',

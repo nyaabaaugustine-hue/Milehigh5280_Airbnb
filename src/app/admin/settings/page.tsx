@@ -1,14 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Metadata } from 'next';
 import { Settings, Phone, Mail, MapPin, Globe, CreditCard, Link as LinkIcon, Clock, Save } from 'lucide-react';
 import type { BlogPost } from '@/lib/airtable/types';
-
-export const metadata: Metadata = {
-  title: 'Settings | Admin Dashboard',
-  robots: 'noindex, nofollow',
-};
 
 export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
