@@ -3,8 +3,7 @@ echo.
 echo ============================================
 echo   Fix AI Chatbot — Push to GitHub
 echo ============================================
-echo.
-cd /d "C:\Users\TGNE\Desktop\air"
+ec\Desktop\air"
 git add src/app/api/ai/interpret/route.ts src/components/admin/AdminChat.tsx
 git status
 git commit -m "fix: AI chatbot not responding

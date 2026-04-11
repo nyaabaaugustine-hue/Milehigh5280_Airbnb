@@ -7,6 +7,7 @@ import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import BookingModal from '@/components/ui/BookingModal';
 import PropertyModal from '@/components/ui/PropertyModal';
 import Footer from '@/components/layout/Footer';
+import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import { Property } from '@/types';
 
 interface BookingContextType {
@@ -55,6 +56,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
         onClose={() => setSelectedProperty(null)}
         onBook={handleBookFromModal}
       />
+      <WhatsAppButton onBookNow={openBooking} />
     </BookingContext.Provider>
   );
 }
