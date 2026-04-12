@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 import {
   Star, MapPin, Users, Bed, Bath, Waves, ChevronRight,
   Wifi, Wind, Shield, Zap, TreePalm, UtensilsCrossed,
-  Car, Tv, Coffee, Shirt, Flame, Package, Phone,
+  Car, Tv, Coffee, Shirt, Flame, Package, Phone, Quote,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getPropertyBySlugNeon, getLivePropertiesNeon } from '@/lib/neon/service';
+import { getPropertyBySlugNeon, getLivePropertiesNeon, getReviewsByPropertyIdNeon } from '@/lib/neon/service';
 import BookingWidget from '@/components/property/BookingWidget';
 import ComingSoonSignup from '@/components/property/ComingSoonSignup';
 import { CONTACT_INFO } from '@/lib/data';
@@ -109,6 +109,24 @@ function PropertyJsonLd({ property }: { property: any }) {
   );
 }
 
+// ─── Star Row helper ────────────────────────────────────────────────────────
+function StarRow({ rating, size = 14 }: { rating: number; size?: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map(n => (
+        <Star
+          key={n}
+          size={size}
+          className={n <= Math.round(rating)
+            ? 'fill-[var(--gold)] text-[var(--gold)]'
+            : 'text-[var(--border)]'
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 export default async function PropertyPage(
   { params }: { params: Promise<{ id: string }> }
@@ -117,7 +135,10 @@ export default async function PropertyPage(
   const property = await getPropertyBySlugNeon(id);
   if (!property) notFound();
 
-  const allProperties = await getLivePropertiesNeon().catch(() => []);
+  const [allProperties, reviews] = await Promise.all([
+    getLivePropertiesNeon().catch(() => []),
+    getReviewsByPropertyIdNeon(property.id).catch(() => []),
+  ]);
   const related = allProperties.filter(p => p.slug !== property.slug).slice(0, 3);
 
   const heroImage =
@@ -141,6 +162,11 @@ export default async function PropertyPage(
 
   const perNight = property.pricing?.perNight ?? 0;
   const perNightGHS = property.pricing?.perNightGHS ?? Math.round(perNight * 15.8);
+
+  // ── Reviews summary ──────────────────────────────────────────────────────
+  const avgRating = reviews.length
+    ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+    : property.rating ?? 0;
 
   return (
     <>
@@ -296,6 +322,18 @@ export default async function PropertyPage(
             {features.length > 0 && (
               <div className="mb-14 pb-14 border-b border-[var(--border)]">
                 <p className="section-label mb-4">Property Highlights</p>
+
+                {/* Features showcase image */}
+                <div className="relative w-full h-56 mb-6 overflow-hidden border border-[var(--border)]">
+                  <Image
+                    src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg"
+                    alt={`${property.name} — property highlights`}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-transparent" />
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {features.map((f, i) => (
                     <div
@@ -358,6 +396,99 @@ export default async function PropertyPage(
                 </div>
               </div>
             )}
+
+            {/* ── REVIEWS ─────────────────────────────────────────────── */}
+            <div className="mb-14 pb-14 border-b border-[var(--border)]">
+              <p className="section-label mb-4">Guest Reviews</p>
+
+              {/* Rating summary */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="text-center">
+                  <p className="font-serif text-5xl text-white font-light leading-none">
+                    {avgRating > 0 ? avgRating.toFixed(1) : '—'}
+                  </p>
+                  <p className="text-[var(--text-muted)] text-xs uppercase tracking-widest mt-1">Overall</p>
+                </div>
+                <div className="border-l border-[var(--border)] pl-4">
+                  <StarRow rating={avgRating} size={18} />
+                  <p className="text-[var(--text-muted)] text-sm mt-1">
+                    {reviews.length > 0
+                      ? `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''}`
+                      : 'No reviews yet'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Review cards */}
+              {reviews.length > 0 ? (
+                <div className="space-y-6">
+                  {reviews.map((review) => (
+                    <div
+                      key={review.id}
+                      className="border border-[var(--border)] bg-[var(--surface)] p-6 hover:border-[var(--gold)]/40 transition-colors"
+                    >
+                      <div className="flex items-start gap-4 mb-4">
+                        {/* Avatar */}
+                        <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[var(--border)] shrink-0 bg-[var(--surface-2)]">
+                          {review.authorAvatar ? (
+                            <Image
+                              src={review.authorAvatar}
+                              alt={review.author}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[var(--gold)] font-serif text-lg">
+                              {review.author.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Author info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <div>
+                              <p className="text-white font-medium text-sm">{review.author}</p>
+                              {review.country && (
+                                <p className="text-[var(--text-muted)] text-xs">{review.country}</p>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <StarRow rating={review.rating} size={12} />
+                              <p className="text-[var(--text-muted)] text-xs mt-0.5">{review.date}</p>
+                            </div>
+                          </div>
+                          {review.stayDuration && (
+                            <p className="text-[var(--text-muted)] text-xs mt-1 flex items-center gap-1">
+                              <Waves size={10} className="text-[var(--gold)]" />
+                              Stayed {review.stayDuration}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Comment */}
+                      <div className="relative pl-4 border-l-2 border-[var(--gold)]/30">
+                        <Quote size={14} className="text-[var(--gold)] mb-1 opacity-60" />
+                        <p className="text-[var(--text-muted)] text-sm leading-relaxed italic">
+                          {review.comment}
+                        </p>
+                        {review.isVerified && (
+                          <span className="inline-flex items-center gap-1 mt-2 text-[0.65rem] text-[var(--gold)] uppercase tracking-wider">
+                            <Shield size={9} /> Verified Stay
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="border border-[var(--border)] bg-[var(--surface)] p-10 text-center">
+                  <Star size={28} className="text-[var(--border)] mx-auto mb-3" />
+                  <p className="text-[var(--text-muted)] text-sm">Be the first to leave a review.</p>
+                </div>
+              )}
+            </div>
 
             {/* Location */}
             <div className="mb-14">
