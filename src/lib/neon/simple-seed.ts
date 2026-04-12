@@ -13,6 +13,7 @@ async function main() {
   }
   
   const pricePerNight = 150;
+  const pricePerNight = 50;
   const pricePerNightGhs = pricePerNight * 15.8;
   
   await execute(
