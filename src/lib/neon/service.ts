@@ -340,11 +340,11 @@ export async function createPropertyNeon(data: Partial<Property>): Promise<Prope
     const result = await queryOne(
       `INSERT INTO properties (
         name, slug, tagline, description, long_description, property_type,
-        badge, price_per_night, price_per_night_ghs, is_live,
+        badge, price_per_night, price_per_night_ghs, is_live, is_featured,
         bedrooms, bathrooms, beds, max_guests, city, area,
         country, hero_image, hero_image_alt, gallery, amenities,
         features, house_rules, check_in_time, check_out_time
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)
       RETURNING *`,
       [
         data.name,
@@ -357,6 +357,7 @@ export async function createPropertyNeon(data: Partial<Property>): Promise<Prope
         data.pricing?.perNight ?? 0,
         data.pricing?.perNightGHS ?? null,
         data.isLive ?? false,
+        data.featured ?? false,
         data.capacity?.bedrooms ?? 1,
         data.capacity?.bathrooms ?? 1,
         data.capacity?.beds ?? 1,
@@ -411,6 +412,10 @@ export async function updatePropertyNeon(id: string, data: Partial<Property>): P
     if (data.isLive !== undefined) {
       updates.push(`is_live = $${paramCount++}`);
       values.push(data.isLive);
+    }
+    if (data.featured !== undefined) {
+      updates.push(`is_featured = $${paramCount++}`);
+      values.push(data.featured);
     }
     if (data.pricing?.perNight !== undefined) {
       updates.push(`price_per_night = $${paramCount++}`);
