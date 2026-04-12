@@ -48,8 +48,8 @@ async function main() {
       1,
       1,
       4,
-      'Ayi Mensah',
       'Accra',
+      'Ayi Mensah',
       'Ghana',
     ]
   );

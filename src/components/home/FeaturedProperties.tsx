@@ -51,7 +51,7 @@ const STATIC: any = {
   isLive: true,
   featured: true,
   location: { city: 'Ayi Mensah', area: 'Accra', country: 'Ghana' },
-  pricing: { perNight: 150, perNightGHS: 2370, currency: 'USD' },
+  pricing: { perNight: 50, perNightGHS: 790, currency: 'USD' },
   capacity: { guests: 4, bedrooms: 2, bathrooms: 1, beds: 2 },
   images: {
     hero: { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', alt: 'The Palm' },

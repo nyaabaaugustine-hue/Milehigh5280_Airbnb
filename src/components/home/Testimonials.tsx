@@ -12,34 +12,34 @@ const sampleReviews = [
     id: '1',
     author: 'Sarah M.',
     country: 'United Kingdom',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
     rating: 5,
     date: '2024-12-15',
     comment: 'Absolutely stunning property! The views of the surrounding hills were breathtaking. The villa was immaculate and the host was incredibly responsive.',
     stayDuration: '5 nights',
-    propertyName: 'The Palm Ayi Mensah',
+    propertyName: 'The Palm',
   },
   {
     id: '2',
     author: 'James K.',
     country: 'Germany',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
     rating: 5,
     date: '2024-11-28',
     comment: 'Perfect escape from Accra. The peace and quiet here is exactly what we needed. The interior design is impeccable.',
     stayDuration: '7 nights',
-    propertyName: 'The Palm Ayi Mensah',
+    propertyName: 'The Palm',
   },
   {
     id: '3',
     author: 'Amara D.',
     country: 'USA',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
+    authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
     rating: 5,
     date: '2024-10-10',
     comment: 'Exceeded all expectations. The location is pristine, the amenities top-notch, and the hospitality unmatched. Will definitely return.',
     stayDuration: '3 nights',
-    propertyName: 'The Palm Ayi Mensah',
+    propertyName: 'The Palm',
   },
 ];
 
@@ -138,7 +138,7 @@ export default function Testimonials() {
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[var(--border-bright)]">
               <SafeImage
-                src={current.avatar}
+                src={current.authorAvatar}
                 alt={current.author}
                 fill
                 className="object-cover"

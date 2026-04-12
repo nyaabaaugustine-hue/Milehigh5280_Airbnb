@@ -10,7 +10,7 @@ ON CONFLICT (name) DO NOTHING;
 
 -- Seed "The Palm" Property
 INSERT INTO properties (
-    name, slug, tagline, description, type, badge, 
+    name, slug, tagline, description, property_type, badge, 
     city, area, country, price_per_night, currency, 
     max_guests, bedrooms, bathrooms, is_featured, hero_image, gallery, 
     rating, review_count, is_live

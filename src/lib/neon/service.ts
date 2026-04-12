@@ -595,7 +595,7 @@ export async function updateAmenityNeon(id: string, data: Partial<Amenity>): Pro
     const result = await queryOne(
       `UPDATE amenities SET ${updates.join(', ')} WHERE id = $${paramCount}
        RETURNING id, name, icon, category, is_active as "isActive", created_at as "createdAt"`,
-      ...values
+      values
     );
     return result as unknown as Amenity;
   } catch (err) {
@@ -937,7 +937,7 @@ export async function updateSettingsNeon(data: {
     const result = await queryOne(
       `UPDATE settings SET ${updates.join(', ')} WHERE type = 'site'
        RETURNING *`,
-      ...values
+      values
     );
     return result;
   } catch (err) {

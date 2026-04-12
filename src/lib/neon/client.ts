@@ -26,7 +26,8 @@ export async function query<T = Record<string, unknown>>(
 ): Promise<T[]> {
   if (!sql) return [];
   try {
-    return await sql(text, params ?? []) as T[];
+    const result = await (sql as any).query(text, params ?? []) as { rows: T[] };
+    return result.rows ?? [];
   } catch (error) {
     console.error('[Neon] Query error:', error);
     console.error('[Neon] SQL:', text);
@@ -52,7 +53,7 @@ export async function queryOne<T = Record<string, unknown>>(
 export async function execute(text: string, params?: unknown[]): Promise<boolean> {
   if (!sql) return false;
   try {
-    await sql(text, params ?? []);
+    await (sql as any).query(text, params ?? []);
     return true;
   } catch (error) {
     console.error('[Neon] Execute error:', error);
