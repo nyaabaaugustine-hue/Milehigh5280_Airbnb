@@ -50,7 +50,7 @@ const STATIC: any = {
   badge: 'Featured',
   isLive: true,
   featured: true,
-  location: { city: 'Ayi Mensah', area: 'Accra', country: 'Ghana' },
+  location: { city: 'Accra', area: 'Ayi Mensah', country: 'Ghana' },
   pricing: { perNight: 50, perNightGHS: 790, currency: 'USD' },
   capacity: { guests: 4, bedrooms: 2, bathrooms: 1, beds: 2 },
   images: {
@@ -96,14 +96,15 @@ function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface Props {
+  allProperties?: Property[];
   onBookNow?: () => void;
   onViewProperty?: (p: Property) => void;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
-export default function FeaturedProperties({ onBookNow, onViewProperty }: Props) {
+export default function FeaturedProperties({ allProperties: initialProperties, onBookNow, onViewProperty }: Props) {
   const [property, setProperty] = useState<any>(STATIC);
-  const [allProperties, setAllProperties] = useState<any[]>([STATIC]);
+  const [allProperties, setAllProperties] = useState<any[]>(initialProperties || [STATIC]);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [vis, setVis] = useState(false);
   const [activeImg, setActiveImg] = useState(0);
@@ -121,6 +122,12 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
 
   // Fetch from Neon
   useEffect(() => {
+    if (initialProperties && initialProperties.length > 0) {
+      setAllProperties(initialProperties);
+      setProperty(initialProperties[0]);
+      setSelectedIdx(0);
+      return;
+    }
     getLivePropertiesNeon()
       .then(data => {
         if (data.length > 0) {
@@ -130,7 +137,7 @@ export default function FeaturedProperties({ onBookNow, onViewProperty }: Props)
         }
       })
       .catch(() => {});
-  }, []);
+  }, [initialProperties]);
 
   // Switch property
   const selectProperty = useCallback((idx: number) => {
