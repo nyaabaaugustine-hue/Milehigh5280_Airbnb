@@ -54,7 +54,7 @@ async function seedProperties() {
       name, slug, tagline, description, long_description, property_type, badge,
       price_per_night, price_per_night_ghs, is_live, is_featured, rating, review_count,
       hero_image, hero_image_alt, gallery, amenities, bedrooms, bathrooms, beds,
-      max_guests, location_city, location_area, location_country
+      max_guests, city, area, country
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)`,
     [
       'The Palm',
@@ -177,65 +177,6 @@ async function seedBlogPosts() {
   console.log('Blog posts seeded');
 }
 
-async function seedReviews() {
-  console.log('Seeding reviews...');
-  
-  const existing = await query(`SELECT id FROM reviews LIMIT 1`);
-  if (existing.length > 0) {
-    console.log('Reviews already exist');
-    return;
-  }
-
-  const reviews = [
-    {
-      author: 'Sarah M.',
-      authorImage: '',
-      country: 'United Kingdom',
-      rating: 5,
-      comment: 'Absolutely stunning property! The Palm exceeded all our expectations. The location is perfect - peaceful yet accessible to all the best spots in Accra. Herbert was an amazing host who made us feel truly welcome.',
-      stayDuration: '5 nights',
-      propertyId: null,
-      isVerified: true,
-      isFeatured: true,
-    },
-    {
-      author: 'James K.',
-      authorImage: '',
-      country: 'USA',
-      rating: 5,
-      comment: 'Clean, modern, and beautifully decorated. The hot tub was a highlight! Would definitely stay here again on our next trip to Ghana.',
-      stayDuration: '7 nights',
-      propertyId: null,
-      isVerified: true,
-      isFeatured: true,
-    },
-    {
-      author: 'Amara D.',
-      authorImage: '',
-      country: 'Canada',
-      rating: 4,
-      comment: 'Great experience overall. The place is exactly as described, and the neighborhood is lovely. Very responsive host.',
-      stayDuration: '3 nights',
-      propertyId: null,
-      isVerified: true,
-      isFeatured: false,
-    },
-  ];
-
-  // Get property ID first
-  const propResult = await query(`SELECT id FROM properties LIMIT 1`);
-  const propertyId = propResult[0]?.id;
-
-  for (const r of reviews) {
-    await execute(
-      `INSERT INTO reviews (author, author_image, country, rating, comment, stay_duration, property_id, is_verified, is_featured)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [r.author, r.authorImage, r.country, r.rating, r.comment, r.stayDuration, propertyId, r.isVerified, r.isFeatured]
-    );
-  }
-  console.log('Reviews seeded');
-}
-
 async function main() {
   console.log('Starting seed...');
   
@@ -244,7 +185,6 @@ async function main() {
     await seedProperties();
     await seedAmenities();
     await seedBlogPosts();
-    await seedReviews();
     
     console.log('Seed completed successfully!');
   } catch (err) {

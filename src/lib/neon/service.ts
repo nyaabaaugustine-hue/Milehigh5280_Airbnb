@@ -340,7 +340,7 @@ export async function createPropertyNeon(data: Partial<Property>): Promise<Prope
   try {
     const result = await queryOne(
       `INSERT INTO properties (
-fe features         name, slug, tagline, description, long_description, property_type,
+        name, slug, tagline, description, long_description, property_type,
         badge, price_per_night, price_per_night_ghs, is_live, is_featured,
         bedrooms, bathrooms, beds, max_guests, city, area,
         country, hero_image, hero_image_alt, gallery, amenities,

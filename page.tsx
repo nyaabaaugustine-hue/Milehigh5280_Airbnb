@@ -1,4 +1,7 @@
 'use client';
+import { getPropertyBySlugNeon } from '@/lib/neon/service';
+import { notFound } from 'next/navigation';
+import PropertyDetailPageClient from './PropertyDetailPageClient';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -9,6 +12,9 @@ import {
   MapPin, Users, Bed, Bath, Shield, Star,
   Plane, ExternalLink, Phone, X
 } from 'lucide-react';
+export default async function PropertyPage({ params }: { params: { slug: string } }) {
+  // Fetch the real property data from Neon using the slug from the URL
+  const property = await getPropertyBySlugNeon(params.slug);
 
 const ICON_MAP: Record<string, any> = {
   wifi: Wifi,
@@ -18,6 +24,9 @@ const ICON_MAP: Record<string, any> = {
   washer: WashingMachine,
   tv: Tv,
 };
+  if (!property) {
+    notFound();
+  }
 
 export default function PropertyDetailPage({ params }: { params: { slug: string } }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -75,7 +84,7 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 pb-20">
+      <main className="max-w-7xl mx-auto px-6 mt-6 pb-20">
         {/* Hero Image Layout */}
         <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[500px] mb-12 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div 
@@ -259,4 +268,5 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
       </AnimatePresence>
     </div>
   );
+  return <PropertyDetailPageClient property={property} />;
 }

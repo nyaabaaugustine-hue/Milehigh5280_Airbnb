@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SafeImage from '@/components/ui/SafeImage';
 import { Star, Quote, ExternalLink } from 'lucide-react';
-import { getAllReviewsNeon } from '@/lib/neon/service';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Review } from '@/lib/airtable/types';
@@ -60,17 +59,8 @@ export default function Testimonials() {
   const [vis, setVis] = useState(false);
   const [active, setActive] = useState(0);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAllReviewsNeon()
-      .then(data => {
-        setReviews(data.length > 0 ? data : sampleReviews as unknown as Review[]);
-      })
-      .catch(() => setReviews(sampleReviews as unknown as Review[]))
-      .finally(() => setLoading(false));
-  }, []);
+  const [reviews] = useState<Review[]>(sampleReviews as unknown as Review[]);
+  const [loading] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

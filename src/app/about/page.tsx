@@ -83,7 +83,7 @@ export default function AboutPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative min-h-[70vh] flex items-end pb-20 overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-end pt-24 pb-20 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg"

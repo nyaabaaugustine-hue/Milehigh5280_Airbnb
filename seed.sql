@@ -16,7 +16,7 @@ INSERT INTO properties (
     rating, review_count, is_live
 ) VALUES (
     'The Palm', 
-    'the-palm-ayi-mensah', 
+    'the-palm', 
     'Your Private Sanctuary in Ghana', 
     'Handpicked luxury accommodations in Ghana — private, secure, and beautifully maintained. Located at the foot of the Aburi mountains, offering serene views and modern luxury.', 
     'villa', 
@@ -48,20 +48,3 @@ INSERT INTO properties (
     gallery = EXCLUDED.gallery,
     rating = EXCLUDED.rating,
     review_count = EXCLUDED.review_count;
-
--- Seed Sample Reviews for "The Palm"
--- Note: Adjust property_id based on the generated ID from the insert above
-INSERT INTO reviews (
-    property_id, author, author_image, country, rating, date, stay_duration, comment, is_verified
-) 
-SELECT 
-    id, 'Sarah Johnson', 'https://i.pravatar.cc/150?u=sarah', 'United Kingdom', 5, 'March 2024', '5 nights', 'Absolutely stunning villa! The security was top-notch and the views of the mountains are breathtaking.', true
-FROM properties WHERE slug = 'the-palm-ayi-mensah'
-UNION ALL
-SELECT 
-    id, 'Kwame Mensah', 'https://i.pravatar.cc/150?u=kwame', 'Ghana', 5, 'February 2024', '3 nights', 'Best stay in Accra. Very clean, high-speed internet worked perfectly for my remote meetings.', true
-FROM properties WHERE slug = 'the-palm-ayi-mensah'
-UNION ALL
-SELECT 
-    id, 'Elena Rodriguez', 'https://i.pravatar.cc/150?u=elena', 'Spain', 4, 'January 2024', '1 week', 'Beautiful home. The location is peaceful and away from the city noise.', true
-FROM properties WHERE slug = 'the-palm-ayi-mensah';

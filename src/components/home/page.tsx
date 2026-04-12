@@ -75,7 +75,7 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 pb-20">
+      <main className="max-w-7xl mx-auto px-6 mt-6 pb-20">
         {/* Hero Image Layout */}
         <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[500px] mb-12 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div 
