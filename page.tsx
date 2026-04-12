@@ -32,7 +32,7 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
     longDescription: 'Welcome to The Palm, your home away from home in the heart of Ghana. This luxury private apartment offers the perfect blend of modern comfort and authentic Ghanaian warmth. Located in the peaceful Ayi Mensah area, just 30 minutes from Accra\'s bustling city center, The Palm provides a tranquil escape while remaining conveniently close to attractions, restaurants, and amenities.',
     specs: { guests: 4, bedrooms: 2, bathrooms: 1, beds: 2 },
     images: {
-      hero: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775548165/nwe1_vkdfe3.png',
+      hero: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',
       gallery: [
         'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775548165/nwe1_vkdfe3.png',
         'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',

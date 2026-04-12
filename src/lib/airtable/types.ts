@@ -70,6 +70,7 @@ export interface Room {
 export interface Review {
   id: string;
   propertyId: string;
+  propertyName?: string;
   author: string;
   authorAvatar?: string;
   country: string;

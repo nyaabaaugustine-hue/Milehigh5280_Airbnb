@@ -46,7 +46,7 @@ async function seedProperties() {
   }
 
   // Seed main property - The Palm
-  const pricePerNight = 150;
+  const pricePerNight = 50;
   const pricePerNightGhs = pricePerNight * USD_TO_GHS;
   
   await execute(
@@ -70,7 +70,7 @@ async function seedProperties() {
       true,
       4.9,
       28,
-      'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',
+      'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',
       'The Palm - Luxury apartment in Ayi Mensah',
       JSON.stringify([
         { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg', alt: 'Living room' },

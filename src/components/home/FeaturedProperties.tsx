@@ -54,7 +54,7 @@ const STATIC: any = {
   pricing: { perNight: 150, perNightGHS: 2370, currency: 'USD' },
   capacity: { guests: 4, bedrooms: 2, bathrooms: 1, beds: 2 },
   images: {
-    hero: { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775548165/nwe1_vkdfe3.png', alt: 'The Palm' },
+    hero: { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', alt: 'The Palm' },
     gallery: [
       { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775548165/nwe1_vkdfe3.png', alt: 'Main Entrance' },
       { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg', alt: 'Living Room' },

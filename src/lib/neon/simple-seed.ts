@@ -12,7 +12,6 @@ async function main() {
     return;
   }
   
-  const pricePerNight = 150;
   const pricePerNight = 50;
   const pricePerNightGhs = pricePerNight * 15.8;
   
@@ -37,7 +36,7 @@ async function main() {
       true,
       4.9,
       28,
-      'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg',
+      'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',
       'The Palm - Luxury apartment in Ayi Mensah',
       JSON.stringify([
         { url: 'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775296671/5_yc05lt.jpg', alt: 'Living room' },

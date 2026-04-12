@@ -30,7 +30,7 @@ INSERT INTO properties (
     2, 
     1, 
     true,
-    'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=1200&q=80',
+    'https://res.cloudinary.com/dwsl2ktt2/image/upload/v1775380667/ERR_jjr2hx.jpg',
     '[
         {"url": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80", "alt": "Living Room", "category": "interior"},
         {"url": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80", "alt": "Primary Bedroom", "category": "interior"},

@@ -86,6 +86,7 @@ function normalizeReview(row: any): Review {
     comment: String(row.comment ?? row.content ?? ''),
     aspects: row.aspects ?? undefined,
     isVerified: Boolean(row.is_verified ?? row.isVerified ?? false),
+    propertyName: String(row.property_name ?? row.propertyName ?? ''),
   };
 }
 
@@ -339,7 +340,7 @@ export async function createPropertyNeon(data: Partial<Property>): Promise<Prope
   try {
     const result = await queryOne(
       `INSERT INTO properties (
-        name, slug, tagline, description, long_description, property_type,
+fe features         name, slug, tagline, description, long_description, property_type,
         badge, price_per_night, price_per_night_ghs, is_live, is_featured,
         bedrooms, bathrooms, beds, max_guests, city, area,
         country, hero_image, hero_image_alt, gallery, amenities,
@@ -619,19 +620,21 @@ export async function getAllReviewsNeon(): Promise<Review[]> {
   try {
     const results = await query(
       `SELECT
-        id,
-        author,
-        author_image as "authorImage",
-        country,
-        rating,
-        date,
-        stay_duration as "stayDuration",
-        comment,
-        property_id as "propertyId",
-        is_verified as "isVerified",
-        is_featured as "isFeatured",
-        created_at as "createdAt"
-      FROM reviews
+        r.id,
+        r.author,
+        r.author_image as "authorImage",
+        r.country,
+        r.rating,
+        r.date,
+        r.stay_duration as "stayDuration",
+        r.comment,
+        r.property_id as "propertyId",
+        r.is_verified as "isVerified",
+        r.is_featured as "isFeatured",
+        r.created_at as "createdAt",
+        p.name as "property_name"
+      FROM reviews r
+      LEFT JOIN properties p ON r.property_id = p.id
       WHERE is_verified = true
       ORDER BY created_at DESC`
     );
